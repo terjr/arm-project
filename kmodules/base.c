@@ -3,8 +3,11 @@
 
 MODULE_LICENSE("GPL");
 
+void runtest(void);
+
 static int hello_init(void) {
     printk(KERN_ALERT "Hello, world\n");
+    runtest();
     return 0;
 }
 
