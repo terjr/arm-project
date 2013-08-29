@@ -1,6 +1,7 @@
-INCLUDEPATH=-I/usr/src/linux-headers-3.10-2-common/include/ \
-	    -I/usr/src/linux-headers-3.10-2-common/arch/x86/include/ \
-	    
-CFLAGS+= -nostdinc -D_POSIX_C_SOURCE ${INCLUDEPATH} -Wall -Wextra
+obj-m += base.o
 
-all: base
+all:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
+clean:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
