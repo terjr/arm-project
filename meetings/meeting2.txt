@@ -1,0 +1,13 @@
+-- Project meeting 2 --
+
+Problem: Kernel panics
+    - Logge Vcore og se om det hopper mye
+    - Dobbelsjekk jord
+    - Finn ut om kjernen proever å slå av power-moduler ved shutdown
+    - Disable DVFS?
+    - Måle jord mellom core og kort -- burde være ~0
+
+    Tipper: Prosessoren (eller OS?) proever å regulere sin egen spenning
+
+    Hvordan funker MAXIM-chippen? Oedelegger den for oss? Den har muligens noe
+    intelligens som overstyrer OS.

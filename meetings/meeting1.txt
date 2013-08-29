@@ -1,0 +1,23 @@
+-- Prosjektoppgave, oppstart --
+
+- måle effekt på forskjellige instruksjoner
+- måle stroemmen til prosessorkjernen
+
+- ingen OS
+- kanskje Linux likevel?
+    - ingen interrupts/scheduling
+
+Vcc_core = 1.2-1.3 (fra ledning)
+Vcc = 5v (fra kortet)
+
+60mV ==> 5A (lineært amperemeter)
+
+Velge en type instruksjon -> loop mange ganger
+
+Flere kjerner på samme chippen
+
+Mulig å disable kjerner?
+
+Trigge amperemeter ved å toggle eksternt
+
+Skriv kjernemodul
