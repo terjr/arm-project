@@ -12,9 +12,9 @@ static int hello_init(void) {
     unsigned long irqs;
     local_irq_save(irqs);
 
-    printk("Interrupts enabled: 0x%X\n", irqs);
-
+    printk("Starting runtest()...\n");
     runtest();
+    printk("runtest() done.\n");
 
     local_irq_restore(irqs);
     return 0;
