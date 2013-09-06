@@ -22,3 +22,7 @@
             "subs r7, r7, #1\n" \
             "bne lbl\n"); \
 } while (0);
+
+#define CONST1 "#55"
+#define CONST2 "#0x55"
+#define CONST3 "#0xAA"
