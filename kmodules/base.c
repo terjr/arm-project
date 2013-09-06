@@ -2,20 +2,24 @@
 #include <linux/irqflags.h>
 #include <linux/module.h>
 
+#include "fast_loop.h"
+
 MODULE_LICENSE("GPL");
 
 void runtest(void);
 
 static int hello_init(void) {
+    unsigned long irqs;
     printk(KERN_ALERT "Hello, world\n");
 
-    unsigned long irqs;
     local_irq_save(irqs);
+    preempt_disable();
 
     printk("Starting runtest()...\n");
     runtest();
-    printk("runtest() done.\n");
+    printk("runtest() done. %d preemtions.\n", preempt_count());
 
+    preempt_enable();
     local_irq_restore(irqs);
     return 0;
 }
