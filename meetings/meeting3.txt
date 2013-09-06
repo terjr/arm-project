@@ -1,0 +1,29 @@
+Hvor stor er cachene, L1 osv.?
+
+- Finn ut hvordan mikroarkitekturen ser ut
+- Se på standard ARM arkitektur og finn ut hvordan det kan se ut
+
+Hva gjoer CPU-en når den idler?
+    - Sannsynligvis skru av klokka
+
+Vcc_core gir sannsynligvis stroem til både core og L1+FIFO (samme spenning)
+
+Lyst til å måle Ampere og regne ut effekt.
+
+Når vi har laget oversikt over stroemforbruk per instruksjon:
+    - proev med forskjellige operander (undersoek hvor mye bit-flipping koster)
+    - kanskje antall bits som toggler er mye viktigere enn hvilken instruksjon
+      det er?
+
+Husk å skriv ned akkurat hva vi gjoer når vi setter opp base eksperiment; særlig
+cache+FIFO-oppsett og slike ting.
+
+Minne venter vi med.
+
+Undersoek om vi kan bruke average-måling med multimeteret.
+
+Kjoer en NOP-loekke med noeyaktig like mange instruksjoner for å finne en
+baseline, slik at målingene blir relative til NOP-loekke.
+
+Lagre rådata i en filstruktur og skriv et script som henter ut og genererer
+grafer.

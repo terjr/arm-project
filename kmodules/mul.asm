@@ -6,7 +6,6 @@ __asm__(
 "mov r2, %[arg1]\t\n"
 "mov r3, %[arg2]\t\n"
 "mov r4, #10\t\n"
-"str r5, [r0], #12 \t\n"
 "mov r5, #10\t\n"
 "lbl: \t\n"
 "mul r1, r2, r3 \t\n"
