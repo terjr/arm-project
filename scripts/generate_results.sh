@@ -10,7 +10,7 @@ echo "set style fill solid"
 echo
 
 echo "plot '-' using 1:3:xtic(2) with boxes"
-for LOG_FILE in ${0/generate_results.sh/..\/results\/*\/log}
+for LOG_FILE in ${0/generate_results.sh/..\/results\/*\/*\/log}
 do
     F=`basename ${LOG_FILE/\/log/}`
     AVG=`awk 'BEGIN {x=0} $8 > 0 {sum+=$8; x+=1} END {print sum/x}' $LOG_FILE`
