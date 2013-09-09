@@ -1,5 +1,5 @@
 #include "../base.c"
 
 void runtest(void) {
-#include "icache.asm"
+    FAST_LOOP("qsub r1, r1, r2");
 }

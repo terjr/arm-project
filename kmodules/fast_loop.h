@@ -23,6 +23,7 @@
             "bne lbl\n"); \
 } while (0);
 
+#define CONST0 "#1"
 #define CONST1 "#55"
 #define CONST2 "#0x55"
 #define CONST3 "#0xAA"

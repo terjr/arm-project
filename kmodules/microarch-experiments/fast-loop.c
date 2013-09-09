@@ -1,4 +1,4 @@
-#include "base.c"
+#include "../base.c"
 
 void runtest(void) {
 #include "fast-loop.asm"
