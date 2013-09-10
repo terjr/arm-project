@@ -6,7 +6,7 @@
 
 MODULE_LICENSE("GPL");
 
-void runtest(void);
+long runtest(void);
 
 static int hello_init(void) {
     unsigned long irqs;
@@ -16,8 +16,9 @@ static int hello_init(void) {
     preempt_disable();
 
     printk("Starting runtest()...\n");
-    runtest();
-    printk("runtest() done. %d preemtions.\n", preempt_count());
+    init_perfcounters(1, 0);
+    long cc = runtest();
+    printk("runtest() done. %d cycles\n", cc);
 
     preempt_enable();
     local_irq_restore(irqs);
