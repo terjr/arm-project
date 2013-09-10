@@ -1,5 +1,5 @@
 #include "../base.c"
 
-void runtest(void) {
+unsigned int runtest(void) {
 #include "jmp.asm"
 }

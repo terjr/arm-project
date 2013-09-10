@@ -1,5 +1,6 @@
 #include "../base.c"
 
-void runtest(void) {
+unsigned int runtest(void) {
 #include "no-icache.asm"
+    return -1;
 }
