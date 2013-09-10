@@ -11,6 +11,10 @@ then
     exit 1
 fi
 
+IP_ODROID=129.241.111.182
+
+ssh ${IP_ODROID} -l root "cd arm-project/ && git pull && cd kmodules/ && make -j5"
+
 for file in $(cat ${GIT_ROOT}/.tests | grep -v ^#)
 #for file in $(find ${MODDIR}  -maxdepth 2 -mindepth 2  \
 #  -path '*microarch-experiments*' -prune -or \
@@ -18,7 +22,7 @@ for file in $(cat ${GIT_ROOT}/.tests | grep -v ^#)
 # sed -e 's@.*kmodules/\(.*\).c@\1@g' )
 do
     echo "`date`: Testing ${file}"
-    ${ME/${BASE}/test_kmod.sh} 129.241.111.182 129.241.110.134 ${file}
+    ${ME/${BASE}/test_kmod.sh} ${IP_ODROID} 129.241.110.134 ${file}
 done
 
 ${ME/${BASE}/}generate_results.sh | gnuplot -p
