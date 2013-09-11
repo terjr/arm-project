@@ -1,5 +1,5 @@
 #include "base.c"
 
 void runtest(void) {
-#include "nop.asm"
+    FAST_LOOP("nop");
 }

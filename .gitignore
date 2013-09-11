@@ -6,3 +6,5 @@
 *.order
 *.mod.c
 *.mod
+.*.sw*
+results
