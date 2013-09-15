@@ -1,0 +1,19 @@
+Kjoer kun sub i loekka for å trekke fra sub-overhead
+Gjoer det samme med jmp
+    - jmp fram og tilbake innen fast-loop
+    - jmp sekvensielt (foelg PC)
+    - sjekk at de bruker ca. like mye stroem
+
+==> Normaliser til per-instruksjon
+
+Rapport: Hvordan er tallene hentet (noeyaktighet osv.)
+- Sett fast range på måleinstrumentet
+- Proev å få måleinstrumentet til å måle raskere
+
+Sett opp to scenarioer:
+    - minimal bit-toggling
+    - maksimal bit-toggling
+    Trenger ikke gjoere det på alle instruksjoner.
+        - add, mul, logikk
+
+Sjekk at chippen kjoerer for full maskin (1.7 GHz)
