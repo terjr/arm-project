@@ -33,6 +33,7 @@ static inline void init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 
 #define FAST_LOOP(instr) \
     unsigned int _cc = 0; \
+    unsigned int value; \
 \
 /* disable i-cache */\
     __asm__ volatile ( \
@@ -72,7 +73,9 @@ static inline void init_perfcounters(int32_t do_reset, int32_t enable_divider) {
             instr"\n" \
             "subs r7, r7, #1\n" \
             "bne lbl\n" : "=r"(_cc)); \
-return get_cyclecount()
+    /* Read CCNT Register*/ \
+    asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(value)); \
+    return value;
 
 #define CONST0 "#1"
 #define CONST1 "#55"
