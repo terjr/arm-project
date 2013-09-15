@@ -48,7 +48,7 @@ static inline void init_perfcounters(int32_t do_reset, int32_t enable_divider) {
             "mov r3, #0x01\n"); \
             /* reset cycle counter */ \
   /* program the performance-counter control-register: */ \
-    asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(22)); \
+    asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(0x17)); \
     /* enable all counters: */ \
     asm volatile ("MCR p15, 0, %0, c9, c12, 1\t\n" :: "r"(0x8000000f)); \
     /* clear overflows: */ \
@@ -72,7 +72,7 @@ static inline void init_perfcounters(int32_t do_reset, int32_t enable_divider) {
             instr"\n" \
             "subs r7, r7, #1\n" \
             "bne lbl\n" : "=r"(_cc)); \
-return get_cyclecount() - _cc 
+return get_cyclecount()
 
 #define CONST0 "#1"
 #define CONST1 "#55"
