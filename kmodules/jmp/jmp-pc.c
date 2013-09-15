@@ -1,5 +1,5 @@
 #include "../base.c"
 
 void runtest(void) {
-    FAST_LOOP("jmp .+2");
+    FAST_LOOP("b .+4");
 }
