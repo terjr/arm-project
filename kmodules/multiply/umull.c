@@ -1,5 +1,5 @@
 #include "../base.c"
 
-void runtest(void) {
+unsigned int runtest(void) {
     FAST_LOOP("umull r1, r2, r3, r4");
 }

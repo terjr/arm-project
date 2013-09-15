@@ -6,18 +6,21 @@
 
 MODULE_LICENSE("GPL");
 
-void runtest(void);
+unsigned int runtest(void);
 
 static int hello_init(void) {
     unsigned long irqs;
+    unsigned int cc;
+
     printk(KERN_ALERT "Hello, world\n");
 
     local_irq_save(irqs);
     preempt_disable();
 
     printk("Starting runtest()...\n");
-    runtest();
-    printk("runtest() done. %d preemtions.\n", preempt_count());
+    init_perfcounters(1, 0);
+    cc = runtest();
+    printk("runtest() done. %d cycles\n", cc);
 
     preempt_enable();
     local_irq_restore(irqs);
