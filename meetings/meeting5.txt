@@ -1,0 +1,10 @@
+Proev å skru på instruksjonscachen på og test branch på nytt
+
+Kanskje branch predictoren oedelegger for hovedloopen?
+==> Ytelsestellere for å måle antall ganger branch predictoren bommer
+
+Stoey
+==> Jord sammen power supplyene
+==> Hev jord
+==> Opamp?
+
