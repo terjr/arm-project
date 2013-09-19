@@ -14,6 +14,8 @@ then
     exit 1
 fi
 
+#set 'SAMPLE:TIMER 0.0001428571'; to sample 7000 samples/second
+#set 'SAMPLE:TIMER MIN'; to sample 10000 samples/second
 
 (
 echo '*RST';
