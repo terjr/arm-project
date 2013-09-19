@@ -1,0 +1,7 @@
+- Would like to measure without the influence of caches
+- Run 15 instructions in fast-loop (TM)(R)(C). Only room for "less than 64
+  bytes" of instructions, that is 60 / (4 byte instructions) = 15 instructions.
+- Used {,no-}icache.asm {,no-}fast-loop.asm to figure out how many instructions
+  we had space for.
+- Instructions also has to be cache aligned, although not documented by ARM.
+  Used ".align" in the assembly.
