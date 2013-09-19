@@ -31,7 +31,7 @@ do
     AVG=`awk 'BEGIN {x=0; min=100000; max=0} $2 > 0 {sum+=$2; x+=1} $2 > max {max=$2} $2 < min {min=$2}  END {avg=sum/x; print avg - min, max - avg}' $LOG_FILE`
     MEDIAN=`awk '{print $2+0}' $LOG_FILE | sort -n -k1 | awk 'NR==25000 {print $1}'`
     echo ${COUNTER} ${MEDIAN}  ${AVG} -2 ${F}
-    let COUNTER=COUNTER+1
+    ((COUNTER++))
 done
 
 echo "# file done"

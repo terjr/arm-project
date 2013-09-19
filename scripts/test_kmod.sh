@@ -19,3 +19,5 @@ mkdir -p ${GIT_ROOT}/results/${KMOD}
 
 ${GIT_ROOT}/scripts/get_samples.sh ${IP_AGILENT} > ${GIT_ROOT}/results/${KMOD}/log
 wait ${SSH_PID}
+ssh -lroot ${IP_ODROID} dmesg | grep ".*runtest().*cycles$" | tail -n 1 \
+    | awk '{print $(NF-1)}' > ${GIT_ROOT}/results/${KMOD}/cycles
