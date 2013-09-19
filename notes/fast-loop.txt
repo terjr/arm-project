@@ -5,3 +5,4 @@
   we had space for.
 - Instructions also has to be cache aligned, although not documented by ARM.
   Used ".align" in the assembly.
+- NOTE: To start with, we forgot to align to the next 64byte boundary.
