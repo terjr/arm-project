@@ -12,8 +12,10 @@ SSH_PID=$!
 sleep 1
 
 mkdir -p ${GIT_ROOT}/results/${KMOD}
-${GIT_ROOT}/agilent/agilent ${IP_AGILENT} > ${GIT_ROOT}/results/${KMOD}/log &
-PID=$!
-sleep 10
-kill ${PID}
+#${GIT_ROOT}/agilent/agilent ${IP_AGILENT} > ${GIT_ROOT}/results/${KMOD}/log &
+#PID=$!
+#sleep 10
+#kill ${PID}
+
+${GIT_ROOT}/scripts/get_samples.sh ${IP_AGILENT} > ${GIT_ROOT}/results/${KMOD}/log
 wait ${SSH_PID}
