@@ -10,6 +10,6 @@
 \
     FAST_LOOP("lbl2", instr, "0x1"); \
 \
-    READ_CYCLE_COUNTER("value"); \
+    READ_CYCLE_COUNTER(value); \
     return value;
 

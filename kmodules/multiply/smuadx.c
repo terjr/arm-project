@@ -1,5 +1,5 @@
 #include "../base.c"
 
 unsigned int runtest(void) {
-    FAST_LOOP("smuadx r1, r1, r2");
+    TEST_BENCH("smuadx r1, r1, r2");
 }

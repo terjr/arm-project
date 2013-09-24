@@ -23,7 +23,6 @@ static int hello_init(void) {
     preempt_disable();
 
     printk("Starting runtest()...\n");
-    init_perfcounters(1, 0);
     cc = runtest();
     printk("runtest() done. %d cycles\n", cc);
 
