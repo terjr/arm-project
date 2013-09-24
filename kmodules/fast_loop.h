@@ -32,7 +32,6 @@ static inline void init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 }
 
 #define FAST_LOOP(instr) \
-    unsigned int _cc = 0; \
     unsigned int value; \
 \
 /* disable i-cache */\
@@ -42,21 +41,13 @@ static inline void init_perfcounters(int32_t do_reset, int32_t enable_divider) {
             "mcr p15, 0, r0, c1, c0, 0\n"); \
             /* set up loop */ \
     __asm__ volatile ( \
-            "mov r7, #0x3fffffff\n" \
+            "mov r7, #0x1fffffff\n" \
             "mov r0, #0x55\n" \
             "mov r1, #0x71\n" \
             "mov r2, #0x11\n" \
             "mov r3, #0x01\n"); \
-            /* reset cycle counter */ \
-  /* program the performance-counter control-register: */ \
-    asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(0x17)); \
-    /* enable all counters: */ \
-    asm volatile ("MCR p15, 0, %0, c9, c12, 1\t\n" :: "r"(0x8000000f)); \
-    /* clear overflows: */ \
-    asm volatile ("MCR p15, 0, %0, c9, c12, 3\t\n" :: "r"(0x8000000f)); \
- \
-    __asm__ volatile ("b lbl\n" \
-            ".align\n" \
+    __asm__ volatile ( \
+            ".balign 64\n" \
             "lbl:\n" \
             instr"\n" \
             instr"\n" \
@@ -72,7 +63,38 @@ static inline void init_perfcounters(int32_t do_reset, int32_t enable_divider) {
             instr"\n" \
             instr"\n" \
             "subs r7, r7, #1\n" \
-            "bne lbl\n" : "=r"(_cc)); \
+            "bne lbl\n" \
+            "mov r7, #1\n" \
+            "nop\n" \
+            "nop\n" \
+            "nop\n" \
+            ); \
+            /* reset cycle counter */ \
+  /* program the performance-counter control-register: */ \
+    asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(0x17)); \
+   /* clear overflows: */ \
+    asm volatile ("MCR p15, 0, %0, c9, c12, 3\t\n" :: "r"(0x8000000f)); \
+    /* enable all counters: */ \
+    asm volatile ("MCR p15, 0, %0, c9, c12, 1\t\n" :: "r"(0x8000000f)); \
+ \
+    __asm__ volatile ( \
+            ".balign 64\n" \
+            "lbl2:\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            instr"\n" \
+            "subs r7, r7, #1\n" \
+            "bne lbl2\n"); \
     /* Read CCNT Register*/ \
     asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(value)); \
     return value;
