@@ -2,7 +2,12 @@
 #include <linux/irqflags.h>
 #include <linux/module.h>
 
-#include "fast_loop.h"
+#include "test_bench.h"
+
+#define CONST0 "#1"
+#define CONST1 "#55"
+#define CONST2 "#0x55"
+#define CONST3 "#0xAA"
 
 MODULE_LICENSE("GPL");
 
