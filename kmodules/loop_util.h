@@ -42,6 +42,7 @@
 
 #define FAST_LOOP(label, instr, iter_count) \
     INIT_ITER_COUNT(iter_count); \
+    RESET_CYCLE_COUNTER() \
     LOOP_HEAD(label); \
     __asm__ volatile ( \
         instr"\n" \
