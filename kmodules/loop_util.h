@@ -40,9 +40,23 @@
             "mrc p15, 0, %0, c9, c13, 0\n": "=r"(variable) \
             )
 
+#define CACHE_WARMUP(label) \
+    INIT_ITER_COUNT("0xff << 4"); \
+    __asm__ volatile ( \
+            "warmup:" \
+            "ldr r1, "label"\n" \
+            "ldr r0, [r1]\n" \
+            "ldr r0, [r1,#32]\n" \
+            "ldr r0, [r1,#64]\n" \
+            "ldr r0, [r1,#96]\n" \
+            "subs r7, r7, #1\n" \
+            "bne warmup\n" \
+            ) \
+
+
 #define FAST_LOOP(label, instr, iter_count) \
     INIT_ITER_COUNT(iter_count); \
-    RESET_CYCLE_COUNTER() \
+    RESET_CYCLE_COUNTER(); \
     LOOP_HEAD(label); \
     __asm__ volatile ( \
         instr"\n" \

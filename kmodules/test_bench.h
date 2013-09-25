@@ -6,8 +6,10 @@
     DISABLE_L1_CACHE(); \
     INIT_RANDOM_REGVALS(); \
 \
+\
     FAST_LOOP("lbl", instr, "0x1fffffff"); \
 \
+    CACHE_WARMUP("lbl2"); \
     FAST_LOOP("lbl2", instr, "0x1"); \
 \
     READ_CYCLE_COUNTER(value); \
