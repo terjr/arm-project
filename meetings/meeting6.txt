@@ -1,0 +1,5 @@
+Prefetching
+    - Vær sikker på at cachen blir varmet skikkelig opp
+
+Odroid XU-E
+    - Avvent.
