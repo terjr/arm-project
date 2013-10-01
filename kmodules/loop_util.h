@@ -41,16 +41,18 @@
             )
 
 #define CACHE_WARMUP(label) \
-    INIT_ITER_COUNT("0xff << 6"); \
+    INIT_ITER_COUNT("0xff"); \
+    __asm__ volatile ("mov r7, r7, lsl #8\n"); \
     __asm__ volatile ( \
-            "ldr r1, "label"\n" \
-            "warmup"label":" \
-            "ldr r0, [r1]\n" \
-            "ldr r0, [r1,#32]\n" \
-            "ldr r0, [r1,#64]\n" \
+            "warmup"label":\n" \
+            "ldr r0, "label"\n" \
+            "ldr r1, "label"+32\n" \
+            "ldr r2, "label"+64\n" \
             "subs r7, r7, #1\n" \
             "bne warmup"label"\n" \
-            )
+            "mov %[instruction], r1\n" \
+            : [instruction] "=r"(content)); \
+            printk("Instr: %x\n", content)
 
 #define FAST_LOOP(label, instr, iter_count) \
     INIT_ITER_COUNT(iter_count); \
