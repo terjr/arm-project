@@ -9,7 +9,7 @@ echo
 
 echo set boxwidth 0.5
 echo set style fill solid
-echo set yrange [0:20000]
+echo set yrange [0:200]
 echo set xrange [-.5:]
 
 FILELIST=$(find $DIRNAME/../results -name 'cycles')
