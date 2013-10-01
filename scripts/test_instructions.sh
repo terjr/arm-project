@@ -13,7 +13,9 @@ fi
 
 IP_ODROID=129.241.111.182
 
-ssh ${IP_ODROID} -l root "cd arm-project/ && git pull && cd kmodules/ && make -j5"
+ssh ${IP_ODROID} -l root "cd arm-project/ && git pull && cd kmodules/ && make && echo \$!"
+# ssh ${IP_ODROID} -l root "dmesg --clear"
+
 
 for file in $(cat ${GIT_ROOT}/.tests | grep -v ^#)
 #for file in $(find ${MODDIR}  -maxdepth 2 -mindepth 2  \
