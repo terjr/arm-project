@@ -1,0 +1,10 @@
+Se på performance countere som teller ALU-operasjoner for å finne ut hvor mange
+instruksjoner som går i hver ALU.
+
+Proev å finn Linux sitt perfcounter-API.
+
+Se i Exynos sin dokumentasjon om PMU; Performance Management Unit
+
+Fjern alle avhengigheter og se på hvor mange sykler det tar.
+
+Avhengighetsfri ADC burde ta 13.0 sykler.
