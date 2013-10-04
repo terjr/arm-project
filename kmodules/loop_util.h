@@ -21,7 +21,7 @@
 #define LOOP_HEAD(label) \
     __asm__ volatile ( \
             ".balign 64\n" \
-            label":\n" \
+            label":" \
             )
 
 #define LOOP_TAIL(label) \
@@ -29,6 +29,13 @@
             "subs r7, r7, #1\n" \
             "bne "label"\n" \
             )
+
+/*
+ * Initiate event counter using event number (table A.18)
+ * and monitor register (table 9.1)
+ */
+#define INIT_PERF_COUNTER(event, reg) \
+    __asm__ 
 
 #define RESET_CYCLE_COUNTER() \
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x17)); \
@@ -47,12 +54,34 @@
             "warmup"label":\n" \
             "ldr r0, "label"\n" \
             "ldr r1, "label"+32\n" \
-            "ldr r2, "label"+64\n" \
             "subs r7, r7, #1\n" \
             "bne warmup"label"\n" \
             "mov %[instruction], r1\n" \
             : [instruction] "=r"(content)); \
             printk("Instr: %x\n", content)
+
+#define FAST_LOOP_nHAZARDS(label, instr1, instr2, iter_count) \
+    INIT_ITER_COUNT(iter_count); \
+    RESET_CYCLE_COUNTER(); \
+    LOOP_HEAD(label); \
+    __asm__ volatile ( \
+        instr1"\n" \
+        instr2"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr1"\n" \
+       ); \
+    LOOP_TAIL(label); \
+
+
 
 #define FAST_LOOP(label, instr, iter_count) \
     INIT_ITER_COUNT(iter_count); \
