@@ -32,14 +32,14 @@
 
 #define NOP() __asm__ volatile ("nop\n")
 
-#define 2_NOP() NOP(); NOP()
-#define 4_NOP() 2_NOP(); 2_NOP()
-#define 8_NOP() 4_NOP(); 4_NOP()
-#define 16_NOP() 8_NOP(); 8_NOP()
-#define 32_NOP() 16_NOP(); 16_NOP()
+#define NOP_x2() NOP(); NOP()
+#define NOP_x4() NOP_x2(); NOP_x2()
+#define NOP_x8() NOP_x4(); NOP_x4()
+#define NOP_x16() NOP_x8(); NOP_x8()
+#define NOP_x32() NOP_x16(); NOP_x16()
 
-#define 61_NOP() \
-    32_NOP(); 16_NOP(); 8_NOP(); 4_NOP(); 1_NOP()
+#define NOP_x59() \
+    NOP_x32(); NOP_x16(); NOP_x8(); NOP_x2(); NOP()
 
 /*
  * Initiate event counter using event number (table A.18)
@@ -50,8 +50,8 @@
 
 
 #define RESET_CYCLE_COUNTER() \
-    __asm__ volatile (".balign 64\n") \
-    61_NOP(); \
+    __asm__ volatile (".balign 64\n"); \
+    NOP_x59(); \
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x17)); \
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 3\n" :: "r"(0x8000000f)); \
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 1\n" :: "r"(0x8000000f))
