@@ -27,4 +27,4 @@ do
     ${ME/${BASE}/test_kmod.sh} ${IP_ODROID} 129.241.110.134 ${file}
 done
 
-${ME/${BASE}/}generate_results.sh | gnuplot -p
+#${ME/${BASE}/}generate_results.sh | gnuplot -p
