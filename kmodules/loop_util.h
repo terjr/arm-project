@@ -41,25 +41,43 @@
 #define NOP_x59() \
     NOP_x32(); NOP_x16(); NOP_x8(); NOP_x2(); NOP()
 
+#define MAP_EVENT_COUNTER(counter, event) \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 5\n" :: "r"(counter << 2)); \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c13, 1\n" :: "r"(event))
+
 /*
  * Initiate event counter using event number (table A.18)
  * and monitor register (table 9.1)
  */
-#define INIT_PERF_COUNTER(event, reg) \
-    __asm__ 
+
+#define INIT_PERF_COUNTERS() \
+    MAP_EVENT_COUNTER(0, 0x70); \
+    MAP_EVENT_COUNTER(0, 0x71); \
+    MAP_EVENT_COUNTER(0, 0x72)
 
 
-#define RESET_CYCLE_COUNTER() \
+#define RESET_COUNTERS() \
     __asm__ volatile (".balign 64\n"); \
     NOP_x59(); \
-    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x17)); \
-    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 3\n" :: "r"(0x8000000f)); \
-    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 1\n" :: "r"(0x8000000f))
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 3\n" :: "r"(0x8000003f)); \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 1\n" :: "r"(0x8000003f)); \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x17))
 
-#define READ_CYCLE_COUNTER(variable) \
-    __asm__ volatile ( \
-            "mrc p15, 0, %0, c9, c13, 0\n": "=r"(variable) \
-            )
+#define PRINT_PERFCOUNTER(n) \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 5\n" :: "r"(n)); \
+    __asm__ volatile ("mrc p15, 0, %0, c9, c13, 2\n" : "=r"(perf)); \
+    printk("Eventctr #%d = %d\n", n, perf)
+
+#define PRINT_COUNTERS() \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 1\n" :: "r"(0x0)); \
+    __asm__ volatile ("mrc p15, 0, %0, c9, c13, 0\n": "=r"(perf)); \
+    printk("Cycle count: %d\n", perf); \
+            PRINT_PERFCOUNTER(0); \
+            PRINT_PERFCOUNTER(1); \
+            PRINT_PERFCOUNTER(2); \
+            PRINT_PERFCOUNTER(3); \
+            PRINT_PERFCOUNTER(4); \
+            PRINT_PERFCOUNTER(5)
 
 #define CACHE_WARMUP(label) \
     INIT_ITER_COUNT("0xff"); \
@@ -76,7 +94,7 @@
 
 #define FAST_LOOP_nHAZARDS(label, instr1, instr2, iter_count) \
     INIT_ITER_COUNT(iter_count); \
-    RESET_CYCLE_COUNTER(); \
+    RESET_COUNTERS(); \
     LOOP_HEAD(label); \
     __asm__ volatile ( \
         instr1"\n" \
@@ -99,7 +117,7 @@
 
 #define FAST_LOOP(label, instr, iter_count) \
     INIT_ITER_COUNT(iter_count); \
-    RESET_CYCLE_COUNTER(); \
+    RESET_COUNTERS(); \
     LOOP_HEAD(label); \
     __asm__ volatile ( \
         instr"\n" \
