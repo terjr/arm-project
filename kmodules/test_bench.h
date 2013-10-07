@@ -9,6 +9,13 @@
 #define TEST_BENCH(instr1, instr2) \
     unsigned int content, perf; \
 \
+    __asm__ volatile ("mrc p15, 0, %0, c9, c12, 0" : "=r"(content)); \
+    printk("IMP: %#x, IDCODE: %#x, N: %d\n", content >> 24, (content >> 16) & 0xff, (content >> 11) & 0xf); \
+    __asm__ volatile ("mrc p15, 0, %0, c0, c0, 0" : "=r"(content));\
+    printk("IMP: %#x, VAR: %#x, ARCH: %#x, PPN: %#x, Rev: %#x\n", \
+            content >> 24, (content >> 20) & 0xf, (content >> 16) & 0xf, \
+            (content >> 4) & 0xfff, content & 0xf\
+            );\
     printk("Testing "instr1" and "instr2"\n");\
 \
     DISABLE_L1_CACHE(); \

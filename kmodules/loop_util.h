@@ -42,7 +42,7 @@
     NOP_x32(); NOP_x16(); NOP_x8(); NOP_x2(); NOP()
 
 #define MAP_EVENT_COUNTER(counter, event) \
-    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 5\n" :: "r"(counter << 2)); \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 5\n" :: "r"(1 << counter)); \
     __asm__ volatile ("mcr p15, 0, %0, c9, c13, 1\n" :: "r"(event))
 
 /*
@@ -52,8 +52,11 @@
 
 #define INIT_PERF_COUNTERS() \
     MAP_EVENT_COUNTER(0, 0x70); \
-    MAP_EVENT_COUNTER(0, 0x71); \
-    MAP_EVENT_COUNTER(0, 0x72)
+    MAP_EVENT_COUNTER(1, 0x71); \
+    MAP_EVENT_COUNTER(2, 0x72); \
+    MAP_EVENT_COUNTER(3, 0x01); \
+    MAP_EVENT_COUNTER(4, 0x70); \
+    MAP_EVENT_COUNTER(5, 0x66)
 
 
 #define RESET_COUNTERS() \
@@ -64,12 +67,12 @@
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x17))
 
 #define PRINT_PERFCOUNTER(n) \
-    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 5\n" :: "r"(n)); \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 5\n" :: "r"(1 << n)); \
     __asm__ volatile ("mrc p15, 0, %0, c9, c13, 2\n" : "=r"(perf)); \
-    printk("Eventctr #%d = %d\n", n, perf)
+    printk("PMXEVCNTR%d = %d\n", n, perf)
 
 #define PRINT_COUNTERS() \
-    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 1\n" :: "r"(0x0)); \
+    __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x0)); \
     __asm__ volatile ("mrc p15, 0, %0, c9, c13, 0\n": "=r"(perf)); \
     printk("Cycle count: %d\n", perf); \
             PRINT_PERFCOUNTER(0); \
