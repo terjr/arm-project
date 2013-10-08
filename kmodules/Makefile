@@ -1,6 +1,6 @@
 DIR=/root/arm-project/kmodules/
 #FILES=$(shell /usr/bin/find ${DIR} -maxdepth 2 -mindepth 2  ! -name '*.mod.c' -name '*.c' | sed -e 's@\(.*\).c@\1.o@g' -e 's@${DIR}@@g')
-FILES=add/add.o add/adc.o
+FILES=add/add.o add/adc.o misc/nop.o
 #ccflags-y += -E
 #ccflags-y+= -marm -mthumb-interwork -mfpu=vfpv3-d16
 obj-m += $(FILES)
