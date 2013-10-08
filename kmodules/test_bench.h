@@ -1,8 +1,8 @@
 #include "loop_util.h"
 
 #define TEST_BLOCK(instr1, instr2, label, iterations) \
+    printk("Running "instr1" and "instr2" for "iterations" iterations\n"); \
     CACHE_WARMUP(label); \
-    INIT_PERF_COUNTERS(); \
     FAST_LOOP_nHAZARDS(label, instr1, instr2, iterations); \
     PRINT_COUNTERS()
  
@@ -16,16 +16,20 @@
             content >> 24, (content >> 20) & 0xf, (content >> 16) & 0xf, \
             (content >> 4) & 0xfff, content & 0xf\
             );\
-    printk("Testing "instr1" and "instr2"\n");\
+/*    printk("Testing "instr1" and "instr2"\n");\ */ \
 \
     DISABLE_L1_CACHE(); \
+    printk("Perfcounters with no instr.\n");\
+    INIT_PERF_COUNTERS(); \
+    RESET_COUNTERS(); \
+    PRINT_COUNTERS(); \
     INIT_RANDOM_REGVALS(); \
 \
     /* Loop for power-meassure */ \
     FAST_LOOP_nHAZARDS("lbl", instr1, instr2,"0x1fffffff"); \
 \
     /* Loops for instruction length (cycles) determination */ \
-    TEST_BLOCK(instr1, instr2, "part1", "5"); \
+    TEST_BLOCK(instr1, instr2, "part1", "2"); \
     TEST_BLOCK(instr1, instr2, "part2", "6"); \
     TEST_BLOCK(instr1, instr2, "part3", "0xfa"); \
     TEST_BLOCK(instr1, instr2, "part4", "0xfb"); \
