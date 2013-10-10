@@ -1,0 +1,18 @@
+We tried to figure out how many functional units there is in the Cortex-A9. We
+figured out that 4x MUL (12 cycles) and 9x ADD (9 cycles) in fast-loop used 50
+cycles (accurate). Performance counters from main and secondary execution unit
+said 44 and 47, respectively.
+
+For each iteration, you would have
+9 cycles to add
+12 cycles to mul
+1 cycle to sub
+=22
+
+Multiplied with 5, you get
+45
+60
+5
+=110
+
+BUT IT TAKES ONLY 50 CYCLES.
