@@ -2,7 +2,7 @@
 DIRNAME=$(readlink -f $(dirname $0))
 
 echo instruction,iterations,cycles,main_ex,second_ex,pred_branch,mispred_branch,issue_no_dispatch,issue_empty
-ssh root@129.241.111.182 dmesg | sed 's|.*] \(.*\)|\1|' |
+ssh root@129.241.111.182 dmesg | sed 's|.*] \(.*\)|\1|' | grep "tdt4501:" | sed 's|tdt4501:||' |
 awk '$1 == "Running" \
     { \
         $1=""; \
