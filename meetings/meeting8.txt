@@ -1,0 +1,12 @@
+Vi får to mispredict to ganger uansett hvor lang loopen er
+
+Test MUL, med og uten hazard. Hvis det ikke er noen forskjell, så har vi sikkert
+bare en multiply.
+
+Test MUL + 2xADDs for å se hvor mange ALUer som finnes.
+
+I rapport:
+    Introduction (hva du vil for noe)
+    Description (prosessoren slik vi oppfatter at den er)
+    Experimental Setup
+    Results
