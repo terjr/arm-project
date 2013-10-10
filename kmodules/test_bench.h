@@ -5,7 +5,7 @@
     CACHE_WARMUP(label); \
     FAST_LOOP_nHAZARDS(label, instr1, instr2, iterations); \
     PRINT_COUNTERS()
- 
+
 #define TEST_BENCH(instr1, instr2) \
     unsigned int content, perf; \
 \
