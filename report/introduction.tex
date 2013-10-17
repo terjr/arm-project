@@ -1,7 +1,17 @@
 \section{Introduction}
 
-\IEEEPARstart{M}{oore's} law is very often the first word in a paper about computer science.
-This is in fact a paper about computer science, and thus starts with the words Moore's law.
+\IEEEPARstart{T}{odays} processors grow more sophisticated each day, and
+more and more advanced features are added. In the earlier days, the focus
+was all on performance, but as we are hitting walls where we cannot dispatch
+more heat, along with computers entring smaller and more energy aware domains,
+power and energy has become a major focal point.
+
+In this paper, we present a method for analysing the instruction level energy efficency
+of a new computer architecture. We also apply this method to the ARM Cortex-A9, and
+inspect the power profile of different instructions. We will see that even though
+the ARM Cortex-A9 is both a computationaly strong and energy efficient CPU, there
+are room for improvement.
+
 
 What exactly have we been focusing on? Reverse-engineered the ARM Cortex-A9. ARM
 does not even tell how many functional units there is in the A9 core. With these
