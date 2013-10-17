@@ -1,0 +1,11 @@
+- Baseline -
+Ingen instruksjoner bruker lite stroem
+Hva med å bare velge en instruksjon?
+=> Eventuelt bare ta den instruksjonen som bruker minst stroem
+Proev instruksjoner som f.eks "set endianess" og se om kanskje de bruker
+latterlig lite stroem
+
+- Rapport -
+Planene vi har med rapport er bra. Husk å nevne SHMAC.
+
+Sjekk temperatur.
