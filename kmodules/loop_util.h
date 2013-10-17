@@ -1,3 +1,5 @@
+#define LOG_PREFIX "tdt4501:"
+
 #define DISABLE_L1_CACHE() \
     __asm__ volatile ( \
             "mrc p15, 0, r0, c1, c0, 0\n" \
@@ -66,21 +68,21 @@
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 1\n" :: "r"(0x8000003f)); \
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x17))
 
-#define PRINT_PERFCOUNTER(n) \
+#define PRINT_PERFCOUNTER(n, name) \
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 5\n" :: "r"(n)); \
     __asm__ volatile ("mrc p15, 0, %0, c9, c13, 2\n" : "=r"(perf)); \
-    printk("PMXEVCNTR%d = %d\n", n, perf)
+    printk(LOG_PREFIX name" %d\n", perf)
 
 #define PRINT_COUNTERS() \
     __asm__ volatile ("mcr p15, 0, %0, c9, c12, 0\n" :: "r"(0x0)); \
     __asm__ volatile ("mrc p15, 0, %0, c9, c13, 0\n": "=r"(perf)); \
-    printk("Cycle count: %d\n", perf); \
-            PRINT_PERFCOUNTER(0); \
-            PRINT_PERFCOUNTER(1); \
-            PRINT_PERFCOUNTER(2); \
-            PRINT_PERFCOUNTER(3); \
-            PRINT_PERFCOUNTER(4); \
-            PRINT_PERFCOUNTER(5)
+    printk(LOG_PREFIX"cycle_count %d\n", perf); \
+            PRINT_PERFCOUNTER(0, "main_ex"); \
+            PRINT_PERFCOUNTER(1, "second_ex"); \
+            PRINT_PERFCOUNTER(2, "pred_branch"); \
+            PRINT_PERFCOUNTER(3, "mispred_branch"); \
+            PRINT_PERFCOUNTER(4, "issue_no_dispatch"); \
+            PRINT_PERFCOUNTER(5, "issue_empty")
 
 #define CACHE_WARMUP(label) \
     INIT_ITER_COUNT("0xff"); \
@@ -93,7 +95,7 @@
             "bne warmup"label"\n" \
             "mov %[instruction], r1\n" \
             : [instruction] "=r"(content)); \
-            printk("Instr: %x\n", content)
+            printk(LOG_PREFIX"Instr: %x\n", content)
 
 #define FAST_LOOP_nHAZARDS(label, instr1, instr2, iter_count) \
     INIT_ITER_COUNT(iter_count); \
@@ -136,6 +138,27 @@
         instr"\n" \
         instr"\n" \
         instr"\n" \
+        ); \
+    LOOP_TAIL(label); \
+
+#define FAST_LOOP_3(label, instr1, instr2, instr3, iter_count) \
+    INIT_ITER_COUNT(iter_count); \
+    RESET_COUNTERS(); \
+    LOOP_HEAD(label); \
+    __asm__ volatile ( \
+        instr1"\n" \
+        instr2"\n" \
+        instr3"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr3"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr3"\n" \
+        instr1"\n" \
+        instr2"\n" \
+        instr3"\n" \
+        instr1"\n" \
         ); \
     LOOP_TAIL(label); \
 
