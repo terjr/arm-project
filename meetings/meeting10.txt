@@ -1,0 +1,6 @@
+Mål temperatur på en annen ODROID
+- Pass på DVFS/performance governor
+- Kjoelespray? Proev Komponenttjenesten @ C245
+
+Skriv rapport og send utkast til Gunnar+Asbjoern med
+overskrifter/disposisjon/outline/litt tekst/+++.

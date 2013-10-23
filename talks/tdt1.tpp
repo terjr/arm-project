@@ -53,8 +53,8 @@ Current models...
 
 --center Solution: Define power components
 
---newpage methology
---heading Methology
+--newpage methodology
+--heading Methodology
 
 
 Prerequisite: An overview of the microarchitectural components
@@ -72,7 +72,7 @@ Algorithm
 4) Create model
 --endoutput
 
---newpage methology_step1
+--newpage methodology_step1
 --heading Step 1: Defining power components
 
 
@@ -81,7 +81,7 @@ Algorithm
 * Problem: Some components are shared
            ==> Merge
 
---newpage methology_step2
+--newpage methodology_step2
 --heading Step 2: Define training benchmarks
 
 
@@ -93,7 +93,7 @@ Algorithm
 
 * Intel Core 2 Duo specific: fxch instruction
 
---newpage methology_step3
+--newpage methodology_step3
 --heading Step 3: Execute benchmarks and sample data
 
 
@@ -104,11 +104,40 @@ Algorithm
 ---
 --##exec feh -Z -F Tab2.png
 
---newpage methology_step4
+--newpage methodology_step4
 --heading Step 4: Create model
 
 
 * Solve the linear system
+
+* ...but do so incrementally
+
+
+
+--newpage validation
+--heading Validation
+
+--boldon
+Model Correctness
+--boldoff
+
+
+* All models performs about the same in terms of accuracy
+    ==> Model accuracy has not improved
+
+* ...however, standard deviation decreases when tracking more components
+
+TODO: Pro'lly add Table 4?
+
+--horline
+
+
+--boldon
+Model Responsiveness
+--boldoff
+
+
+* Phase detection algorithm
 
 --newpage shortcomings
 --heading Shortcomings
