@@ -53,8 +53,8 @@ Current models...
 
 --center Solution: Define power components
 
---newpage methology
---heading Methology
+--newpage methodology
+--heading Methodology
 
 
 Prerequisite: An overview of the microarchitectural components
