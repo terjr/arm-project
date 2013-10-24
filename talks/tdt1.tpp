@@ -137,14 +137,30 @@ Model Responsiveness
 --boldoff
 
 
+* MICRO are far more responsive
+
 * Phase detection algorithm
 
---newpage shortcomings
---heading Shortcomings
+* Observation: 63% of phases are (2,10] seconds long
+  ==> Long enough to overhead of power aware policies
 
-* Hard to decompose unknown architectures (e.g. ARM)
+--newpage conclusion
+--heading Conclusion
 
---newpage notes
---heading Notes
-- accuracy, responsiveness and decomposability :: power model must-haves
-- should apply to up-and-coming architectures
+--boldon
+Power model must-haves
+--boldoff
+
+    * Accuracy
+
+    * Responsiveness
+
+    * Decomposability
+
+--horline
+
+
+--boldon
+Shortcomings
+--boldoff
+* Hard to decompose proprietary architectures (e.g. ARM)
