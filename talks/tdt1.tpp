@@ -14,24 +14,19 @@
 --heading Motivation
 
 
-* Need to _UNDERSTAND_ power consumption to _LOWER_ it
+* Power wall
 
 * A platform for online power-aware scheduling
 
+---
+--exec feh -Z -F Fig1.png
+---
+--exec feh -Z -F Fig2.png
 
 --newpage outline
 --heading Outline
 
 
-
---newpage perfcounters
---heading Performance Counters Recap
-
-
-* Registers counting distinct events in and around the processor
-TODO: Maybe a picture?
-
-* 
 
 --newpage observations
 --heading Observations
@@ -59,7 +54,7 @@ Current models...
 
 Prerequisite: An overview of the microarchitectural components
 ---
---##exec feh -Z -F Fig3.png
+--exec feh -Z -F Fig3.png
 
 Algorithm
 --beginoutput
@@ -102,7 +97,7 @@ Algorithm
 * Turn off as much as possible
 
 ---
---##exec feh -Z -F Tab2.png
+--exec feh -Z -F Tab2.png Eq1.png
 
 --newpage methodology_step4
 --heading Step 4: Create model
