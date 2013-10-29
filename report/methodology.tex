@@ -1,10 +1,39 @@
 \section{Methodology}
+
+
 \subsection{Test Environment}
 We are using the ODROID-X2 developer platform \cite{odroid-x2}, which has an
 Exynos 4412 Prime SoC with four ARM Cortex-A9 processor cores running at
 $f_{core} = 1.7 GHz$.
 
-% TODO: Insert ARM Cortex A9 description
+The processor we used in the experiment was an ARM Cortex A9
+r3p0\footnote{Revision number revealed by printing the contents of the Main ID
+Register}, hereby denoted A9. This processor runs at a static frequency of
+1.7GHz, have 4 32-bit cores, each with its own out-of-order dual issue
+speculative pipelines\cite{armtech}. The pipeline is split after the dispatch
+stage into 4 different lines, each with its own functional units. The different
+pipelines is not very well documented, but our experiments together with the
+common subset of information found in various
+documentations\cite{armtech}\cite{7cpu}\cite{lotofdocs}, the four pipelines are
+structured as follow: Main execution pipeline with a  general ALU, and a
+hardware-multiply, secondary execution pipeline with only a general ALU,
+load-store-pipeline, containing only an hardware adder to generate addresses,
+and a floating-point pipeline containing an ordinary FPU and connections to the
+NEON unit.
+
+It is a common philosophy that a RISC should consume one clock cycle pr.
+instruction\cite{unknown}.  For this particular processor made by Advanced RISC
+Machines, it is not the case. The dual issue and its parallell general ALU
+pipelines enables the processor to achive more than one instruction pr. clock
+cycle, and at the same time, it supports multiply, divide and floating point,
+each taking multiple clock cycles. It is even so that multiply, divide and
+floating point takes different amount of cycles according to their surrounding
+instructions.
+
+The A9 processor contains an Performance Monitor Unit with 6 generic event
+counters, a cycle counter and 58 different events that are mappable to the event
+counters\cite{armtech}. A list of possible events can be found in table A.18 in
+the Cortex-A9 Technical Reference Manual\cite{armtech}.
 
 To measure energy consumption, we use an Agilent 34410A multimeter to measure
 voltage drop over a negligible $12$ $m\Omega$ resistor. We isolate power
@@ -12,10 +41,11 @@ consumption on the ARM cores and the development board by modifying the
 ODROID-X2 and providing a separate power supply for the A9 cores. They get
 powered by an external power supply giving $1.3V$ DC, while the rest of the
 board is powered from a another power supply at $5.0V$, as depicted in figure
-TODO.
+\todo{figure ref}.
 
 For all experiments, we disable all but one A9 core since we are only interested
 in single-core performance.
+
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
@@ -24,6 +54,7 @@ providing a fixed core voltage, so energy usage of simple, one-cycle instruction
 could be retrieved by running for a fixed time period and applying the following
 formula.
 
+\todo{fix formula}
 \begin{center}
 $P_{instruction} = TODO$
 \end{center}
@@ -32,7 +63,7 @@ The Agilent multimeter is set up to sample at full precision at its maximum rate
 of 1000 Hz. This yields one sample every $\frac{ f_{core} }{ 1000 } = 1.7$
 million instructions; it is obvious from this that we are unable to observe
 inter-cycle variations in energy consumption.
-%TODO: But maybe the multimeter is doing a running average internally?
+\todo[inline]{But maybe the multimeter is doing a running average internally?}
 
 This simple setup does not take the memory system into account; we are
 undoubtedly not able to feed the processor instructions at no cost in terms of
@@ -46,8 +77,12 @@ loops consisting of up to 15 instructions to execute with only one access to the
 instruction cache accesses (i.e. at the beginning). Executing code that fits in
 fast-loop allows us to bypass the L1 cache entirely: In fact, we even disable it
 completely through one of the p15 control registers.
-%TODO: Verify and add reference to the last sentence
+\todo[inline]{Verify and add reference to the last sentence}
 
 Furthermore, executing code within fast-loop allows us to limit the number of
 cache mispredicts to 2, independently of the iteration count.
-%TODO: Explain how and why these to misses occur
+\todo[inline]{Explain how and why these to misses occur}
+
+
+\subsection{Cycle Normalization}
+Write about how we perform normalization. Refer to the paper we have read.
