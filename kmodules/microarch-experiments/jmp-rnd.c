@@ -1,6 +1,6 @@
 #include "../base.c"
 
-unsigned int runtest(void) {
+void runtest(void) {
     __asm__("mrc p15, 0, r0, c1, c0, 0\n" \
             "bic r0, r0, #(0x1 << 12)\n" \
             "mcr p15, 0, r0, c1, c0, 0\n" \
@@ -27,5 +27,4 @@ unsigned int runtest(void) {
             "b .-44\n" \
             "subs r7, r7, #1\n" \
             "bne lbl\n"); \
-            return 0;
 }

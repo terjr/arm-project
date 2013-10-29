@@ -1,5 +1,5 @@
 #include "../base.c"
 
-unsigned int runtest(void) {
-    TEST_BENCH("b .+4");
+void runtest(void) {
+    TEST_BENCH("b .+4", "b .+4");
 }

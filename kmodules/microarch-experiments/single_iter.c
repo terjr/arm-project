@@ -6,6 +6,6 @@
 #include "single_iter.h"
 #include "../base.c"
 
-unsigned int runtest(void) {
-    TEST_BENCH("add r1, r2, "CONST1);
+void runtest(void) {
+    TEST_BENCH("add r1, r2, "CONST1, "add r1, r2, "CONST1);
 }
