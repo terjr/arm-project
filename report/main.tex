@@ -17,11 +17,11 @@
     pdfmenubar=true,        % show Acrobats menu?
     pdffitwindow=false,     % window fit to page when opened
     pdfstartview={FitH},    % fits the width of the page to the window
-    pdftitle={TDT4260 - Group 1 - Performance Measurement Unit},    % title
-    pdfauthor={Henrik Fegran, Sebastian Bøe, Anders Tvetmarken Akre, Stian Hvatum},     % author
+    pdftitle={TDT4501 - Toward a SHMAC ISA and Microarchitecture: An Experimental Approach on the ARM ISA},    % title
+    pdfauthor={Stian Hvatum, Terje Runde},     % author
     pdfsubject={Prefetching techniques},   % subject of the document
-    pdfcreator={Henrik Fegran, Sebastian Bøe, Anders Tvetmarken Akre, Stian Hvatum},   % creator of the document
-    pdfproducer={Henrik Fegran, Sebastian Bøe, Anders Tvetmarken Akre, Stian Hvatum}, % producer of the document
+    pdfcreator={Stian Hvatum, Terje Runde},   % creator of the document
+    pdfproducer={Stian Hvatum, Terje Runde}, % producer of the document
     pdfnewwindow=true,      % links in new window
     colorlinks,       % false: boxed links; true: colored links
     linkcolor=black,          % color of internal links
@@ -35,22 +35,23 @@
 
 \begin{document}
 
-\title{\small{TDT4501 - Toward a SHMAC ISA and Micro Architecture}\\\Huge{An experimental approach on the ARM-ISA}}
+\title{\small{TDT4501 - Toward a SHMAC ISA and Microarchitecture}\\\Huge{An Experimental Approach on the ARM ISA}}
 
 \author{Terje~Runde,~MSc.~CS~student~NTNU,
         Stian~Hvatum,~MSc.~CS~student~NTNU}
+
 
 \maketitle
 
 \input{./abstract}
 
 \begin{IEEEkeywords}
-Hardware prefetching, processor-memory gap, M5 simulator, performance evaluation
+Power consumption, ARM, performance counters, instruction level energy efficency
 \end{IEEEkeywords}
 
 \input{./introduction}
-\input{./related_work}
-\input{./cpu}
+\input{./related_work} % beginning or end?
+\input{./cortex-a9}
 \input{./the_scheme}
 \input{./methodology}
 \input{./results}

@@ -1,1 +1,53 @@
 \section{Methodology}
+\subsection{Test Environment}
+We are using the ODROID-X2 developer platform \cite{odroid-x2}, which has an
+Exynos 4412 Prime SoC with four ARM Cortex-A9 processor cores running at
+$f_{core} = 1.7 GHz$.
+
+% TODO: Insert ARM Cortex A9 description
+
+To measure energy consumption, we use an Agilent 34410A multimeter to measure
+voltage drop over a negligible $12$ $m\Omega$ resistor. We isolate power
+consumption on the ARM cores and the development board by modifying the
+ODROID-X2 and providing a separate power supply for the A9 cores. They get
+powered by an external power supply giving $1.3V$ DC, while the rest of the
+board is powered from a another power supply at $5.0V$, as depicted in figure
+TODO.
+
+For all experiments, we disable all but one A9 core since we are only interested
+in single-core performance.
+
+\subsection{Benchmarks}
+As a first approximation, the benchmark programs consists of an infinite series
+of identic instructions. The A9 core runs at a fixed frequency and we are
+providing a fixed core voltage, so energy usage of simple, one-cycle instruction
+could be retrieved by running for a fixed time period and applying the following
+formula.
+
+\begin{center}
+$P_{instruction} = TODO$
+\end{center}
+
+The Agilent multimeter is set up to sample at full precision at its maximum rate
+of 1000 Hz. This yields one sample every $\frac{ f_{core} }{ 1000 } = 1.7$
+million instructions; it is obvious from this that we are unable to observe
+inter-cycle variations in energy consumption.
+%TODO: But maybe the multimeter is doing a running average internally?
+
+This simple setup does not take the memory system into account; we are
+undoubtedly not able to feed the processor instructions at no cost in terms of
+access speed and -- more importantly -- memory system energy usage. Thus, we
+improve this model by investigating features that avoids the memory system as
+much as possible.
+
+On our target CPU, there is a feature called fast-loop\texttrademark mode
+(previously small-loop mode). As the name suggests, this feature allows small
+loops consisting of up to 15 instructions to execute with only one access to the
+instruction cache accesses (i.e. at the beginning). Executing code that fits in
+fast-loop allows us to bypass the L1 cache entirely: In fact, we even disable it
+completely through one of the p15 control registers.
+%TODO: Verify and add reference to the last sentence
+
+Furthermore, executing code within fast-loop allows us to limit the number of
+cache mispredicts to 2, independently of the iteration count.
+%TODO: Explain how and why these to misses occur
