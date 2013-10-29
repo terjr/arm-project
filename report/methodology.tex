@@ -35,17 +35,6 @@ counters, a cycle counter and 58 different events that are mappable to the event
 counters\cite{armtech}. A list of possible events can be found in table A.18 in
 the Cortex-A9 Technical Reference Manual\cite{armtech}.
 
-To measure energy consumption, we use an Agilent 34410A multimeter to measure
-voltage drop over a negligible $12$ $m\Omega$ resistor. We isolate power
-consumption on the ARM cores and the development board by modifying the
-ODROID-X2 and providing a separate power supply for the A9 cores. They get
-powered by an external power supply giving $1.3V$ DC, while the rest of the
-board is powered from a another power supply at $5.0V$, as depicted in figure
-\todo{figure ref}.
-
-For all experiments, we disable all but one A9 core since we are only interested
-in single-core performance.
-
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
@@ -84,5 +73,17 @@ cache mispredicts to 2, independently of the iteration count.
 \todo[inline]{Explain how and why these to misses occur}
 
 
-\subsection{Cycle Normalization}
-Write about how we perform normalization. Refer to the paper we have read.
+\subsection{Measurements}
+To measure energy consumption, we use an Agilent 34410A multimeter to measure
+voltage drop over a negligible $12$ $m\Omega$ resistor. We isolate power
+consumption on the ARM cores and the development board by modifying the
+ODROID-X2 and providing a separate power supply for the A9 cores. They get
+powered by an external power supply giving $1.3V$ DC, while the rest of the
+board is powered from a another power supply at $5.0V$, as depicted in figure
+\todo{figure ref}.
+
+For all experiments, we disable all but one A9 core since we are only interested
+in single-core performance.
+
+Cycle counting: Write about how we perform normalization. Refer to the paper we
+have read.
