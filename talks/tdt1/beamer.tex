@@ -9,7 +9,7 @@
  
 % Angi tittelen, vi gir også en kortere variant som brukes nederst på
 % hver slide:
-\title[Paper 8]%
+\title[TDT1, Paper 8]%
 {Decomposable and Responsive Power Models}
 \subtitle{for Multicore Processors using Performance Counters}
 
@@ -19,10 +19,10 @@
 
 % Institusjon. Bruk gjerne disse slik det passer best med det du vil
 % ha.  Valgfri kortversjon her også
-\institute[NTNU]{Institutt for datateknikk og informatikk}
+\institute[NTNU]{Department of Computer and Information Science}
 
 % Datoen blir også trykket på forsida. 
-\date{28. october 2013}
+\date{\today}
 %\date{} % Bruk denne hvis du ikke vil ha noe dato på forsida.
 
 % Fra her av begynner selve dokumentet
@@ -37,8 +37,16 @@
     \frametitle{Motivation}
 
   \begin{itemize}
-    \item Power wall
-    \item A platform for online power-aware scheduling
+      \item Energy consumption limits processor design
+          \begin{itemize}
+              \item Which components burns energy?
+          \end{itemize}
+
+      \item A platform for online power-aware scheduling
+          \begin{itemize}
+              \item Helps us understand the hardware
+              \item Helps us reduce power consumption
+          \end{itemize}
   \end{itemize}
 
 \end{frame}
@@ -58,13 +66,21 @@
             \begin{itemize}
                 \item We want \emph{responsiveness} too
             \end{itemize}
-        \item \ldots does not apply to upcomming architectures
+        \item \ldots does not apply to upcoming architectures
     \end{itemize}
 
     \pause
 
-\textbf{Solution: Define power models}
+    \textbf{Solution: Define power components}
 
+\end{frame}
+
+\begin{frame}
+    \includegraphics[width=\textwidth]{Fig1}
+\end{frame}
+
+\begin{frame}
+    \includegraphics[width=\textwidth]{Fig2}
 \end{frame}
 
 \begin{frame}
@@ -80,12 +96,12 @@
     \frametitle{Methodology}
     \textbf{Algorithm}
     \begin{figure}
-    \begin{enumerate}
-        \item Define power components
-        \item Define training benchmarks
-        \item Execute benchmarks and sample data
-        \item Create model
-    \end{enumerate}
+        \begin{enumerate}
+            \item Define power components
+            \item Define training benchmarks
+            \item Execute benchmarks and sample data
+            \item Create model
+        \end{enumerate}
     \end{figure}
 
 \end{frame}
@@ -126,8 +142,17 @@
 
     \begin{itemize}
         \item Run benchmarks created in the previous step
+        \item Use performance counters to gain information about component activity
         \item Turn off as much as possible
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \includegraphics[width=\textwidth]{Tab1}
+\end{frame}
+
+\begin{frame}
+    \includegraphics[width=\textwidth]{Tab2}
 \end{frame}
 
 \begin{frame}
@@ -145,17 +170,16 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Validation - model correctness}
+    \frametitle{Validation - Model Correctness}
 
     \begin{itemize}
         \item All models performs about the same in terms of accuracy: \emph{Model accuracy has not improved}
         \item \ldots however, standard deviation decreases when tracking more components
     \end{itemize}
-
 \end{frame}
 
 \begin{frame}
-    \frametitle{Validation - responsiveness}
+    \frametitle{Validation - Responsiveness}
 
     \begin{itemize}
         \item Phase detection algorithm
@@ -168,6 +192,19 @@
 
     \end{itemize}
 
+    \includegraphics{Fig2}
+
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Validation - Other variations}
+
+    \begin{itemize}
+        \item Two Core Validation
+        \item Frequency Validation
+    \end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -176,15 +213,12 @@
 
     \begin{enumerate}
         \item Responsiveness, decomposability and accuracy are power model must-haves
-        \item It is hard to decompose proprietary architectures where details are under NDAs.
+        \item This new model does not improve accuracy, but responsiveness
+        \item This method can be applied on new architectures
     \end{enumerate}
 
+    \textbf{Shortcoming}
+        It might be hard to decompose proprietary architectures where details are under NDAs
 \end{frame}
 
-
-
-
-    %  \begin{block}{Bokstittel}
-    %    Comodo consequat.
-    %  \end{block}
 \end{document}
