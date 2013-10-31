@@ -1,0 +1,9 @@
+Temperatur har litt å si, men vi vet ikke hva temperaturen er
+
+=> Proev temperaturmåleren til Lasse
+=> Proev å mål temperatur med intern temperaturmåler
+
+
+Rapport:
+- Ved foersteutkast, legg inn noen grafer
+- Få med hvordan vi oensker å ha resultat-kapittelet
