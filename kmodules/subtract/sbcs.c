@@ -1,4 +1,4 @@
 #include "../base.c"
 
 void runtest(void) {
-    TEST_BENCH("sbcs r1, r1, "CONST1, "sbcs r1, r1, "CONST1); }
+    TEST_BENCH("sbcs r1, r2, "CONST1, "sbcs r3, r4, "CONST1); }
