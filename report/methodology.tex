@@ -66,12 +66,12 @@ could be retrieved by running for a fixed time period and applying the following
 formula.
 
 \todo{fix formula}
-\begin{center}
-    $P_{instruction} = A_{instruction} \cdot V_{core} $
-\end{center}
-\begin{center}
-    $E_{instruction} = P_{instruction} \cdot CPI_{instruction} $
-\end{center}
+\begin{equation}
+    P_{instruction} = A_{instruction} \cdot V_{core}
+\end{equation}
+\begin{equation}
+    E_{instruction} = P_{instruction} \cdot CPI_{instruction}
+\end{equation}
 The Agilent multimeter is set up to sample at full precision at its maximum rate
 of 1000 Hz. This yields one sample every $\frac{ f_{core} }{ 1000 } = 1.7$
 million instructions; it is obvious from this that we are unable to observe
@@ -98,5 +98,38 @@ powered by an external power supply giving $1.3V$ DC, while the rest of the
 board is powered from a another power supply at $5.0V$, as depicted in figure
 \todo{figure ref}.
 
-\subsection{Pitfalls}
-\todo{Temp,noise,interrupts,memory (alt. to fast-loop)}
+\subsection{Pit Falls}
+% temperature, noise (inducted power, etc.), interrupts, memory latency (fast-loop)
+Since we are comparing the energy efficency of different instruction in an asynchronous
+way, we have to consider factors that affects power usage, as well as acknowledege that
+they may differ between runs.
+
+One obviuos such factor is temperature, both ambient and
+the chip temperature. The first may change without our notice, and the second one is
+determined by the ambient, the cooling device and what load tasks that was just run on
+the SoC. On this specific SoC, Samsung Exynos 4412, we have detected that the difference
+from the CPU Thermal Zone 0 being 9$^\circ$ Celcius and 63$^\circ$ Celcius is on average
+between 2-4\%. We also detected that some instructions might have as much as 7\% higher
+energy consumption when running at the hotter level\footnote{This was detected with at
+the {\ttfamily mul}-instruction}. We have also checked that running a single core at
+maximum performace over time does not increase the temperature by more than from
+idle at 47$^\circ$ Celcius to 54$^\circ$ Celcius at load. Assuming that it is generally
+true that a single core cannot heat the entire SoC with any significant amount, and that
+the increase in power consumption is at max 10\% over 50$^\circ$ Celcius, we get
+\begin{equation}
+    P_{inc} = P_{orig} \cdot T_{inc} \cdot \frac{0.10}{50} = P_{orig} \cdot T_{inc} \cdot 0.002
+\end{equation}
+Believing that this trend is at least close to linear, output will increase by 0.2\% pr.
+degree Celcius increased. Also, we start our measurements at leat half a second after the benchmarks
+have been started, thus there is plenty of time for the CPU to gain work temperature. In our
+tests, the time used to get to work temperature was humanly instant.
+
+Another factor that is not that obvious, but at least equally important, is power inducted
+in the measurement circuit. Since wires are often winded up on the test bench, and lab equipment
+might contain large metal cores with a great amount of power running through them, unexpected
+power might be introduced.
+
+We are running Linux on the chip under test, this gives us a much simpler way of programming
+the processor to run our tests. The fact that we run an entire operating system benith our
+benchmark programs implies that there is much going on that we have no direct controll over.
+In order to mitigate the 
