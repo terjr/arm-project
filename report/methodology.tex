@@ -39,6 +39,7 @@ instructions.
 
 
 \subsection{Architectural Experiments}
+\label{arch_experiments}
 Running the processor at it's highest possible throughput requires knowledge of
 internal components in the pipeline, e.g. to find out the number of $add$s it is
 capable of doing per cycle. As we are using a proprietary platform as our target
@@ -132,4 +133,11 @@ power might be introduced.
 We are running Linux on the chip under test, this gives us a much simpler way of programming
 the processor to run our tests. The fact that we run an entire operating system benith our
 benchmark programs implies that there is much going on that we have no direct controll over.
-In order to mitigate the 
+In order to mitigate the artifacts originating from the operating system, we
+disable all the maskable interrupts.
+
+As explained in section \ref{arch_experiments}, we utilize the fast-loop mode of the processor to mitigate
+memory access latencies. We disable the L1 cache to easier detect when we are outside the fast-loop mode,
+and thus we are certain that there is no memory access going on.
+
+\todo[inline]{memory latency and issue-is-empty}
