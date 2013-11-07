@@ -12,6 +12,7 @@ then
 fi
 
 IP_ODROID=129.241.111.182
+IP_AGILENT=129.241.110.213
 
 ssh ${IP_ODROID} -l root "cd arm-project/ && git pull && cd kmodules/ && make && echo \$!"
 # ssh ${IP_ODROID} -l root "dmesg --clear"
@@ -24,7 +25,8 @@ for file in $(cat ${GIT_ROOT}/.tests | grep -v ^#)
 # sed -e 's@.*kmodules/\(.*\).c@\1@g' )
 do
     echo "`date`: Testing ${file}"
-    ${ME/${BASE}/test_kmod.sh} ${IP_ODROID} 129.241.110.134 ${file}
+    ${ME/${BASE}/test_kmod.sh} ${IP_ODROID} ${IP_AGILENT} ${file}
+    sleep 30
 done
 
-#${ME/${BASE}/}generate_results.sh | gnuplot -p
+${ME/${BASE}/}generate_results.sh | gnuplot -p
