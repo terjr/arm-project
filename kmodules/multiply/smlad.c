@@ -1,5 +1,5 @@
 #include "../base.c"
 
 void runtest(void) {
-    TEST_BENCH("smlad r1, r1, r2, r3", "smlad r1, r1, r2, r3");
+    TEST_BENCH("smlad r0, r1, r4, r5", "smlad r2, r3, r6, r7");
 }

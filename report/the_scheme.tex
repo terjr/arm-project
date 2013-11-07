@@ -1,6 +1,22 @@
-\section{The scheme/solution/fix/hero}
+\section{Application}
 
-
+\todo[inline]{TODO}
 \begin{itemize}
     \item Describe why the procedure we present gives a reasonable
 \end{itemize}
+
+% General approach here? Implementation in methodology? Order of apperance?
+
+The need for energy efficent processors is increasing, and in order to achieve
+better understanding of how architectural decisions, we propose a method to
+measure energy efficency on the instruction level of a processor.
+
+Our scheme relies on fairly accurate measurements of each instructions, in terms
+of energy. Since each instruction cannot be measured alone with normaly
+available instruments, we set up an assembly code loop that fits in the
+processors instruction queue and makes it large enough to allow power
+consumption measurements. The list of equal instructions will be a acompanged by
+a subtract and a conditional branch, but their impact can be mitigated using
+statistics and by knowing how the processor works.
+
+
