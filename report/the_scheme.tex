@@ -15,15 +15,13 @@ Our scheme relies on fairly accurate measurements of each instructions, in terms
 of energy. Since each instruction cannot be measured alone with normaly
 available instruments, we set up an assembly code loop that fits in the
 processors instruction queue and makes it large enough to allow power
-consumption measurements. The list of equal instructions will be a acompanged by
-a subtract and a conditional branch, but their impact can be mitigated using
+consumption measurements. The list of equal instructions has to be ended by
+a conditional branch, but their impact can be mitigated using
 statistics and by knowing how the processor works.
 
-\begin{lstlisting}{language=[ARM]Assembler}
-label: instruction
-       . . .
-       instruction
-       subs
-       jne label
-\end{lstlisting}
+The reason for why we need a conditional branch is because we disable
+interrupts, but stil want the test to end after a reasonable amount of time.
+Also, we want to read out the performance counters after each test in order to
+do instruction normalisation.
+
 
