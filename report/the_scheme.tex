@@ -1,9 +1,8 @@
-\section{Instruction level energy consumption}
-\todo[inline]{change title to Rationale?}
+\section{Instruction level energy consumption} \todo[inline]{change title to
+Rationale?}
 
-\begin{itemize}
-    \item Describe why the procedure we present gives a reasonable
-\end{itemize}
+\begin{itemize} \item Describe why the procedure we present gives a reasonable
+    \end{itemize}
 
 % General approach here? Implementation in methodology? Order of apperance?
 
@@ -11,17 +10,32 @@ The need for energy efficent processors is increasing, and in order to achieve
 better understanding of how architectural decisions, we propose a method to
 measure energy efficency on the instruction level of a processor.
 
-Our scheme relies on fairly accurate measurements of each instructions, in terms
-of energy. Since each instruction cannot be measured alone with normaly
-available instruments, we set up an assembly code loop that fits in the
-processors instruction queue and makes it large enough to allow power
-consumption measurements. The list of equal instructions has to be ended by
-a conditional branch, but their impact can be mitigated using
-statistics and by knowing how the processor works.
+Our scheme relies on fairly accurate core voltage and power measurements, thus
+we have to modify the processor in such a way that core power can be feed
+externally.  We run a customised instruction loop, one for each applicable
+instruction of the chosen ISA, and measure its power drain.
 
-The reason for why we need a conditional branch is because we disable
-interrupts, but stil want the test to end after a reasonable amount of time.
-Also, we want to read out the performance counters after each test in order to
-do instruction normalisation.
+As each instruction cannot be measured alone, we create an assembly loop that
+contains the instruction under test. This loop runs long enough to be measurable
+by ordinary laboratory equipment.
+
+It is a common philosophy that a RISC should consume one clock cycle pr.
+instruction\cite{sivarama}. Even so, this is not the most common case any more.
+Dual pipelines and dual issue and parallell general ALUs are entering RISC
+processors, allowing the processor to retire more than one instruction pr. clock
+cycle. At the same time, processors that support multiply, divide and floating
+point often use different amount of clock cycles to perform these operations. It
+might even be so that multiply, divide and floating point takes different amount
+of cycles according to their surrounding instructions.
+
+Since some instructions takes a different amount of time, the power drain has to be
+normalised using statistics gained from performance counters. Applying this
+normalization, we can convert point-in-time energy consumption in terms of
+wattage to energy per instruction in terms of joules.
+
+As we need data from the performance counters, the measured instruction loop has
+to be conditional. Thus the list of equal instructions has to be
+ended by a conditional branch, but their impact can be mitigated using
+statistics and by knowing how the processor works. The effect of the 
 
 

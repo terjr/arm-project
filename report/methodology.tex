@@ -27,41 +27,30 @@ complete overview can be seen in table $A.18$ in the Cortex-A9 Technical
 Reference Manual \cite{armtech}.
 
 
-\todo[inline]{Move and rewrite this paragraph.}
-It is a common philosophy that a RISC should consume one clock cycle pr.
-instruction\cite{unknown}. For this particular processor made by Advanced RISC
-Machines, it is not the case. The dual issue and its parallell general ALU
-pipelines enables the processor to achive more than one instruction pr. clock
-cycle, and at the same time, it supports multiply, divide and floating point,
-each taking multiple clock cycles. It is even so that multiply, divide and
-floating point takes different amount of cycles according to their surrounding
-instructions.
-
 \begin{figure}
-\input{figures/test_setup}
-\caption{Test Setup}
-\label{fig:setup}
+    \input{figures/test_setup}
+    \caption{Test Setup}
+    \label{fig:setup}
 \end{figure}
 
 \subsection{Architectural Experiments}
-\label{arch_experiments}
-Running the processor at it's highest possible throughput requires knowledge of
-internal components in the pipeline, e.g. to find out the number of $add$s it is
-capable of doing per cycle. As we are using a proprietary platform as our target
-architecture, only some of these details are known. Thus, we define test
-programs to stress particular pipeline components and gather statistics using
-performance counters. By comparing execution unit counters and the total cycle
-count, we obtain detailed (although approximate, due to the speculativity in the
-core) information of a test program's execution.
-\todo[inline]{Elaborate in detail, see notes/alu-count.txt.}
+\label{arch_experiments} Running the processor at it's highest possible
+throughput requires knowledge of internal components in the pipeline, e.g. to
+find out the number of $add$s it is capable of doing per cycle. As we are using
+a proprietary platform as our target architecture, only some of these details
+are known. Thus, we define test programs to stress particular pipeline
+components and gather statistics using performance counters. By comparing
+execution unit counters and the total cycle count, we obtain detailed (although
+approximate, due to the speculativity in the core) information of a test
+program's execution.  \todo[inline]{Elaborate in detail, see
+notes/alu-count.txt.}
 
 Using the same approach as above, we are able to identify a feature on the A9
 processor that is very vaguely documented; fast-loop\texttrademark mode. As the
 name suggests, this feature enables rapid execution of small loops by bypassing
 the L1 cache.  However, which loops that falls into this category is not
 documented, but by using performance counters we are able to determine this with
-confidence.
-\todo[inline]{Add appendix explaining fast-loop microbenchmark.}
+confidence.  \todo[inline]{Add appendix explaining fast-loop microbenchmark.}
 
 
 \subsection{Benchmarks}
@@ -81,8 +70,8 @@ formula.
 The Agilent multimeter is set up to sample at full precision at its maximum rate
 of 1000 Hz. This yields one sample every $\frac{ f_{core} }{ 1000 } = 1.7$
 million instructions; it is obvious from this that we are unable to observe
-inter-cycle variations in energy consumption.
-\todo[inline]{But maybe the multimeter is doing a running average internally?}
+inter-cycle variations in energy consumption.  \todo[inline]{But maybe the
+multimeter is doing a running average internally?}
 
 This simple setup does not take the memory system into account; we are
 undoubtedly not able to feed the processor instructions at no cost in terms of
@@ -95,15 +84,15 @@ cache mispredicts to 2, independently of the iteration count.
 \todo[inline]{Explain how and why these to misses occur}
 
 \begin{figure}
-\begin{lstlisting}{language=[ARM]Assembler}
+    \begin{lstlisting}{language=[ARM]Assembler}
 label: instruction
-       . . .
+        . . .
        instruction
        subs
        jne label
-\end{lstlisting}
-\caption{Instruction loop}
-\label{list:inst_loop}
+    \end{lstlisting}
+    \caption{Instruction loop}
+    \label{list:inst_loop}
 \end{figure}
 
 \subsection{Power Measurements}
@@ -116,42 +105,48 @@ board is powered from a another power supply at $5.0V$, as depicted in figure
 \todo{figure ref}.
 
 \subsection{Pit Falls}
-% temperature, noise (inducted power, etc.), interrupts, memory latency (fast-loop)
-Since we are comparing the energy efficency of different instruction in an asynchronous
-way, we have to consider factors that affects power usage, as well as acknowledege that
-they may differ between runs.
+% temperature, noise (inducted power, etc.), interrupts, memory latency
+% (fast-loop)
+Since we are comparing the energy efficency of different instruction in an
+asynchronous way, we have to consider factors that affects power usage, as well
+as acknowledege that they may differ between runs.
 
-One obviuos such factor is temperature, both ambient and
-the chip temperature. The first may change without our notice, and the second one is
-determined by the ambient, the cooling device and what load tasks that was just run on
-the SoC. On this specific SoC, Samsung Exynos 4412, we have detected that the difference
-from the CPU Thermal Zone 0 being 9$^\circ$ Celcius and 63$^\circ$ Celcius is on average
-between 2-4\%. We also detected that some instructions might have as much as 7\% higher
-energy consumption when running at the hotter level\footnote{This was detected with at
-the {\ttfamily mul}-instruction}. We have also checked that running a single core at
-maximum performace over time does not increase the temperature by more than from
-idle at 47$^\circ$ Celcius to 54$^\circ$ Celcius at load. Assuming that it is generally
-true that a single core cannot heat the entire SoC with any significant amount, and that
-the increase in power consumption is at max 10\% over 50$^\circ$ Celcius, we get
+One obviuos such factor is temperature, both ambient and the chip temperature.
+The first may change without our notice, and the second one is determined by the
+ambient, the cooling device and what load tasks that was just run on the SoC. On
+this specific SoC, Samsung Exynos 4412, we have detected that the difference
+from the CPU Thermal Zone 0 being 9$^\circ$ Celcius and 63$^\circ$ Celcius is on
+average between 2-4\%. We also detected that some instructions might have as
+much as 7\% higher energy consumption when running at the hotter
+level\footnote{This was detected with at the {\ttfamily mul}-instruction}. We
+have also checked that running a single core at maximum performace over time
+does not increase the temperature by more than from idle at 47$^\circ$ Celcius
+to 54$^\circ$ Celcius at load. Assuming that it is generally true that a single
+core cannot heat the entire SoC with any significant amount, and that the
+increase in power consumption is at max 10\% over 50$^\circ$ Celcius, we get
+
 \begin{equation}
     P_{inc} = P_{orig} \cdot T_{inc} \cdot \frac{0.10}{50} = P_{orig} \cdot T_{inc} \cdot 0.002
 \end{equation}
-Believing that this trend is at least close to linear, output will increase by 0.2\% pr.
-degree Celcius increased. Also, we start our measurements at leat half a second after the benchmarks
-have been started, thus there is plenty of time for the CPU to gain work temperature. In our
-tests, the time used to get to work temperature was humanly instant.
 
-Another factor that is not that obvious, but at least equally important, is power inducted
-in the measurement circuit. Since wires are often winded up on the test bench, and lab equipment
-might contain large metal cores with a great amount of power running through them, unexpected
-power might be introduced.
+Believing that this trend is at least close to linear, output will increase by
+0.2\% pr.  degree Celcius increased. Also, we start our measurements at leat
+half a second after the benchmarks have been started, thus there is plenty of
+time for the CPU to gain work temperature. In our tests, the time used to get to
+work temperature was humanly instant.
 
-We are running Linux on the chip under test, this gives us a much simpler way of programming
-the processor to run our tests. The fact that we run an entire operating system benith our
-benchmark programs implies that there is much going on that we have no direct controll over.
-In order to mitigate the artifacts originating from the operating system, we
-disable all the maskable interrupts.
+Another factor that is not that obvious, but at least equally important, is
+power inducted in the measurement circuit. Since wires are often winded up on
+the test bench, and lab equipment might contain large metal cores with a great
+amount of power running through them, unexpected power might be introduced.
 
-As explained in section \ref{arch_experiments}, we utilize the fast-loop mode of the processor to mitigate
-memory access latencies. We disable the L1 cache to easier detect when we are outside the fast-loop mode,
-and thus we are certain that there is no memory access going on.
+We are running Linux on the chip under test, this gives us a much simpler way of
+programming the processor to run our tests. The fact that we run an entire
+operating system benith our benchmark programs implies that there is much going
+on that we have no direct controll over.  In order to mitigate the artifacts
+originating from the operating system, we disable all the maskable interrupts.
+
+As explained in section \ref{arch_experiments}, we utilize the fast-loop mode of
+the processor to mitigate memory access latencies. We disable the L1 cache to
+easier detect when we are outside the fast-loop mode, and thus we are certain
+that there is no memory access going on.
