@@ -5,5 +5,5 @@
 
 
 void runtest(void) {
-    TEST_BENCH("sxth r1, r2", "sxth r3, r4");
+    TEST_BENCH("sxth r0, r1", "sxth r2, r3");
 }
