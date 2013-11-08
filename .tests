@@ -67,8 +67,6 @@ multiply/smmla
 multiply/smmlar
 multiply/smmls
 multiply/smmlsr
-divide/sdiv
-divide/udiv
 move_data/mov
 move_data/movs
 move_data/mvn
@@ -117,4 +115,3 @@ select/sel
 misc/endian
 misc/cpsid
 misc/nop
-
