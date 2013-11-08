@@ -109,7 +109,7 @@ signed_extend_with_add/sxtab16
 signed_extend_with_add/sxtab
 unsigned_extend_with_add/uxtah
 unsigned_extend_with_add/uxtab16
-unsigned_extend_with_add/uxatb
+unsigned_extend_with_add/uxtab
 revese/rev
 revese/rev16
 revese/revsh
