@@ -37,6 +37,11 @@ each taking multiple clock cycles. It is even so that multiply, divide and
 floating point takes different amount of cycles according to their surrounding
 instructions.
 
+\begin{figure}
+\input{figures/test_setup}
+\caption{Test Setup}
+\label{fig:setup}
+\end{figure}
 
 \subsection{Architectural Experiments}
 \label{arch_experiments}
@@ -89,6 +94,17 @@ Furthermore, executing code within fast-loop allows us to limit the number of
 cache mispredicts to 2, independently of the iteration count.
 \todo[inline]{Explain how and why these to misses occur}
 
+\begin{figure}
+\begin{lstlisting}{language=[ARM]Assembler}
+label: instruction
+       . . .
+       instruction
+       subs
+       jne label
+\end{lstlisting}
+\caption{Instruction loop}
+\label{list:inst_loop}
+\end{figure}
 
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A multimeter and measures
