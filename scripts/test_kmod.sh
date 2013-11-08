@@ -9,7 +9,7 @@ ssh ${IP_ODROID} -l root /root/arm-project/scripts/disable_cpus.sh
 ssh ${IP_ODROID} -l root testmod /root/arm-project/kmodules/${KMOD}.ko &
 SSH_PID=$!
 
-sleep 1
+sleep 5
 
 mkdir -p ${GIT_ROOT}/results/${KMOD}
 #${GIT_ROOT}/agilent/agilent ${IP_AGILENT} > ${GIT_ROOT}/results/${KMOD}/log &
