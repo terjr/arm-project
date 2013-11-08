@@ -8,6 +8,8 @@
 #define CONST1 "#55"
 #define CONST2 "#0x55"
 #define CONST3 "#0xAA"
+#define CONST4 "#0x07"
+
 
 MODULE_LICENSE("GPL");
 

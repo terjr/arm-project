@@ -29,7 +29,7 @@
     INIT_RANDOM_REGVALS(); \
 \
     /* Loop for power-meassure */ \
-    FAST_LOOP_nHAZARDS("lbl", instr1, instr2,"0x1fffffff"); \
+    TEST_BLOCK(instr1, instr2, "lbl", num_iterations); \
 \
     /* Loops for instruction length (cycles) determination */ \
     TEST_BLOCK(instr1, instr2, "part1", "2"); \
