@@ -1,6 +1,34 @@
 \section{Results}
 
-\subsection{Single-Cycle Instruction}
+\subsection{Introduction}
+In this section we present data gathered from our experiments on the ARM
+Cortex-A9.
 
-\subsection{Multi-Cycle Instruction}
+We distinguish between single-cycle instructions and multi-cycle instructions
+because they behave differently in and around the execution pipeline.
+Instructions consuming only one cycle are fairly easy to reason about as there
+is no need to normalize energy consumption with respect to the cycle count (i.e.
+time). However, it is important to also recognize CPU capabilities such as dual
+issuing that we have on our processor: All single-cycle ALU instructions execute
+pairwise in parallel (one in each ALU), giving a peak performance of two
+instructions per CPU cycle. On the other hand, multi-cycle instructions needs to
+be carefully considered. Typically, multi-cycle instructions divide work which
+can be done only in a subset of the available CPUs (e.g. one) over several
+cycles, lowering the average current draw. They consume less energy per
+timestep, but also do less useful work.
+
+For all these reasons, we partition the measured data in two datasets; one for
+single-cycle instructions and one for multi-cycle instructions.
+
+\subsection{Single-Cycle Instructions}
+On our target CPU, most of \todo{how many} the tested instructions falls into
+this category. The per-instruction energy consumption measured in Watts can be
+seen in figure \ref{fig:singlecycle}.
+
+\begin{figure}
+    \caption{Single Cycle energy consumption}
+    \label{fig:singlecycle}
+\end{figure}
+
+\subsection{Multi-Cycle Instructions}
 
