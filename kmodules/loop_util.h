@@ -1,3 +1,5 @@
+#define num_iterations "0x1fffffff"
+
 #define LOG_PREFIX "tdt4501:"
 
 #define DISABLE_L1_CACHE() \
