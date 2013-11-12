@@ -33,9 +33,22 @@ normalised using statistics gained from performance counters. Applying this
 normalization, we can convert point-in-time energy consumption in terms of
 wattage to energy per instruction in terms of joules.
 
-As we need data from the performance counters, the measured instruction loop has
-to be conditional. Thus the list of equal instructions has to be
-ended by a conditional branch, but their impact can be mitigated using
-statistics and by knowing how the processor works. The effect of the 
+As each instruction runs only for a determined amount of time, the measured
+instruction loop has to be conditional, thus the list of equal instructions has
+to be ended by a conditional branch. The impact of these alien instructions 
+can be mitigated using statistics and by knowing how the processor works. The
+latency introduced by the conditional jump is most likly hidden by the branch
+predictor in most modern architectures, either taking a single cycle or hidden
+entirely. It has to be noted that its energy consumption is not hidden, and must
+be accounted for to get accurate results. This method mainly focuses on
+comparison between instructions, and the energy consumption of the condition
+calculation and the conditional jump can then be seens as part of the common
+baseline.
+\todo[inline]{correct assumption?}
+
+When each relevant instruction has been measured, we can compare their
+normalized energy consumption and possibly identify patterns where consumption
+is greater than expected. This can help in later architectural designs where
+energy consumption is important.
 
 

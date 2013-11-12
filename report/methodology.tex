@@ -8,17 +8,18 @@ Cortex-A9 (r3p0) processor cores. We disable CPU core 1 through 3, leaving only
 one core configured to run at a static frequency of $1.7$ GHz.
 
 The Cortex-A9 is a 32-bit out-of-order dual-issue speculative RISC processor
-with many features common for modern processor designs, making it attractive for
-our experiments. After the dispatch stage, its pipeline is split into four
-different lanes, each with its own functional units. Documentation on the
-internal structure of the pipelines are not publicly available, but by running
-experiments similar to the ones presented in \cite{paper} (explained below) and
-looking at previous work\cite{armtech}\cite{7cpu}\cite{lotofdocs}, we are able
-to get some details. The four pipelines are structured as follow: Main execution
-pipeline with a general ALU, and a hardware-multiply, secondary execution
-pipeline with only a general ALU, load-store-pipeline, containing only an
-hardware adder to generate addresses, and a floating-point pipeline containing
-an ordinary FPU and connections to the NEON unit.
+with many features common for modern processor designs\cite{patterson}\cite{hennessy},
+making it attractive for our experiments. After the dispatch stage, its pipeline
+is split into four different lanes, each with its own functional units.
+Documentation on the internal structure of the pipelines are not publicly
+available, but by running experiments similar to the ones presented in
+\cite{paper} (explained below) and looking at previous
+work\cite{armtech}\cite{7cpu}\cite{lotofdocs}, we are able to get some details.
+The four pipelines are structured as follow: Main execution pipeline with a
+general ALU, and a hardware-multiply, secondary execution pipeline with only a
+general ALU, load-store-pipeline, containing only an hardware adder to generate
+addresses, and a floating-point pipeline containing an ordinary FPU and
+connections to the NEON unit.
 
 The A9 processor has 58 distinct events that each can be mapped to one of six
 generic event counters in the Performance Monitor Unit (i.e. only six generic
@@ -86,8 +87,7 @@ cache mispredicts to 2, independently of the iteration count.
 \begin{figure}
     \begin{lstlisting}{language=[ARM]Assembler}
 label: instruction
-        . . .
-       instruction
+       ... (repeats 13X)
        subs
        jne label
     \end{lstlisting}
