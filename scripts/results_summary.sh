@@ -5,7 +5,7 @@ RESULTS_DIR=$DIR/../old_results
 function FIND_MEDIAN()
 {
 
-  TEST_NAME=$(echo $1 | sed 's|.*\.\([^/]*\)/.*|\1|')
+  TEST_NAME=$(echo $1 | sed 's|.*/\([^/]*\)/.*\.\([^/]*\)/.*|\1,\2|')
   MIDDLE=$(($(cat $1 | wc -l) / 2))
   cat $1 | tr -d 'A' | sort -n -k 2 | awk "NR == $MIDDLE {print \"$TEST_NAME\" \",\" \$2}"
 }
@@ -27,5 +27,5 @@ FILES=$(find $RESULTS_DIR -path "*/$INSTR/log")
 
 for F in $FILES
 do
-    FIND_MEDIAN $F
+    FIND_MEDIAN $(readlink -f $F)
 done
