@@ -1,0 +1,7 @@
+Temperatur: Sikkert OK
+
+Rapport:
+- Ikke metode => målinger
+- Abstract: Flytt konklusjoner til abstract
+- Mer motivasjon: Gjerne foer andre kolonne.
+- Schematic of ARM Cortex-A9
