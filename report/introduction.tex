@@ -6,18 +6,10 @@ performance, but current research are hitting walls where we cannot dispatch mor
 Along with computers entering smaller and more energy aware domains, power and
 energy has become a major focal point\cite{patterson}\cite{hennessy}.
 
-In this paper, we present a method for analysing the instruction level energy
-efficency of a new computer architecture. We take commonly used
-microarchitecture features, like out-of-order execution and dual-issue, into
-account in order to isolate the functional unit's energy consumption.
+This paper investigates the instruction set architecture and how its properties
+relates to energy consumption. In this paper, this investigation is realized on
+an ARM Cortex A9.
 
-In our case study, we apply our method to an ARM Cortex-A9, a modern 32-bit
-processor implementing the ARMv7 instruction set. We inspect the power profile
-of various instructions and see that even though the ARM Cortex-A9 is both a
-computationaly strong and energy efficient CPU, there are room for energy
-improvements.
-
-\todo[inline]{SHMAC}
 Our research is highly motivated by the SHMAC project from the Energy Efficient
 Computin Systems research group at NTNU. SHMAC is The Single-ISA Heterogeneous
 MAny-core Computer where one of the main goals is an optimal processor in terms
@@ -27,6 +19,18 @@ based Exynos 4212 will of course not be equal to the same experiments run on
 a final implementation of SHMAC, but it will give concrete results for a near
 ISA-equivalent chip.
 
+Previous work in this field has been consentrated around measuring power drain
+from the wall outlet, and then correlating the consumed energy with performance
+counters available on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others
+have done similar test setup, but with a focus workload classes instead of
+instruction level energy consumption\cite{carroll2010analysis}.
+
+In this paper, we present results after analysing the instruction level energy
+efficency of a modern computer architecture. We take a set of commonly used
+microarchitecture features, like out-of-order execution and dual-issue, into
+account in order to isolate the functional unit's energy consumption.
+
+\todo[inline]{SHMAC}
 
 \todo[inline]{What exactly have we been focusing on? Reverse-engineered the ARM
     Cortex-A9. ARM does not even tell how many functional units there is in the

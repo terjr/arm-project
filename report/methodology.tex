@@ -97,9 +97,11 @@ label: instruction
 
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A multimeter and measures
-voltage drop over a negligible $12$ $m\Omega$ resistor. We decouple power
-consumption on the ARM cores and the development board by modifying the
-ODROID-X2 and providing a separate power supply for the A9 cores. They get
+voltage drop over a negligible $12$ $m\Omega$ resistor. The Agilent 34410A is
+capable of doing 10,000 measurments pr. second with an accuracy of
+$0.002V$\cite{agilent34410a}. We decouple power consumption on the ARM cores
+and the development board by modifying the ODROID-X2 and providing a separate
+power supply for the A9 cores. They get
 powered by an external power supply giving $1.3V$ DC, while the rest of the
 board is powered from a another power supply at $5.0V$, as depicted in figure
 \todo{figure ref}.
