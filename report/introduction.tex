@@ -1,10 +1,31 @@
 \section{Introduction}
 
-\IEEEPARstart{T}{odays} processors grow more sophisticated each day, and more
-and more advanced features are added. In the earlier days, the focus was all on
-performance, but current research are hitting walls where we cannot dispatch more heat.
-Along with computers entering smaller and more energy aware domains, power and
-energy has become a major focal point\cite{patterson}\cite{hennessy}.
+\IEEEPARstart{P}{rocessors} grow more sophisticated every day.
+
+\todo[inline]{
+    At the same time, processors grow more and more sophisticated. Even modern RISC
+        architectures gets stuffed with features speeding up execution in return for
+        added complexity and nondeterminism.
+
+        Add something about the need for energy modeling techniques. Ideally, we
+        could just feed our results to an algorithm that schedules for energy
+        instead of performance.
+
+        Being able to model and monitor energy consumption has also got the industry's
+        attention. Semiconductor companies are making software targeting the embedded
+        market to monitor energy consumption on-chip, giving application engineers the
+        opportunity to optimize for energy.
+
+        Energy awareness at the microarchitecture level has gotten researchers
+        attention for quite some time, but as the architecture has become more
+        nondeterministic it is necessary to to real world simulations and gather
+        the statistics.
+}
+
+In the earlier days, the focus was all on performance, but current research are
+hitting walls where we cannot dispatch more heat.  Along with computers entering
+smaller and more energy aware domains, power and energy has become a major focal
+point\cite{patterson}\cite{hennessy}.
 
 This paper investigates the instruction set architecture and how its properties
 relates to energy consumption. In this paper, this investigation is realized on
@@ -23,7 +44,7 @@ instructions.
 
 Our research is highly motivated by the SHMAC project from the Energy Efficient
 Computing Systems research group at NTNU. SHMAC is The Single-ISA Heterogeneous
-MAny-core Computer where one of the main goals is an optimal processor in terms
+Many-core Computer where one of the main goals is an optimal processor in terms
 of energy efficiency. The SHMAC processor is based on the Amber open-source ARM
 compatible processor core project. Our research on the ARM Cortex A9
 based Exynos 4212 will of course not be equal to the same experiments run on
