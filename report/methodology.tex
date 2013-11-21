@@ -21,13 +21,6 @@ general ALU, load-store-pipeline, containing only an hardware adder to generate
 addresses, and a floating-point pipeline containing an ordinary FPU and
 connections to the NEON unit.
 
-The A9 processor has 58 distinct events that each can be mapped to one of six
-generic event counters in the Performance Monitor Unit (i.e. only six generic
-events can be tracked simultaneously). It also has a separate cycle counter. A
-complete overview can be seen in table $A.18$ in the Cortex-A9 Technical
-Reference Manual \cite{armtech}.
-
-
 \begin{figure}
     \input{figures/test_setup}
     \caption{Test Setup}
@@ -55,6 +48,11 @@ the L1 cache.  However, which loops that falls into this category is not
 documented, but by using performance counters we are able to determine this with
 confidence.  \todo[inline]{Add appendix explaining fast-loop microbenchmark.}
 
+The A9 processor has 58 distinct events that each can be mapped to one of six
+generic event counters in the Performance Monitor Unit (i.e. only six generic
+events can be tracked simultaneously). It also has a separate cycle counter. A
+complete overview can be seen in table $A.18$ in the Cortex-A9 Technical
+Reference Manual \cite{armtech}.
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
@@ -70,6 +68,7 @@ formula.
 \begin{equation}
     E_{instruction} = P_{instruction} \cdot CPI_{instruction}
 \end{equation}
+
 The Agilent multimeter is set up to sample at full precision at its maximum rate
 of 1000 Hz. This yields one sample every $\frac{ f_{core} }{ 1000 } = 1.7$
 million instructions; it is obvious from this that we are unable to observe
@@ -97,16 +96,22 @@ label: instruction
     \label{list:inst_loop}
 \end{figure}
 
+The technical manual states that branching to immediate locations does not
+consume execution unit cycles. Our microbenchmarks branches to immediate
+locations, but it does so only when a certain condition is met. We assume that
+the calculation of this condition takes normal execution time, but that the
+branch is invisible.
+
+
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A multimeter and measures
 voltage drop over a negligible $12$ $m\Omega$ resistor. The Agilent 34410A is
 capable of doing 10,000 measurements pr. second with an accuracy of
-$0.002V$\cite{agilent34410a}. We decouple power consumption on the ARM cores
-and the development board by modifying the ODROID-X2 and providing a separate
-power supply for the A9 cores. They get
-powered by an external power supply giving $1.3V$ DC, while the rest of the
-board is powered from a another power supply at $5.0V$, as depicted in figure
-\todo{figure ref}.
+$0.002V$\cite{agilent34410a}. We decouple power consumption on the ARM cores and
+the development board by modifying the ODROID-X2 and providing a separate power
+supply for the A9 cores. They get powered by an external power supply giving
+$1.3V$ DC, while the rest of the board is powered from a another power supply at
+$5.0V$, as depicted in figure \ref{fig:setup}.
 
 \subsection{Pit Falls}
 % temperature, noise (inducted power, etc.), interrupts, memory latency
