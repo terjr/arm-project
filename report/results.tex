@@ -15,7 +15,7 @@ instructions per CPU cycle. On the other hand, multi-cycle instructions needs to
 be carefully considered. Typically, multi-cycle instructions divide work which
 can be done only in a subset of the available CPUs (e.g. one) over several
 cycles, lowering the average current draw. They consume less energy per
-timestep, but also do less useful work.
+time step, but also do less useful work.
 
 For all these reasons, we partition the measured data in two datasets; one for
 single-cycle instructions and one for multi-cycle instructions.
@@ -36,8 +36,8 @@ seen in figure \ref{fig:singlecycle}.
 Some instructions use variable amount of time. This section will contain
 information about how we normalize and compare energy consumption of
 these instructions. It will be difficult to compare single cycle instructions
-to the multi cylce ones, as the single cycle instructions is often the ones
+to the multi cycle ones, as the single cycle instructions is often the ones
 utilizing more than one ALU at a time. Also, the multi-cycle ones will most
-likly pipeline up very differently than the single cycle ones. We will try to
+likely pipeline up very differently than the single cycle ones. We will try to
 draw a conclusion about the results, but it is important to note the differences
-in the execution path of these two categeories.
+in the execution path of these two categories.
