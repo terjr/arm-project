@@ -35,16 +35,18 @@ Reference Manual \cite{armtech}.
 \end{figure}
 
 \subsection{Architectural Experiments}
-\label{arch_experiments} Running the processor at it's highest possible
-throughput requires knowledge of internal components in the pipeline, e.g. to
-find out the number of $add$s it is capable of doing per cycle. As we are using
-a proprietary platform as our target architecture, only some of these details
-are known. Thus, we define test programs to stress particular pipeline
-components and gather statistics using performance counters. By comparing
-execution unit counters and the total cycle count, we obtain detailed (although
-approximate, due to the speculativity in the core) information of a test
-program's execution.  \todo[inline]{Elaborate in detail, see
-notes/alu-count.txt.}
+\label{arch_experiments}
+Because the energy efficiency is often different at different amounts of
+workload, we seek to stress the processor as much as possible when we run our
+tests. In order to run the processor at it's highest possible throughput, it is
+required that we gain some knowledge of it's pipeline and other components
+within the CPU. As we are using a proprietary platform as our target
+architecture, only some of these details are known. Thus, we define test
+programs to stress particular pipeline components and gather statistics using
+performance counters. By comparing execution unit counters and the total cycle
+count, we obtain detailed (although approximate, due to the speculativity in the
+core) information of a test program's execution.  \todo[inline]{Elaborate in
+detail, see notes/alu-count.txt.}
 
 Using the same approach as above, we are able to identify a feature on the A9
 processor that is very vaguely documented; fast-loop\texttrademark mode. As the
@@ -56,7 +58,7 @@ confidence.  \todo[inline]{Add appendix explaining fast-loop microbenchmark.}
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
-of identic instructions. The A9 core runs at a fixed frequency and we are
+of identical instructions. The A9 core runs at a fixed frequency and we are
 providing a fixed core voltage, so energy usage of simple, one-cycle instruction
 could be retrieved by running for a fixed time period and applying the following
 formula.
@@ -81,7 +83,7 @@ improve this model by investigating features that avoids the memory system as
 much as possible.
 
 Furthermore, executing code within fast-loop allows us to limit the number of
-cache mispredicts to 2, independently of the iteration count.
+cache miss predicts to 2, independently of the iteration count.
 \todo[inline]{Explain how and why these to misses occur}
 
 \begin{figure}
@@ -98,7 +100,7 @@ label: instruction
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A multimeter and measures
 voltage drop over a negligible $12$ $m\Omega$ resistor. The Agilent 34410A is
-capable of doing 10,000 measurments pr. second with an accuracy of
+capable of doing 10,000 measurements pr. second with an accuracy of
 $0.002V$\cite{agilent34410a}. We decouple power consumption on the ARM cores
 and the development board by modifying the ODROID-X2 and providing a separate
 power supply for the A9 cores. They get
@@ -109,30 +111,30 @@ board is powered from a another power supply at $5.0V$, as depicted in figure
 \subsection{Pit Falls}
 % temperature, noise (inducted power, etc.), interrupts, memory latency
 % (fast-loop)
-Since we are comparing the energy efficency of different instruction in an
+Since we are comparing the energy efficiency of different instruction in an
 asynchronous way, we have to consider factors that affects power usage, as well
-as acknowledege that they may differ between runs.
+as acknowledge that they may differ between runs.
 
-One obviuos such factor is temperature, both ambient and the chip temperature.
+One obvious such factor is temperature, both ambient and the chip temperature.
 The first may change without our notice, and the second one is determined by the
 ambient, the cooling device and what load tasks that was just run on the SoC. On
 this specific SoC, Samsung Exynos 4412, we have detected that the difference
-from the CPU Thermal Zone 0 being 9$^\circ$ Celcius and 63$^\circ$ Celcius is on
+from the CPU Thermal Zone 0 being 9$^\circ$ Celsius and 63$^\circ$ Celsius is on
 average between 2-4\%. We also detected that some instructions might have as
 much as 7\% higher energy consumption when running at the hotter
 level\footnote{This was detected with at the {\ttfamily mul}-instruction}. We
-have also checked that running a single core at maximum performace over time
-does not increase the temperature by more than from idle at 47$^\circ$ Celcius
-to 54$^\circ$ Celcius at load. Assuming that it is generally true that a single
+have also checked that running a single core at maximum performance over time
+does not increase the temperature by more than from idle at 47$^\circ$ Celsius
+to 54$^\circ$ Celsius at load. Assuming that it is generally true that a single
 core cannot heat the entire SoC with any significant amount, and that the
-increase in power consumption is at max 10\% over 50$^\circ$ Celcius, we get
+increase in power consumption is at max 10\% over 50$^\circ$ Celsius, we get
 
 \begin{equation}
     P_{inc} = P_{orig} \cdot T_{inc} \cdot \frac{0.10}{50} = P_{orig} \cdot T_{inc} \cdot 0.002
 \end{equation}
 
 Believing that this trend is at least close to linear, output will increase by
-0.2\% pr.  degree Celcius increased. Also, we start our measurements at leat
+0.2\% pr.  degree Celsius increased. Also, we start our measurements at least
 half a second after the benchmarks have been started, thus there is plenty of
 time for the CPU to gain work temperature. In our tests, the time used to get to
 work temperature was humanly instant.
@@ -144,9 +146,9 @@ amount of power running through them, unexpected power might be introduced.
 
 We are running Linux on the chip under test, this gives us a much simpler way of
 programming the processor to run our tests. The fact that we run an entire
-operating system benith our benchmark programs implies that there is much going
-on that we have no direct controll over.  In order to mitigate the artifacts
-originating from the operating system, we disable all the maskable interrupts.
+operating system beneath our benchmark programs implies that there is much going
+on that we have no direct controls over.  In order to mitigate the artifacts
+originating from the operating system, we disable all the mask cable interrupts.
 
 As explained in section \ref{arch_experiments}, we utilize the fast-loop mode of
 the processor to mitigate memory access latencies. We disable the L1 cache to
