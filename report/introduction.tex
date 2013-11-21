@@ -10,27 +10,36 @@ This paper investigates the instruction set architecture and how its properties
 relates to energy consumption. In this paper, this investigation is realized on
 an ARM Cortex A9.
 
+It is a common philosophy that a RISC should consume one clock cycle per
+instruction \cite{sivarama}. This would make it a rather easy job to measure
+and calculate the power consumption on any RISC processor. Even so, this is not
+necessarily true any more.  Dual pipelines and dual issue and parallel general
+ALUs are entering the RISC domain, allowing the processor to retire more than
+one instruction per clock cycle. At the same time, processors that support
+multiply, divide and floating point often use different amount of clock cycles
+to perform these operations. It might even be so that multiply, divide and
+floating point takes different amount of cycles according to their surrounding
+instructions.
+
 Our research is highly motivated by the SHMAC project from the Energy Efficient
 Computing Systems research group at NTNU. SHMAC is The Single-ISA Heterogeneous
 MAny-core Computer where one of the main goals is an optimal processor in terms
-of energy efficency. The SHMAC processor is based on the Amber open-source ARM
+of energy efficiency. The SHMAC processor is based on the Amber open-source ARM
 compatible processor core project. Our research on the ARM Cortex A9
 based Exynos 4212 will of course not be equal to the same experiments run on
 a final implementation of SHMAC, but it will give concrete results for a near
 ISA-equivalent chip.
 
-Previous work in this field has been consentrated around measuring power drain
+Previous work in this field has been concentrated around measuring power drain
 from the wall outlet, and then correlating the consumed energy with performance
 counters available on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others
 have done similar test setup, but with a focus workload classes instead of
 instruction level energy consumption\cite{carroll2010analysis}.
 
 In this paper, we present results after analysing the instruction level energy
-efficency of a modern computer architecture. We take a set of commonly used
+efficiency of a modern computer architecture. We take a set of commonly used
 microarchitecture features, like out-of-order execution and dual-issue, into
 account in order to isolate the functional unit's energy consumption.
-
-\todo[inline]{SHMAC}
 
 \todo[inline]{What exactly have we been focusing on? Reverse-engineered the ARM
     Cortex-A9. ARM does not even tell how many functional units there is in the

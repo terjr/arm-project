@@ -1,48 +1,34 @@
-\section{Instruction level energy consumption} \todo[inline]{change title to
-Rationale?}
+\section{ISA dependent energy consumption}
+% General approach here? Implementation in methodology? Order of appearance?
 
-\begin{itemize} \item Describe why the procedure we present gives a reasonable
-    \end{itemize}
-
-% General approach here? Implementation in methodology? Order of apperance?
-
-The need for energy efficent processors is increasing, and in order to achieve
+The need for energy efficient processors is increasing, and in order to achieve
 better understanding of how architectural decisions, we propose a method to
-measure energy efficency on the instruction level of a processor.
+measure energy efficiency on the instruction level of a processor.
 
 Our scheme relies on fairly accurate core voltage and power measurements, thus
 we have to modify the processor in such a way that core power can be feed
-externally.  We run a customised instruction loop, one for each applicable
+externally.  We run a customized instruction loop, one for each applicable
 instruction of the chosen ISA, and measure its power drain.
 
 As each instruction cannot be measured alone, we create an assembly loop that
 contains the instruction under test. This loop runs long enough to be measurable
 by ordinary laboratory equipment.
 
-It is a common philosophy that a RISC should consume one clock cycle pr.
-instruction\cite{sivarama}. Even so, this is not the most common case any more.
-Dual pipelines and dual issue and parallell general ALUs are entering RISC
-processors, allowing the processor to retire more than one instruction pr. clock
-cycle. At the same time, processors that support multiply, divide and floating
-point often use different amount of clock cycles to perform these operations. It
-might even be so that multiply, divide and floating point takes different amount
-of cycles according to their surrounding instructions.
-
 Since some instructions takes a different amount of time, the power drain has to be
-normalised using statistics gained from performance counters. Applying this
+normalized using statistics gained from performance counters. Applying this
 normalization, we can convert point-in-time energy consumption in terms of
 wattage to energy per instruction in terms of joules.
 
 As each instruction runs only for a determined amount of time, the measured
 instruction loop has to be conditional, thus the list of equal instructions has
-to be ended by a conditional branch. The impact of these alien instructions 
+to be ended by a conditional branch. The impact of these alien instructions
 can be mitigated using statistics and by knowing how the processor works. The
-latency introduced by the conditional jump is most likly hidden by the branch
+latency introduced by the conditional jump is most likely hidden by the branch
 predictor in most modern architectures, either taking a single cycle or hidden
 entirely. It has to be noted that its energy consumption is not hidden, and must
 be accounted for to get accurate results. This method mainly focuses on
 comparison between instructions, and the energy consumption of the condition
-calculation and the conditional jump can then be seens as part of the common
+calculation and the conditional jump can then be seen as part of the common
 baseline.
 \todo[inline]{correct assumption?}
 
