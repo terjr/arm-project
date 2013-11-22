@@ -4,6 +4,14 @@
 In this section we present data gathered from our experiments on the ARM
 Cortex-A9.
 
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/cycle_timings_1_cycles_normalized}
+    \caption{Single Cycle energy consumption}
+    \label{fig:singlecycle}
+\end{figure*}
+
+
 We distinguish between single-cycle instructions and multi-cycle instructions
 because they behave differently in and around the execution pipeline.
 Instructions consuming only one cycle are fairly easy to reason about as there
@@ -24,12 +32,6 @@ single-cycle instructions and one for multi-cycle instructions.
 On our target CPU, most of \todo{how many} the tested instructions falls into
 this category. The per-instruction energy consumption measured in Ampere can be
 seen in figure \ref{fig:singlecycle}.
-
-\begin{figure}
-    \includegraphics[width=\textwidth/2]{figures/single-cycle}
-    \caption{Single Cycle energy consumption}
-    \label{fig:singlecycle}
-\end{figure}
 
 \subsection{Multi-Cycle Instructions}
 \todo[inline]{This section is mostly an outline}
