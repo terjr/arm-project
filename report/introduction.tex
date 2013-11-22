@@ -1,46 +1,45 @@
 \section{Introduction}
 
-\IEEEPARstart{P}{rocessors} grow more sophisticated every day.
+\IEEEPARstart{M}{aking} processors burn less energy while at the same time
+increasing performance is currently one of the toughest challenges hardware
+designers are facing. Performance alone can be improved by cramming more
+components onto integrated circuits \ref{moore} by utilizing new processing
+technologies. However, it also incurs additional generation of heat which the
+surroundings must manage to dissipate. Thus, hardware designers has been forced
+to come up with new techniques, such as shutting down parts of the chip
+\ref{dark_silicon} and designing specialized hardware.
 
-\todo[inline]{
-    At the same time, processors grow more and more sophisticated. Even modern RISC
-        architectures gets stuffed with features speeding up execution in return for
-        added complexity and nondeterminism.
+Traditionally, RISC architectures has been influenced by design choices making
+each instruction as simple as possible. E.g. the AVR architecture designed in
+the early 90's has a two-stage pipeline and only a few instructions consumes
+more than one cycle. More recently, however, even RISC architectures includes
+features that aims to reduce energy consumption and increase performance in
+return of nondeterminism and complexity. Processor cores with multiple
+pipelines, dual-issuing and out-of-order execution are becoming ubiquitous even
+in low-cost devices.
 
-        Add something about the need for energy modeling techniques. Ideally, we
-        could just feed our results to an algorithm that schedules for energy
-        instead of performance.
 
-        Being able to model and monitor energy consumption has also got the industry's
-        attention. Semiconductor companies are making software targeting the embedded
-        market to monitor energy consumption on-chip, giving application engineers the
-        opportunity to optimize for energy.
+\todo[inline]{Add something about the need for energy modeling techniques.
+Ideally, we could just feed our results to an algorithm that schedules for
+energy instead of performance.}
 
-        Energy awareness at the microarchitecture level has gotten researchers
-        attention for quite some time, but as the architecture has become more
-        nondeterministic it is necessary to to real world simulations and gather
-        the statistics.
-}
+Being able to model and monitor energy consumption has also got the industry's
+attention. Semiconductor companies are making software targeting the embedded
+market to monitor energy consumption on-chip, giving application engineers the
+opportunity to optimize for energy.
 
-In the earlier days, the focus was all on performance, but current research are
-hitting walls where we cannot dispatch more heat.  Along with computers entering
-smaller and more energy aware domains, power and energy has become a major focal
-point\cite{patterson}\cite{hennessy}.
+%It is a common philosophy that a RISC should consume one clock cycle per
+%instruction \cite{sivarama}. This would make it a rather easy job to measure
+%and calculate the power consumption on any RISC processor. Even so, this is not
+%necessarily true any more.  Dual pipelines and dual issue and parallel general
+%ALUs are entering the RISC domain, allowing the processor to retire more than
+%one instruction per clock cycle. At the same time, processors that support
+%multiply, divide and floating point often use different amount of clock cycles
+%to perform these operations. It might even be so that multiply, divide and
+%floating point takes different amount of cycles according to their surrounding
+%instructions.
 
-This paper investigates the instruction set architecture and how its properties
-relates to energy consumption. In this paper, this investigation is realized on
-an ARM Cortex A9.
 
-It is a common philosophy that a RISC should consume one clock cycle per
-instruction \cite{sivarama}. This would make it a rather easy job to measure
-and calculate the power consumption on any RISC processor. Even so, this is not
-necessarily true any more.  Dual pipelines and dual issue and parallel general
-ALUs are entering the RISC domain, allowing the processor to retire more than
-one instruction per clock cycle. At the same time, processors that support
-multiply, divide and floating point often use different amount of clock cycles
-to perform these operations. It might even be so that multiply, divide and
-floating point takes different amount of cycles according to their surrounding
-instructions.
 
 Our research is highly motivated by the SHMAC project from the Energy Efficient
 Computing Systems research group at NTNU. SHMAC is The Single-ISA Heterogeneous
@@ -56,6 +55,11 @@ from the wall outlet, and then correlating the consumed energy with performance
 counters available on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others
 have done similar test setup, but with a focus workload classes instead of
 instruction level energy consumption\cite{carroll2010analysis}.
+
+
+This paper investigates the instruction set architecture and how its properties
+relates to energy consumption. In this paper, this investigation is realized on
+an ARM Cortex A9.
 
 In this paper, we present results after analyzing the instruction level energy
 efficiency of a modern computer architecture. We take a set of commonly used
