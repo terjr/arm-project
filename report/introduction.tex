@@ -27,39 +27,33 @@ Thus, we need to gain insight of the processors energy characteristics by
 running real-world measurements on a specific processor. Compilers can then use
 these results to optimize for energy and not only performance.
 
+Previous research correlates power drain seen from the wall outlet with
+performance counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others
+look at energy usage under different workloads\cite{carrol2010analysis}.
 
-\todo[inline]{Write about previous work here, but do not dedicate a subsection
-    to it.}
-Previous work in this field has been concentrated around measuring power drain
-from the wall outlet, and then correlating the consumed energy with performance
-counters available on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others
-have done similar test setup, but with a focus workload classes instead of
-instruction level energy consumption\cite{carroll2010analysis}.
+The SHMAC project\cite{shmac} aims to build a tile-based architecture where
+general CPUs, memory and accelerators can be connected in a user-specified
+configuration. Better energy profiling enables tiles to be chosen based on their
+energy characteristics for the given application, creating an energy efficient
+system as possible. Being able to model and monitor energy consumption has also
+got the industry's attention: Semiconductor companies are making software
+targeting the embedded market to monitor energy consumption on-chip, giving
+application engineers the opportunity to optimize for energy.
 
-Being able to model and monitor energy consumption has also got the industry's
-attention. Semiconductor companies are making software targeting the embedded
-market to monitor energy consumption on-chip, giving application engineers the
-opportunity to optimize for energy.
-
-
-
-\subsection{Contributions}
-This paper investigates the instruction set architecture and how its properties
-relates to energy consumption. In this paper, this investigation is realized on
-an ARM Cortex A9.
-
-In this paper, we present results after analyzing the instruction level energy
-efficiency of a modern computer architecture. We take a set of commonly used
-microarchitecture features, like out-of-order execution and dual-issue, into
-account in order to isolate the functional unit's energy consumption.
+In this paper we make two contributions. First, we analyze the instruction level
+energy efficency of a modern RISC computer architecture. We try to isolate as
+many architecture components as possible by correlating performance counters
+with observed power drain, emphasizing components that directly relates to the
+per-instruction activity. Secondly, we write benchmark programs to get an
+overview of the energy consumed per instruction type (e.g. \textrm{add}).
 
 
-Our research is highly motivated by the SHMAC project from the Energy Efficient
-Computing Systems research group at NTNU. SHMAC is The Single-ISA Heterogeneous
-Many-core Computer where one of the main goals is an optimal processor in terms
-of energy efficiency. The SHMAC processor is based on the Amber open-source ARM
-compatible processor core project. Our research on the ARM Cortex A9
-based Exynos 4212 will of course not be equal to the same experiments run on
-a final implementation of SHMAC, but it will give concrete results for a near
-ISA-equivalent chip.
+%Our research is highly motivated by the SHMAC project from the Energy Efficient
+%Computing Systems research group at NTNU. SHMAC is The Single-ISA Heterogeneous
+%Many-core Computer where one of the main goals is an optimal processor in terms
+%of energy efficiency. The SHMAC processor is based on the Amber open-source ARM
+%compatible processor core project. Our research on the ARM Cortex A9
+%based Exynos 4212 will of course not be equal to the same experiments run on
+%a final implementation of SHMAC, but it will give concrete results for a near
+%ISA-equivalent chip.
 
