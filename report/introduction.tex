@@ -20,7 +20,7 @@ become ubiquitous even in the embedded world.
 
 As processors grow more sophisticated, it becomes harder to reason about their
 energy efficiency. Pipeline components are getting more complex, with advanced
-branch predictior units and a high degree of instruction level parallelism. The
+branch predictor units and a high degree of instruction level parallelism. The
 processor core itself gets more integrated with the rest of the system and many
 parts of the pipeline contribute to the overall power consumption\cite{bertran}.
 Thus, we need to gain insight of the processors energy characteristics by
@@ -41,11 +41,12 @@ targeting the embedded market to monitor energy consumption on-chip, giving
 application engineers the opportunity to optimize for energy.
 
 In this paper we make two contributions. First, we analyze the instruction level
-energy efficency of a modern RISC computer architecture. We try to isolate as
+energy efficiency of a modern RISC computer architecture. We try to isolate as
 many architecture components as possible by correlating performance counters
 with observed power drain, emphasizing components that directly relates to the
-per-instruction activity. Secondly, we write benchmark programs to get an
-overview of the energy consumed per instruction type (e.g. \textrm{add}).
+per-instruction activity. Secondly, we show that it is feasible to get a
+per-instruction energy overview on an existing architecture by applying our
+method and running benchmark programs.
 
 
 %Our research is highly motivated by the SHMAC project from the Energy Efficient
