@@ -44,9 +44,11 @@ In this paper we make two contributions. First, we analyze the instruction level
 energy efficiency of a modern RISC computer architecture. We try to isolate as
 many architecture components as possible by correlating performance counters
 with observed power drain, emphasizing components that directly relates to the
-per-instruction activity. Secondly, we show that it is feasible to get a
-per-instruction energy overview on an existing architecture by applying our
-method and running benchmark programs.
+pipeline activity for a specific instruction. Secondly, we show that it is
+feasible to get a per-instruction energy overview of an existing architecture by
+applying our method and writing benchmark programs. We look at both simple
+single-cycle instructions as well as the most complex instructions consuming
+multiple cycles on our target processor.
 
 
 %Our research is highly motivated by the SHMAC project from the Energy Efficient

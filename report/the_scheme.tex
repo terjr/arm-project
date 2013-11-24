@@ -5,11 +5,16 @@ The need for energy efficient processors is increasing, and in order to achieve
 better understanding of how architectural decisions, we propose a method to
 measure energy efficiency on the instruction level of a processor.
 
+\todo[inline]{Give some background on what exactly burns energy in a processor.
+Be as precise as possible -- dissect the pipeline.}
+
 Our scheme relies on fairly accurate core voltage and power measurements, thus
 we have to modify the processor in such a way that core power can be feed
-externally.  We run a customized instruction loop, one for each applicable
+externally. We run a customized instruction loop, one for each applicable
 instruction of the chosen ISA, and measure its power drain.
 
+\todo[inline]{From here on we go into some detail about the methodology, but
+that's probably OK?}
 As each instruction cannot be measured alone, we create an assembly loop that
 contains the instruction under test. This loop runs long enough to be measurable
 by ordinary laboratory equipment.
@@ -17,7 +22,7 @@ by ordinary laboratory equipment.
 Since some instructions takes a different amount of time, the power drain has to be
 normalized using statistics gained from performance counters. Applying this
 normalization, we can convert point-in-time energy consumption in terms of
-wattage to energy per instruction in terms of joules.
+wattage to energy per instruction in terms of Joules.
 
 As each instruction runs only for a determined amount of time, the measured
 instruction loop has to be conditional, thus the list of equal instructions has
@@ -30,8 +35,10 @@ be accounted for to get accurate results. This method mainly focuses on
 comparison between instructions, and the energy consumption of the condition
 calculation and the conditional jump can then be seen as part of the common
 baseline.
-\todo[inline]{correct assumption?}
+\todo[inline]{Correct assumption? Probably. Explain why we need a baseline
+instruction.}
 
+\todo[inline]{Rephrase and move to the end of the introduction?}
 When each relevant instruction has been measured, we can compare their
 normalized energy consumption and possibly identify patterns where consumption
 is greater than expected. This can help in later architectural designs where
