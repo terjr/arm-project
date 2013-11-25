@@ -33,8 +33,10 @@ case $OUTPUT in
         ;;
 esac
 echo "set style fill solid 0.50 border 0"
-echo "set xtics rotate by -45"
+echo "set xtics rotate by -90"
 echo "set key left top Left"
+echo "set xtics font \"Arial, 9\""
+echo "set palette model RGB defined (0 \"green\", 1 \"blue\")"
 
 if [ ! -z $XRANGE ]
 then
@@ -45,6 +47,8 @@ then
     echo "set yrange [$YRANGE]"
 fi
 
-echo "plot '$FILE' using 2:xtic(1) with boxes title 'Energy' linecolor rgb \"\#768ede\""
+echo "unset colorbox"
+
+echo "plot '$FILE' using (\$0):2:3:xtic(1) with boxes palette notitle"
 
 ) | gnuplot -p
