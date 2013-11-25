@@ -8,17 +8,19 @@ NAME=main
 FILES=$(filter %.tex, $(shell /usr/bin/find .))
 TEMP_EXTS=aux log toc idx ind ilg lot lof bbl blg brf out
 TEMPS=$(patsubst %.tex, %, ${FILES})
+GRAPHS=$(shell find . -name '*.tex' | xargs grep -R includegraphics | sed 's|.*figures/graph_\(.*\)\}|figures/graph_\1.eps|;tx;d;:x')
 
 .PHONY: clean clean_all
 
 all: ${NAME}.pdf
 
+graphs: ${GRAPHS}
+
 clean_all: clean
 	if [ -e '${NAME}.pdf' ]; then rm -f ${NAME}.pdf; fi
 
-${NAME}.pdf: ${NAME}.tex ${NAME}.bbl
+${NAME}.pdf: ${NAME}.tex ${NAME}.bbl ${GRAPHS}
 	${TEX} ${NAME}.tex
-	${TEX} ${NAME}.tex # to be shure of toc and links
 
 #${NAME}.ind: ${NAME}.idx
 #	makeindex ${NAME}
@@ -26,8 +28,10 @@ ${NAME}.pdf: ${NAME}.tex ${NAME}.bbl
 #${NAME}.idx: ${NAME}.tex
 #	${TEX} ${NAME}.tex
 
-${NAME}.bbl: bibliography.bib
+${NAME}.aux: ${NAME}.tex
 	${TEX} ${NAME}.tex
+
+${NAME}.bbl: bibliography.bib ${NAME}.aux
 	${BIBTEX} ${NAME}
 
 # Loop though all source files and remove name concated with any temp-extension
@@ -49,5 +53,5 @@ spellcheck: ${FILES}
 #
 # Generate EPS-files
 #
-figures/graph_mult.eps: ../processed_results/unsorted/cycle_timings.csv
-	../scripts/gnuplot_barchart.sh -f <( awk -F , '{print $$1, $$4, $$2}' ../processed_results/unsorted/cycle_timings.csv | sort -n -k 2 ) -o eps > $@
+figures/graph_%.eps: ../processed_results/unsorted/cycle_timings.csv
+	./generate_figures.sh $*
