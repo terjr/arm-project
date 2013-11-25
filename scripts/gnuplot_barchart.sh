@@ -37,6 +37,7 @@ echo "set xtics rotate by -90"
 echo "set key left top Left"
 echo "set xtics font \"Arial, 9\""
 echo "set palette model RGB defined (0 \"green\", 1 \"blue\")"
+echo "set cbrange [1:4]"
 
 if [ ! -z $XRANGE ]
 then
