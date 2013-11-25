@@ -36,8 +36,10 @@ echo "set style fill solid 0.50 border 0"
 echo "set xtics rotate by -90"
 echo "set key left top Left"
 echo "set xtics font \"Arial, 9\""
-echo "set palette model RGB defined (0 \"green\", 1 \"blue\")"
+echo "set palette model RGB defined (0 \"#228B22\", 1 \"#00008B\")"
 echo "set cbrange [1:4]"
+echo "set ylabel \"Ampere {/Symbol \\327} cycles\" font \"Arial, 12\" offset 2,0"
+echo "set xlabel \"Instruction\" font \"Arial, 12\" offset 0,2"
 
 if [ ! -z $XRANGE ]
 then
