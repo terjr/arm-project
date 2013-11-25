@@ -1,5 +1,6 @@
 TEX=$(shell which pdflatex) -interaction nonstopmode --shell-escape
 BIBTEX=$(shell which bibtex)
+SHELL=bash
 
 NAME=main
 
@@ -15,7 +16,7 @@ all: ${NAME}.pdf
 clean_all: clean
 	if [ -e '${NAME}.pdf' ]; then rm -f ${NAME}.pdf; fi
 
-${NAME}.pdf: ${NAME}.tex bibliography.bbl
+${NAME}.pdf: ${NAME}.tex ${NAME}.bbl
 	${TEX} ${NAME}.tex
 	${TEX} ${NAME}.tex # to be shure of toc and links
 
@@ -25,9 +26,8 @@ ${NAME}.pdf: ${NAME}.tex bibliography.bbl
 #${NAME}.idx: ${NAME}.tex
 #	${TEX} ${NAME}.tex
 
-bibliography.bbl:
+${NAME}.bbl: bibliography.bib
 	${TEX} ${NAME}.tex
-	${BIBTEX} ${NAME}
 	${BIBTEX} ${NAME}
 
 # Loop though all source files and remove name concated with any temp-extension
@@ -45,3 +45,9 @@ spellcheck: ${FILES}
 	for f in ${FILES}; do\
 		aspell -t --home-dir=. -c $$f ; \
 	done
+
+#
+# Generate EPS-files
+#
+figures/graph_mult.eps: ../processed_results/unsorted/cycle_timings.csv
+	../scripts/gnuplot_barchart.sh -f <( awk -F , '{print $$1, $$4, $$2}' ../processed_results/unsorted/cycle_timings.csv | sort -n -k 2 ) -o eps > $@
