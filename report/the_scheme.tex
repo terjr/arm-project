@@ -1,12 +1,43 @@
 \section{ISA Dependent Energy Consumption}
 % General approach here? Implementation in methodology? Order of appearance?
 
+
+
+Thus, we need to gain insight of the processors energy characteristics by
+running real-world measurements on a specific processor. Compilers can then use
+these results to optimize for energy and not only performance.
+
+
+
+
+
 The need for energy efficient processors is increasing, and in order to achieve
 better understanding of how architectural decisions, we propose a method to
 measure energy efficiency on the instruction level of a processor.
 
 \todo[inline]{Give some background on what exactly burns energy in a processor.
 Be as precise as possible -- dissect the pipeline.}
+Since this paper investigates the ISA dependent power consumption, we do not
+look into the details of components other that the CPU core. In some
+architectures, cache and other components close to the core are driven by the
+same supply rail\cite{rusu200765}. We try to disable or avoid usage of such
+components as much as possible.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Our scheme relies on fairly accurate core voltage and power measurements, thus
 we have to modify the processor in such a way that core power can be feed
@@ -37,12 +68,6 @@ calculation and the conditional jump can then be seen as part of the common
 baseline.
 \todo[inline]{Correct assumption? Probably. Explain why we need a baseline
 instruction.}
-
-\todo[inline]{Rephrase and move to the end of the introduction?}
-When each relevant instruction has been measured, we can compare their
-normalized energy consumption and possibly identify patterns where consumption
-is greater than expected. This can help in later architectural designs where
-energy consumption is important.
 
 \begin{figure}
     \input{figures/setup}

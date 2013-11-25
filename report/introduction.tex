@@ -9,36 +9,31 @@ which the surroundings must manage to dissipate. Thus, hardware designers has
 been forced to come up with new techniques, such as shutting down parts of the
 chip \ref{dark_silicon} and designing specialized hardware.
 
-Traditionally, RISC architectures has been influenced by design choices making
-each instruction as simple as possible\cite{sivarama}. E.g. the AVR architecture
-designed in the early 90's has a two-stage pipeline and only a few instructions
-consumes more than one cycle. More recently, however, even RISC architectures
-includes features that aims to reduce energy consumption and increase throughput
-in return for nondeterminism and added complexity. Multiple pipelines, dual
-issuing and parallel general ALUs are entering the RISC domain and is soon to
-become ubiquitous even in the embedded world.
-
 As processors grow more sophisticated, it becomes harder to reason about their
-energy efficiency. Pipeline components are getting more complex, with advanced
-branch predictor units and a high degree of instruction level parallelism. The
-processor core itself gets more integrated with the rest of the system and many
-parts of the pipeline contribute to the overall power consumption\cite{bertran}.
-Thus, we need to gain insight of the processors energy characteristics by
-running real-world measurements on a specific processor. Compilers can then use
-these results to optimize for energy and not only performance.
+energy efficiency. Even RISC processors, which is designed with simplicity in
+mind\cite{sivarama}, has got a steep increase in complexity over the last
+years\cite{alf_egil_bogen_cisc_risc_blog}. Features that previously only existed
+in CISC processors are now entering the RISC domain. Current RISC designs may
+have deep pipelines, increased component complexity, advanced branch predictor
+units and a high degree of instruction level parallelism. They include features
+that aims to reduce energy consumption and increase throughput in return for
+nondeterminism and added complexity. Moreover, processors are designed as more
+integrated components -- interacting more widely with the rest of the system.
 
-Previous research correlates power drain seen from the wall outlet with
-performance counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others
-look at energy usage under different workloads\cite{carrol2010analysis}.
+Since energy efficiency are becoming more and more important at all levels of
+computing, we need a broader understanding of how energy are consumed. Previous
+research correlates power drain seen from the wall outlet with performance
+counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others look at
+energy usage under different workloads\cite{carrol2010analysis}. The SHMAC
+project\cite{shmac} looks into energy efficient hardware through a tile-based
+architecture scheme.
 
-The SHMAC project\cite{shmac} aims to build a tile-based architecture where
-general CPUs, memory and accelerators can be connected in a user-specified
-configuration. Better energy profiling enables tiles to be chosen based on their
-energy characteristics for the given application, creating an energy efficient
-system as possible. Being able to model and monitor energy consumption has also
+Being able to model and monitor energy consumption has also
 got the industry's attention: Semiconductor companies are making software
 targeting the embedded market to monitor energy consumption on-chip, giving
-application engineers the opportunity to optimize for energy.
+application engineers the opportunity to optimize for energy. With the emergence
+of performance counters, it is now possible to detect how different pipeline
+stages affects the overall power consumption\cite{bertran}.
 
 In this paper we make two contributions. First, we analyze the instruction level
 energy efficiency of a modern RISC computer architecture. We try to isolate as
@@ -49,6 +44,18 @@ feasible to get a per-instruction energy overview of an existing architecture by
 applying our method and writing benchmark programs. We look at both simple
 single-cycle instructions as well as the most complex instructions consuming
 multiple cycles on our target processor.
+
+When each relevant instruction has been measured, we can compare their
+normalized energy consumption and possibly identify patterns where consumption
+is greater than expected. This can help in later architectural designs where
+energy consumption is important. Also, with energy profiles on the instruction
+level, compilers will be able to optimize their programs for energy efficiency.
+
+The SHMAC project shows that it is possible to use the instruction energy
+profiles to design hardware that is more energy efficient for a given task in
+more sophisticated ways than previously possible. Energy profiles gives us a
+better view of how different cores perform at different tasks. A system can then
+be composed of tiles with energy profiles matching the given application.
 
 
 %Our research is highly motivated by the SHMAC project from the Energy Efficient
