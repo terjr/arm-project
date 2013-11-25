@@ -1,0 +1,10 @@
+qdadd 0.642471
+qdsub 0.645363
+ssat 0.614451
+usat 0.613716
+sxtah 0.646095
+sxtab16 0.638085
+sxtab 0.660705
+uxtah 0.639231
+uxtab16 0.638064
+uxtab 0.636054
