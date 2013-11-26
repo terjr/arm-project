@@ -17,9 +17,9 @@ fi
 if [ ! -z $2 ]
 then
     echo "Adjusting fontsize for $2 scaling"
-    FONTSIZE=$(echo 12.0/$2 | bc)
+    FONTSIZE=$(echo 10.0/$2 | bc)
 else
-    FONTSIZE=12
+    FONTSIZE=10
 fi
 echo "Fontsize is $FONTSIZE"
 

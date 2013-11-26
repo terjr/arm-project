@@ -19,7 +19,7 @@ graphs: ${GRAPHS}
 clean_all: clean
 	if [ -e '${NAME}.pdf' ]; then rm -f ${NAME}.pdf; fi
 
-${NAME}.pdf: ${NAME}.tex ${NAME}.bbl ${GRAPHS}
+${NAME}.pdf: ${NAME}.tex ${NAME}.bbl ${GRAPHS} figures/heat.eps
 	${TEX} ${NAME}.tex
 	${TEX} ${NAME}.tex
 
@@ -56,3 +56,6 @@ spellcheck: ${FILES}
 #
 figures/graph_%.eps: ../processed_results/unsorted/cycle_timings.csv ./generate_figures.sh ../scripts/gnuplot_barchart.sh
 	grep -R $* .| sed 's|.*width=\([^\\]*\)\\.*|\1|;tx;d;:x' | xargs ./generate_figures.sh $*
+
+figures/heat.eps: ../processed_results/heat-correlation.csv ../scripts/gnuplot_heat.sh
+	../scripts/gnuplot_heat.sh -r 0.6 -o eps -t 20 > $@

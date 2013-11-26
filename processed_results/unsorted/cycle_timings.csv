@@ -1,6 +1,8 @@
 Instruction,Cycle timings,Un-normalized values,Normalized values,Category
 add,1,0.21624,0.21624,arith
 adds,1,0.203295,0.203295,arith
+add,1,0.21624,0.21624,cond
+adds,1,0.203295,0.203295,cond
 adc,1,0.217072,0.217072,arith
 adcs,1,0.208192,0.208192,arith
 qadd,2,0.206905,0.41381,quad

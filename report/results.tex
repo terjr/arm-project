@@ -31,7 +31,7 @@
 
 \begin{figure*}[ht]
     \centering
-    \includegraphics[width=\textwidth]{figures/graph_01_base_arith_saturate_data_cond_pack_logic-0c6}
+    \includegraphics[width=\textwidth]{figures/graph_01_base_arith_saturate_data_pack_logic-0c6}
     \caption{Energy profile of single-cycle instructions, excluding multiply.}
     \label{fig:singlecycle}
 \end{figure*}
@@ -65,6 +65,25 @@ find, which is the {\ttfamily setend}-instruction. This instruction sets the
 endianness regarding memory operations to eiter big or little
 endian.\cite{armcompilerref}.
 
+The results presented in the gaphs are enumerated as Ampere
+$\cdot$ cycles, which means that instructions using more time is normalized by
+adding up their power drain with the time used in the pipeline. The results are
+not converted into watts, joule or anything else that would be more convenient
+in order to state a number on each instructions energy consumption. This is
+because this paper investigates how each instruction differs from other
+instructions in the same ISA, and thus we look at the power drain at the
+processor core when a given instruction resides within it, multiplied by the
+number of cycles the instruction consumes. 
+
+During measurements, the core voltage was keept stable at
+$1.3V\pm50mV$ during testing. The measurements where done with as full
+pipelines as possible, avoiding hazards and instruction loading as much as
+possible. This means that instructions that utilize more parts of the processor
+will most likely be more energy consuming than those using only few components.
+This is also shown with our {\ttfamily baseline}-measurement, as we assume that
+the {\ttfamily setend}-instruction merly changes some status flags.
+
+
 
 %Some instructions use variable amount of time. This section will contain
 %information about how we normalize and compare energy consumption of
@@ -76,19 +95,38 @@ endian.\cite{armcompilerref}.
 %in the execution path of these two categories.
 
 \subsection{Single-Cycle Instructions}
-On our target CPU, 72 of the 118 tested instructions falls into this category
-(leaving 46 multi-cycle instructions). The per-instruction energy consumption
-measured in Ampere can be seen in \autoref{fig:singlecycle}.
+On our target CPU, 70 of the 116\footnote{118 including conditionals} tested
+instructions falls into this category (leaving 46 multi-cycle instructions).
 
-See \autoref{fig:singlecycle}
-\begin{itemize}
-    \item The unit really is WATTS.
-    \item Note that baseline is really a instruction. Which instruction and how
-        why is it used?
-    \item add vs. adds -- explain why. Also mention that adds are removed from
-        next-gen.
-    \item Why is NOP as it is (contains hazards, is really a mov r0, r0)
-\end{itemize}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/graph_01_base_cond-0c6}
+    \caption{Energy profile showing conditional execution.}
+    \label{fig:cond}
+\end{figure}
+
+The results in \autoref{fig:singlecycle} shows that the ordinary single-cycle instructions
+does not differ very much. Instructions like {\ttfamily rev} and {\ttfamily sel} are on the
+top, which can be explained by looking on how these instructions move nearly all bits in
+the operands around, while {\ttfamily cmp} and the different shift-instructios are most likely
+moving fewer bits around. A more interesting result is how instructions bearing the {\ttfamily s}-flag
+seems to have a lover consumption than their non-{\ttfamily s}-companion. It is hard to reason about
+such, since we do not have access to the inner workings of this processor.
+
+The results from the conditional-execution scheme brought by this ISA are also an interesting matter. We
+can see from \autoref{fig:cond} how different versions of {\ttfamily add} compares. In the figured test,
+{\ttfamily addne} is committed every time, while {\ttfamily addeq} never has its results committed. It is
+interesting to see that even though {\ttfamily addeq} is never committed, it uses almost as much power as
+the other {\ttfamily add}s. We can assume that with the addition of out-of-order scheduling, conditional
+execution might be harder to implement.
+
+\autoref{fig:singlecycle} shows that the {\ttfamily nop}-instruction has a rather low power consumption. This
+is a bit missguiding, as the {\ttfamily nop}-instruction is actually a {\ttfamily mov r0,r0}-instruction, and thus
+has both a read-after-write and a write-after-write hazard on it self. This makes the {\ttfamily nop}-instruction
+serialize it self, and it is hard to fill the pipeline with this instruction. With this in mind, it makes sense
+that {\ttfamily nop} works in this way, as it is often used to fill out clock cycles with non-destructive work. It
+would not make sense to optimize the {\ttfamily nop} instruction, as it would merly fail to complete it's goal as
+a space-and-time filler.
 
 \begin{figure*}
     \centering
@@ -111,4 +149,25 @@ See \autoref{fig:multicycle} and \autoref{fig:allmul}
 \begin{itemize}
     \item The difference between instructions are much larger in the multi-cycle
         graphs.
+    \item Talk about mul, and why it might differ that much (especially 2 and 3 cycle ones)
 \end{itemize}
+
+\subsection{Stability}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/heat}
+    \caption{Changes in heat and energy consumption for {\ttfamily add} at different runs together with heatsink and ambient temperature}
+    \label{fig:heat}
+\end{figure}
+
+Each instruction was measured 41 times. For each run, there was small changes in
+power consumption, but the relation trends was equal for every run.
+\autoref{fig:heat} shows how the change in power consumption of the instruction
+{\ttfamily add} over different runs combined with the ambient temperature the
+heatsink temperature. According to these results, we assume that the change in
+power consumption was not due to heat. We did not log heat for all test runs,
+but assume that the results from \autoref{fig:heat} holds, and that this small
+change in heat is not responsible for any disturbance in the power consumption
+measurements.
+
+
