@@ -1,9 +1,16 @@
 #!/bin/bash
 if [ -z $1 ]
 then
-    echo "Uage: $0 {int}+{_group}+"
-    echo "\twhere int is cycles (1,2 or 3) and _group is members, eg. 23_mult_add will give"
-    echo "\tall multiply and add instructions using 2 or 3 cycles"
+    echo "Uage: $0 {int}+{_group}+{-int{c{int}+}"
+    echo "  where int is cycles (1,2 or 3) and _group is members."
+    echo "  Example: 23_mult_add will give you all multiply and add instructions using 2 or 3 cycles"
+    echo ""
+    echo "  Append -2 at the end of the string to set aspect ratio to 2x1, or -0c5 to set 1x2."
+    echo "  The use of the 'c' character in place of '.' is because LaTeX thinks it means file"
+    echo "  extension... "
+    echo ""
+    echo "  Full example 13_data_logic-0c7"
+    echo "  - gives graph of all data and logic instructions using 1 or 3 cycles, aspect ratio 0.7x1"
     exit
 fi
 
@@ -18,11 +25,23 @@ for (( i=0; i<${#CYCLES}; i++ ))
 do
     FILTER=$(echo $FILTER "|| \$2=="${CYCLES:$i:1})
 done
-FILTER="("${FILTER:2}" ) && ( "
-for group in $(echo $GROSS_FILTER | sed 's|[^ ]* \(.*\)|\1|')
-do
-    FILTER=$(echo $FILTER "\$5==\""$group"\" || ")
-done
-FILTER=$(echo ${FILTER:0:-3} ")")
 
-$GNUPLOT -f <( awk -F , "$FILTER {print \$1, \$4, \$2}" $RESULTS_CSV | sort -n -k 2 ) -o eps > figures/graph_$1.eps
+GROUP_FILTER=$(echo $GROSS_FILTER | sed 's|[^ ]* \([^-]*\).*|\1|;tx;d;:x')
+ASPECT_RATIO=$(echo $GROSS_FILTER | sed 's|[^-]*-\(.*\)|-r \1|;tx;d;:x' | tr 'c' '.')
+echo $ASPECT_RATIO
+echo $GROSS_FILTER
+echo $GROUP_FILTER
+
+if [ -z "$GROUP_FILTER" ]
+then
+    FILTER=${FILTER:2}
+else
+    FILTER="("${FILTER:2}" ) && ( "
+    for group in $GROUP_FILTER
+    do
+        FILTER=$(echo $FILTER "\$5==\""$group"\" || ")
+    done
+    FILTER=$(echo ${FILTER:0:-3} ")")
+fi
+
+$GNUPLOT -f <( awk -F , "$FILTER {print \$1, \$4, \$2}" $RESULTS_CSV | sort -n -k 2 ) $ASPECT_RATIO -o eps -g xy > figures/graph_$1.eps
