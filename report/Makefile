@@ -55,4 +55,4 @@ spellcheck: ${FILES}
 # Generate EPS-files
 #
 figures/graph_%.eps: ../processed_results/unsorted/cycle_timings.csv ./generate_figures.sh ../scripts/gnuplot_barchart.sh
-	./generate_figures.sh $*
+	grep -R $* .| sed 's|.*width=\([^\\]*\)\\.*|\1|;tx;d;:x' | xargs ./generate_figures.sh $*
