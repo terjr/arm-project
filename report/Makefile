@@ -21,6 +21,7 @@ clean_all: clean
 
 ${NAME}.pdf: ${NAME}.tex ${NAME}.bbl ${GRAPHS}
 	${TEX} ${NAME}.tex
+	${TEX} ${NAME}.tex
 
 #${NAME}.ind: ${NAME}.idx
 #	makeindex ${NAME}
