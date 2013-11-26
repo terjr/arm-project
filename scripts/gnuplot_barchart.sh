@@ -65,14 +65,15 @@ case $GRID in
 esac
 
 
-echo "set style fill solid 0.50 border 0"
-echo "set xtics rotate by -90"
+echo "set style fill solid 1 border 0"
+echo "set xtics rotate by -270"
 echo "set key left top Left"
-echo "set xtics font \"Arial, 9\""
-echo 'set palette model RGB defined (0 "#228B22", 1 "#00008B")'
-echo "set cbrange [1:3]"
+echo "set xtics font \"Arial, 12\""
+#echo 'set palette model RGB defined (0 "#ff0000", 0.33 "#22CC22", 1 "#0000AB")'
+echo 'set palette model RGB defined (0 "#ff0000", 0.33 "#66CC66", 1 "#4444DB")'
+echo "set cbrange [0:3]"
 echo "set ylabel \"Ampere {/Symbol \\327} cycles\" font \"Arial, 12\" offset 2,0"
-echo "set xlabel \"Instruction\" font \"Arial, 12\" offset 0,2"
+echo "set xlabel \"Instruction\" font \"Arial, 12\" offset 0,1"
 
 
 if [ ! -z $XRANGE ]

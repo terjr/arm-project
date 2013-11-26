@@ -1,22 +1,37 @@
 \section{Results}
 
+%\begin{figure*}
+%    \centering
+%    \includegraphics[width=1.1\textwidth]{figures/graph_0123_base_lowpower_mul-0c6}
+%    \label{fig:allmul}
+%\end{figure*}
+%
+%\begin{figure*}
+%    \centering
+%    \includegraphics[width=0.7\textwidth]{figures/graph_0123_base_mul-0c7}
+%    \label{fig:allmul}
+%\end{figure*}
+%
+%
+%
+%\begin{figure*}
+%    \centering
+%    \subfloat[][Multiply]
+%    {
+%        \includegraphics[width=0.49\textwidth]{figures/graph_123_base_mul-0c5}
+%        \label{fig:somemul}
+%    }
+%    \subfloat[][Single Cycle]
+%    {
+%        \includegraphics[width=0.49\textwidth]{figures/graph_1_base_arith_data_logic-0c5}
+%        \label{fig:singlecycle}
+%    }
+%    \caption{test}
+%\end{figure*}
+
 \subsection{Introduction}
 In this section we present data gathered from our experiments on the ARM
 Cortex-A9.
-
-\begin{figure*}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{figures/graph_123_mul}
-    \caption{Single Cycle energy consumption}
-    \label{fig:allmul}
-\end{figure*}
-
-\begin{figure*}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{figures/graph_1_arith_data_logic}
-    \caption{Single Cycle energy consumption}
-    \label{fig:singlecycle}
-\end{figure*}
 
 We distinguish between single-cycle instructions and multi-cycle instructions
 because they behave differently in and around the execution pipeline.
@@ -34,18 +49,56 @@ time step, but also do less useful work.
 For all these reasons, we partition the measured data in two data sets; one for
 single-cycle instructions and one for multi-cycle instructions.
 
+%Some instructions use variable amount of time. This section will contain
+%information about how we normalize and compare energy consumption of
+%these instructions. It will be difficult to compare single cycle instructions
+%to the multi cycle ones, as the single cycle instructions is often the ones
+%utilizing more than one ALU at a time. Also, the multi-cycle ones will most
+%likely pipeline up very differently than the single cycle ones. We will try to
+%draw a conclusion about the results, but it is important to note the differences
+%in the execution path of these two categories.
+
+
 \subsection{Single-Cycle Instructions}
 On our target CPU, most of \todo{how many} the tested instructions falls into
 this category. The per-instruction energy consumption measured in Ampere can be
-seen in figure \ref{fig:singlecycle}.
+seen in \autoref{fig:singlecycle}.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/graph_01_base_arith_saturate_data_cond_pack_logic-0c6}
+    \caption{Energy profile of single-cycle instructions, excluding multiply.}
+    \label{fig:singlecycle}
+\end{figure*}
+
+See \autoref{fig:singlecycle}
+\begin{itemize}
+    \item The unit really is WATTS.
+    \item Note that baseline is really a instruction. Which instruction and how
+        why is it used?
+    \item add vs. adds -- explain why. Also mention that adds are removed from
+        next-gen.
+    \item Why is NOP as it is (contains hazards, is really a mov r0, r0)
+\end{itemize}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/graph_0123_base_mul-0c6}
+    \caption{Energy profile of multiply instructions.}
+    \label{fig:allmul}
+\end{figure*}
+
 
 \subsection{Multi-Cycle Instructions}
-\todo[inline]{This section is mostly an outline}
-Some instructions use variable amount of time. This section will contain
-information about how we normalize and compare energy consumption of
-these instructions. It will be difficult to compare single cycle instructions
-to the multi cycle ones, as the single cycle instructions is often the ones
-utilizing more than one ALU at a time. Also, the multi-cycle ones will most
-likely pipeline up very differently than the single cycle ones. We will try to
-draw a conclusion about the results, but it is important to note the differences
-in the execution path of these two categories.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/graph_023_base_quad_saturate_extend-0c6}
+    \caption{Energy profile of multi-cycle instructions, excluding multiply.}
+    \label{fig:multicycle}
+\end{figure}
+
+See \autoref{fig:multicycle} and \autoref{fig:allmul}
+\begin{itemize}
+    \item The difference between instructions are much larger in the multi-cycle
+        graphs.
+\end{itemize}

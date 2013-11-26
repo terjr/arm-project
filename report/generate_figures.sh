@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ -z $1 ]
 then
-    echo "Uage: $0 {int}+{_group}+{-int{c{int}+}"
+    echo "Usage: $0 {int}+{_group}+{-int{c{int}}?}?"
     echo "  where int is cycles (1,2 or 3) and _group is members."
     echo "  Example: 23_mult_add will give you all multiply and add instructions using 2 or 3 cycles"
     echo ""
@@ -28,6 +28,7 @@ done
 
 GROUP_FILTER=$(echo $GROSS_FILTER | sed 's|[^ ]* \([^-]*\).*|\1|;tx;d;:x')
 ASPECT_RATIO=$(echo $GROSS_FILTER | sed 's|[^-]*-\(.*\)|-r \1|;tx;d;:x' | tr 'c' '.')
+
 echo $ASPECT_RATIO
 echo $GROSS_FILTER
 echo $GROUP_FILTER
@@ -44,4 +45,4 @@ else
     FILTER=$(echo ${FILTER:0:-3} ")")
 fi
 
-$GNUPLOT -f <( awk -F , "$FILTER {print \$1, \$4, \$2}" $RESULTS_CSV | sort -n -k 2 ) $ASPECT_RATIO -o eps -g xy > figures/graph_$1.eps
+$GNUPLOT -f <( awk -F , "$FILTER {print \$1, \$4, \$2}" $RESULTS_CSV | sort -n -k 2 ) $ASPECT_RATIO -o eps -g xy -y '0:*' > figures/graph_$1.eps

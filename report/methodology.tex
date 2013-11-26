@@ -22,9 +22,12 @@ generate addresses, and a floating-point pipeline containing an ordinary FPU and
 connections to the NEON unit.
 
 \begin{figure}
-    \input{figures/test_setup}
-    \caption{Test Setup}
-    \label{fig:setup}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{figures/A9-Pipeline-hres}
+        \caption{ARM Cortex-A9 Pipeline and peripherals,\\
+        figure from ARM\cite{pipeline}}
+    \end{center}
+    \label{fig:pipeline}
 \end{figure}
 
 \subsection{Architectural Experiments}
@@ -88,11 +91,11 @@ above.
 
 \begin{figure}
     \begin{lstlisting}{language=[ARM]Assembler}
-label: instruction
-       ... (repeats 13X)
-       instruction
-       subs
-       jne label
+    label: instruction
+    ... (repeats 13X)
+    instruction
+    subs
+    jne label
     \end{lstlisting}
     \caption{Instruction loop}
     \label{list:inst_loop}
