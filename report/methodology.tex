@@ -13,21 +13,21 @@ making it attractive for our experiments. After the dispatch stage, its pipeline
 is split into four different lanes, each with its own functional units.
 Documentation on the internal structure of the pipelines are not publicly
 available, but by running experiments similar to the ones presented in
-\cite{paper} (explained below) and looking at previous
-work\cite{armtech}\cite{7cpu}\cite{lotofdocs}, we are able to infer some
+\cite{bircher}\cite{bertran}\cite{singh}  (explained below) and looking at previous
+work regarding and existing techncal details\cite{armtech}\cite{7cpu}, we are able to infer some
 details.  The four pipelines are structured as follow: Main execution pipeline
 with a general ALU, and a hardware-multiply, secondary execution pipeline with
 only a general ALU, load-store-pipeline, containing only an hardware adder to
 generate addresses, and a floating-point pipeline containing an ordinary FPU and
-connections to the NEON unit.
+connections to the NEON unit. See \autoref{fig:pipeline}.
 
 \begin{figure}
-    \begin{center}
-        \includegraphics[width=0.5\textwidth]{figures/A9-Pipeline-hres}
-        \caption{ARM Cortex-A9 Pipeline and peripherals,\\
-        figure from ARM\cite{pipeline}}
-    \end{center}
-    \label{fig:pipeline}
+    \begin{centering}
+        \includegraphics[width=0.48\textwidth]{figures/A9-Pipeline-hres}
+        \caption{ARM Cortex-A9 Pipeline and peripherals,\hfill
+        figure from ARM Cortex-A9 Whitepaper\cite{a9whitepaper}}
+        \label{fig:pipeline}
+    \end{centering}
 \end{figure}
 
 \subsection{Architectural Experiments}
@@ -62,7 +62,7 @@ confidence.
 
 Furthermore, executing code within fast-loop limits the number of cache
 mispredicts to 2 independently of the iteration count. We confirm this by
-looking at the cache mispredict \todo{name?} performance counter. The first miss
+looking at the cache mispredict \todo[inline]{name?} performance counter. The first miss
 is likely to occur at the end of the first iteration, while the second occurs on
 the way out of the loop.
 
@@ -73,7 +73,7 @@ providing a fixed core voltage, so energy usage of simple, one-cycle instruction
 could be retrieved by running for a fixed time period and applying the following
 formula.
 
-\todo{fix formula}
+\todo[inline]{fix formula}
 \begin{equation}
     P_{instruction} = A_{instruction} \cdot V_{core}
 \end{equation}

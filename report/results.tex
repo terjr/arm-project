@@ -29,6 +29,14 @@
 %    \caption{test}
 %\end{figure*}
 
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/graph_01_base_arith_saturate_data_cond_pack_logic-0c6}
+    \caption{Energy profile of single-cycle instructions, excluding multiply.}
+    \label{fig:singlecycle}
+\end{figure*}
+
+
 \subsection{Introduction}
 In this section we present data gathered from our experiments on the ARM
 Cortex-A9.
@@ -49,6 +57,15 @@ time step, but also do less useful work.
 For all these reasons, we partition the measured data in two data sets; one for
 single-cycle instructions and one for multi-cycle instructions.
 
+In the graphs, all bars colored green means that the tested instruction is a
+single-cycle instruction, the light blue is two-cycles, and dark blue is
+three-cycle instructions. The red bar is the baseline for power measurement.
+This baseline is an alias for the least power-consuming instruction we could
+find, which is the {\ttfamily setend}-instruction. This instruction sets the
+endianness regarding memory operations to eiter big or little
+endian.\cite{armcompilerref}.
+
+
 %Some instructions use variable amount of time. This section will contain
 %information about how we normalize and compare energy consumption of
 %these instructions. It will be difficult to compare single cycle instructions
@@ -58,18 +75,10 @@ single-cycle instructions and one for multi-cycle instructions.
 %draw a conclusion about the results, but it is important to note the differences
 %in the execution path of these two categories.
 
-
 \subsection{Single-Cycle Instructions}
-On our target CPU, most of \todo{how many} the tested instructions falls into
-this category. The per-instruction energy consumption measured in Ampere can be
-seen in \autoref{fig:singlecycle}.
-
-\begin{figure*}
-    \centering
-    \includegraphics[width=\textwidth]{figures/graph_01_base_arith_saturate_data_cond_pack_logic-0c6}
-    \caption{Energy profile of single-cycle instructions, excluding multiply.}
-    \label{fig:singlecycle}
-\end{figure*}
+On our target CPU, 72 of the 118 tested instructions falls into this category
+(leaving 46 multi-cycle instructions). The per-instruction energy consumption
+measured in Ampere can be seen in \autoref{fig:singlecycle}.
 
 See \autoref{fig:singlecycle}
 \begin{itemize}
@@ -88,14 +97,15 @@ See \autoref{fig:singlecycle}
     \label{fig:allmul}
 \end{figure*}
 
-
-\subsection{Multi-Cycle Instructions}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/graph_023_base_quad_saturate_extend-0c6}
+    \includegraphics[width=0.48\textwidth]{figures/graph_023_base_quad_saturate_extend-0c6}
     \caption{Energy profile of multi-cycle instructions, excluding multiply.}
     \label{fig:multicycle}
 \end{figure}
+
+
+\subsection{Multi-Cycle Instructions}
 
 See \autoref{fig:multicycle} and \autoref{fig:allmul}
 \begin{itemize}

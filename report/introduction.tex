@@ -7,7 +7,7 @@ components onto integrated circuits \cite{moore1965cramming} by utilizing new
 processing technologies. However, it also incurs additional generation of heat
 which the surroundings must manage to dissipate. Thus, hardware designers has
 been forced to come up with new techniques, such as shutting down parts of the
-chip \ref{dark_silicon} and designing specialized hardware.
+chip \cite{esmaeilzadeh2011dark} and designing specialized hardware.
 
 As processors grow more sophisticated, it becomes harder to reason about their
 energy efficiency. Even RISC processors, which is designed with simplicity in
@@ -24,9 +24,9 @@ Since energy efficiency are becoming more and more important at all levels of
 computing, we need a broader understanding of how energy are consumed. Previous
 research correlates power drain seen from the wall outlet with performance
 counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others look at
-energy usage under different workloads\cite{carrol2010analysis}. The SHMAC
-project\cite{shmac} looks into energy efficient hardware through a tile-based
-architecture scheme.
+energy usage under different workloads\cite{carroll2010analysis}. The SHMAC
+project\cite{Umuroglu662354}\cite{rusten2012implementing} looks into energy
+efficient hardware through a tile-based architecture scheme.
 
 Being able to model and monitor energy consumption has also
 got the industry's attention: Semiconductor companies are making software
@@ -54,8 +54,9 @@ level, compilers will be able to optimize their programs for energy efficiency.
 The SHMAC project shows that it is possible to use the instruction energy
 profiles to design hardware that is more energy efficient for a given task in
 more sophisticated ways than previously possible. Energy profiles gives us a
-better view of how different cores perform at different tasks. A system can then
-be composed of tiles with energy profiles matching the given application.
+better view of how different cores perform at different
+tasks\cite{kumar2003single}. A system can then be composed of tiles with energy
+profiles matching the given application.
 
 
 %Our research is highly motivated by the SHMAC project from the Energy Efficient
