@@ -1,0 +1,23 @@
+- Kanskje skippe hele andre kapittel.
+- Fjern related work header.
+- Grafer: Lag moenster og stiplet linje.
+
+Grunnen til at vi ikke har interne tempmålere er at vi har en modifisert
+Linux-kjerne.
+
+Til mandag foer klokken 08:00:
+- Fiks/fjern kapittel 2.
+- Flytt diskusjon inn i intro
+
+Få med hva det kan brukes til i introduksjon.
+Og _HVORDAN_ det kan brukes i further work (implications).
+
+Further work:
+    - Simulering
+    - Kompilering (-Oe)
+    - Forbedre instruksjonssett
+
+Levering:
+    - PDF til Asbjoern og Gunnar. Kopi til Berit Hellan.
+
+Moete foerstkommende tirsdag, ettermiddag.
