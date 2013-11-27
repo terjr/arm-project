@@ -2,6 +2,27 @@
 
 
 \subsection{Test Environment}
+\begin{table}
+    \begin{tabular}{l|l}
+        \hline
+        \hline
+    Manufacturer	&Hardkernel\\
+Platform	&Odroid-X2\\
+SoC	&Samsung Exynos 4412 "Prime"\\
+CPU Core	&ARM Cortex-A9\\
+Number of cores	&4\\
+Clock Freq.	&1.7GHz\\
+Core voltage	&1.3V\\
+OS	&Debian 7 “Wheezy” w/o DVFS\\
+Kernel	&3.9 custom\\
+        \hline
+        \hline
+        Voltmeter   &Agilent 34410A\\
+        Power supply &Agilent E3631A\\
+        Shunt resistor &12m$\Omega$
+    \end{tabular}
+    \caption{System specifications}
+\end{table}
 In our experiments, we are using the ODROID-X2 \cite{odroid-x2} developer
 platform, which has an Exynos 4412 "Prime" System-on-Chip with four ARM
 Cortex-A9 (r3p0) processor cores. We disable three of the cores, leaving only
@@ -134,6 +155,7 @@ Since we are comparing the energy efficiency of different instruction in an
 asynchronous way, we have to consider factors that affects power usage, as well
 as acknowledge that they may differ between runs.
 
+\label{sec:temperature}
 One obvious such factor is temperature, both ambient and the chip temperature.
 The first may change without our notice, and the second one is determined by the
 ambient, the cooling device and what load tasks that was just run on the SoC. On
@@ -156,7 +178,12 @@ Believing that this trend is at least close to linear, output will increase by
 0.2\% pr.  degree Celsius increased. Also, we start our measurements at least
 half a second after the benchmarks have been started, thus there is plenty of
 time for the CPU to gain work temperature. In our tests, the time used to get to
-work temperature was humanly instant.
+work temperature was humanly instant. Note that we could not log temperature
+from on-chip sensors while running our tests, as these sensors are tightly coupled
+with DVFS, which is disabled during our benchmarks. The reason for this is that
+the modifications done to the chips somehow destroys the communication with the external
+power management chip, and thus the development board will not boot with modified
+power source together with DVFS modules for Linux.
 
 Another factor that is not that obvious, but at least equally important, is
 power inducted in the measurement circuit. Since wires are often winded up on
