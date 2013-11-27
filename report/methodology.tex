@@ -26,14 +26,6 @@ paper.
     \end{centering}
 \end{figure}
 
-Official documentation of the internal structure of pipeline stages is limited
-to the ``Cortex-A9 Technical Reference Manual'' \cite{armtech} and ``The ARM
-Cortex-A9 Processors'' whitepaper \cite{a9whitepaper}. However, by running some
-architectural experiments and consulting the performance counters we are able to
-infer some details.
-
-\subsection{Architectural Experiments}
-\label{arch_experiments}
 Because the energy efficiency is often different at different amounts of
 workload, we seek to stress the processor as much as possible when we run our
 tests. In order to run the processor at it's highest possible throughput, it is
@@ -46,6 +38,14 @@ count, we obtain detailed (although approximate, due to the speculativity in the
 core) information of a test program's execution. \todo[inline]{Elaborate in
 detail, see notes/alu-count.txt.}
 
+Official documentation of the internal structure of pipeline stages is limited
+to the ``Cortex-A9 Technical Reference Manual'' \cite{armtech} and ``The ARM
+Cortex-A9 Processors'' whitepaper \cite{a9whitepaper}. However, by running some
+architectural experiments and consulting the performance counters we are able to
+infer some details.
+
+\subsection{Architectural Experiments}
+\label{arch_experiments}
 The A9 processor has 58 distinct events that each can be mapped to one of six
 generic event counters in the Performance Monitor Unit (i.e. only six generic
 events can be tracked simultaneously). It also has a separate cycle counter. A
