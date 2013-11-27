@@ -8,18 +8,20 @@ Cortex-A9 (r3p0) processor cores. We disable CPU core 1 through 3, leaving only
 one core configured to run at a static frequency of $1.7$ GHz.
 
 The Cortex-A9 is a 32-bit out-of-order dual-issue speculative RISC processor
-with many features common for modern processor designs\cite{patterson}\cite{hennessy},
-making it attractive for our experiments. After the dispatch stage, its pipeline
-is split into four different lanes, each with its own functional units.
-Documentation on the internal structure of the pipelines are not publicly
-available, but by running experiments similar to the ones presented in
-\cite{bircher}\cite{bertran}\cite{singh}  (explained below) and looking at previous
-work regarding and existing techncal details\cite{armtech}\cite{7cpu}, we are able to infer some
-details.  The four pipelines are structured as follow: Main execution pipeline
-with a general ALU, and a hardware-multiply, secondary execution pipeline with
-only a general ALU, load-store-pipeline, containing only an hardware adder to
-generate addresses, and a floating-point pipeline containing an ordinary FPU and
-connections to the NEON unit. See \autoref{fig:pipeline}.
+with many features common for modern processor
+designs\cite{patterson}\cite{hennessy}, making it attractive for our
+experiments. After the dispatch stage, its pipeline is split into four different
+lanes, each with its own functional units.  Documentation on the internal
+structure of the pipelines are not publicly available, but by running
+experiments similar to the ones presented in
+\cite{bircher}\cite{bertran}\cite{singh}  (explained below) and looking at
+previous work regarding and existing techncal details\cite{armtech}\cite{7cpu},
+we are able to infer some details.  The four pipelines are structured as follow:
+Main execution pipeline with a general ALU, and a hardware-multiply, secondary
+execution pipeline with only a general ALU, load-store-pipeline, containing only
+an hardware adder to generate addresses, and a floating-point pipeline
+containing an ordinary FPU and connections to the NEON unit. See
+\autoref{fig:pipeline}.
 
 \begin{figure}
     \begin{centering}
@@ -62,9 +64,9 @@ confidence.
 
 Furthermore, executing code within fast-loop limits the number of cache
 mispredicts to 2 independently of the iteration count. We confirm this by
-looking at the cache mispredict \todo[inline]{name?} performance counter. The first miss
-is likely to occur at the end of the first iteration, while the second occurs on
-the way out of the loop.
+looking at the cache mispredict \todo[inline]{name?} performance counter. The
+first miss is likely to occur at the end of the first iteration, while the
+second occurs on the way out of the loop.
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
