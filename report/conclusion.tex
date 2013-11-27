@@ -1,4 +1,7 @@
 \section{Conclusion}
+The ultimate goal of an experiment 
+
+
 This is where we will put the conclusion
 
 Observations (regarding this architecture):
@@ -12,13 +15,27 @@ The results are stable (when doing multiple runs, each runs compare well with
 
 \subsection{Further Work}
 
-We have not yet dived into how instruction operands affects the energy usage on
-modern processors. We would think that instruction patterns that causes a high
-degree of bit toggling would yield higher energy usage, due to the amount of
-TODO. However, writing valid benchmarks stressing these pattern is difficult on
-modern architectures because of the out-of-order non-determinism.
+Our work relies completely on synthetic benchmarks, and we do not know how this
+would differ from real world workloads. The synthetic tests fill the pipeline
+with equal instructions, while common workloads would at least contain a few
+different instructions simultaneously. 
 
-We have omitted the set of floating-point instructions, as in the ARM A9-series
-of processors, these are mainly executed in the NEON co-processor. This would
-introduce another set of unknown architectural curiosities\cite{wolf}, and thus falls
-outside the core ISA scope of this paper.
+Also, we have not yet dived into how instruction operands affects the energy usage on
+modern processors. We believe that instruction patterns that causes a high
+degree of bit toggling would yield higher energy usage, due to the amount of
+energy used to charge and release the transistors. A problem rising is the fact
+that we do not know how the processor schedules or distributes the different
+instructions, thus one has to be very careful when writing the benchmarks.
+
+When selecting instructions for our benchmarks, we have omitted the set of
+floating-point instructions. This is because in the ARM Cortex-A9, the floating
+point unit (NEON) is considered a co-processor\cite{armtech}, and thus out of
+our scope. Investigating the energy efficiency of co-processors versus
+processors that embed such functionality would add value to our results.
+
+There are also room for improvement regarding the experimental setup. Ultimately,
+one would like to be able to measure each instruction individualy, but according
+to the Nyquist-Shannon theorem\cite{shannon1949communication}, this would
+require a sampling rate of at least 3.4 GHz. We could not simply go slower on
+the clock, as a clock frequency reduction will affect the energy
+efficiency, possibly in the negative direction\cite{burd1995energy}.
