@@ -2,26 +2,20 @@
 
 
 \subsection{Test Environment}
-In our experiments, we were using the ODROID-X2 \cite{odroid-x2} developer
+In our experiments, we are using the ODROID-X2 \cite{odroid-x2} developer
 platform, which has an Exynos 4412 "Prime" System-on-Chip with four ARM
-Cortex-A9 (r3p0) processor cores. We disable CPU core 1 through 3, leaving only
+Cortex-A9 (r3p0) processor cores. We disable three of the cores, leaving only
 one core configured to run at a static frequency of $1.7$ GHz.
 
 The Cortex-A9 is a 32-bit out-of-order dual-issue speculative RISC processor
-with many features common for modern processor
-designs\cite{patterson}\cite{hennessy}, making it attractive for our
-experiments. After the dispatch stage, its pipeline is split into four different
-lanes, each with its own functional units.  Documentation on the internal
-structure of the pipelines are not publicly available, but by running
-experiments similar to the ones presented in
-\cite{bircher}\cite{bertran}\cite{singh}  (explained below) and looking at
-previous work regarding and existing techncal details\cite{armtech}\cite{7cpu},
-we are able to infer some details.  The four pipelines are structured as follow:
-Main execution pipeline with a general ALU, and a hardware-multiply, secondary
-execution pipeline with only a general ALU, load-store-pipeline, containing only
-an hardware adder to generate addresses, and a floating-point pipeline
-containing an ordinary FPU and connections to the NEON unit. See
-\autoref{fig:pipeline}.
+with many features common for modern processor designs\cite{patterson}
+\cite{hennessy}, making it attractive for our experiments. After the dispatch
+stage, the pipeline branches into four different lanes, as depicted in
+\autoref{fig:pipeline}. The instructions we look into are all performed in the
+two general ALU's and only one of them are able to execute multiply
+instructions. The processor core also have separate units for floating point
+operations (NEON) and address manipulation, but these are not considered in this
+paper.
 
 \begin{figure}
     \begin{centering}
@@ -31,6 +25,12 @@ containing an ordinary FPU and connections to the NEON unit. See
         \label{fig:pipeline}
     \end{centering}
 \end{figure}
+
+Official documentation of the internal structure of pipeline stages is limited
+to the ``Cortex-A9 Technical Reference Manual'' \cite{armtech} and ``The ARM
+Cortex-A9 Processors'' whitepaper \cite{a9whitepaper}. However, by running some
+architectural experiments and consulting the performance counters we are able to
+infer some details.
 
 \subsection{Architectural Experiments}
 \label{arch_experiments}
