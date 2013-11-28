@@ -74,8 +74,8 @@ echo "set style fill solid 1 border 0"
 echo "set xtics rotate by -270"
 echo "set key outside top right horizontal nobox"
 echo 'set style line 1 lt 1 lw 3 pt 2 linecolor rgb "red"'
-echo 'set style line 2 lt 1 lw 3 pt 2 linecolor rgb "#4444DB"'
-echo 'set style line 3 lt 1 lw 3 pt 2 linecolor rgb "#22CC22"'
+echo 'set style line 2 lt 2 lw 3 pt 2 linecolor rgb "#4444DB"'
+echo 'set style line 3 lt 3 lw 3 pt 2 linecolor rgb "#22CC22"'
 #echo 'set palette model RGB defined (0 "#ff0000", 0.33 "#22CC22", 1 "#0000AB")'
 echo 'set palette model RGB defined (0 "#ff0000", 0.33 "#66CC66", 1 "#4444DB")'
 if [ -z $FONTSIZE ]
