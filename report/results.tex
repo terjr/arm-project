@@ -51,15 +51,10 @@ pairwise in parallel (one in each ALU), giving a peak performance of two
 instructions per CPU cycle. On the other hand, multi-cycle instructions needs to
 be carefully considered. Typically, multi-cycle instructions divide work which
 can be done only in a subset of the available CPUs (e.g. one) over several
-<<<<<<< Updated upstream
-cycles, lowering the average current draw. They consume less energy per
-time step, but also do less useful work. For all these reasons, we partition the
+cycles, lowering the average current draw. They consume less energy per time
+step, but also do less useful work. For all these reasons, we partition the
 measured data in two data sets; one for single-cycle instructions and one for
 multi-cycle instructions.
-=======
-cycles, lowering the average current draw. They consume less energy per time
-step, but also do less useful work.
->>>>>>> Stashed changes
 
 Observational errors are accounted for by running the power measurement loop
 many times for each instruction. We also sleep 30 seconds in between
