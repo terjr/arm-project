@@ -115,12 +115,17 @@ This simple setup does not take the memory system into account; we are
 undoubtedly not able to feed the processor instructions at no cost in terms of
 access speed and -- more importantly -- memory system energy usage. Thus, we
 enhance our setup by running all benchmark code within fast-loop, as explained
-previously.
+previously. The technical manual states that branching to immediate locations
+does not consume execution unit cycles. Our microbenchmarks branches to
+immediate locations, but it does so conditionally. We assume that the
+calculation of this condition takes normal execution time, but that the branch
+is invisible.
 
 \begin{figure}
     \begin{lstlisting}{language=[ARM]Assembler}
-    label: instruction
-    ... (repeats 13X)
+    label:
+    instruction
+    ... ; repeats 13X
     instruction
     subs
     jne label
@@ -128,12 +133,6 @@ previously.
     \caption{Instruction loop}
     \label{list:inst_loop}
 \end{figure}
-
-The technical manual states that branching to immediate locations does not
-consume execution unit cycles. Our microbenchmarks branches to immediate
-locations, but it does so only when a certain condition is met. We assume that
-the calculation of this condition takes normal execution time, but that the
-branch is invisible.
 
 
 \subsection{Power Measurements}
@@ -150,6 +149,12 @@ modifying the ODROID-X2 and providing a separate power supply for the A9 cores.
 They get powered by an external power supply giving $1.3V$ DC, while the rest of
 the board is powered from a another power supply at $5.0V$, as depicted in
 figure \ref{fig:setup}.
+
+Since some instructions takes a different amount of time, the power drain has to
+be normalized using statistics gained from performance counters. By normalizing,
+we can convert point-in-time energy consumption in terms of wattage to energy
+per instruction in terms of Joules.
+
 
 \subsection{Pitfalls}
 % temperature, noise (inducted power, etc.), interrupts, memory latency
@@ -178,7 +183,7 @@ increase in power consumption is at max 10\% over 50$^\circ$ Celsius, we get
 \end{equation}
 
 Believing that this trend is at least close to linear, output will increase by
-0.2\% pr.  degree Celsius increased. Also, we start our measurements at least
+0.2\% pr. degree Celsius increased. Also, we start our measurements at least
 half a second after the benchmarks have been started, thus there is plenty of
 time for the CPU to gain work temperature. In our tests, the time used to get to
 work temperature was humanly instant. Note that we could not log temperature
@@ -196,7 +201,7 @@ amount of power running through them, unexpected power might be introduced.
 We are running Linux on the chip under test, this gives us a much simpler way of
 programming the processor to run our tests. The fact that we run an entire
 operating system beneath our benchmark programs implies that there is much going
-on that we have no direct controls over.  In order to mitigate the artifacts
+on that we have no direct controls over. In order to mitigate the artifacts
 originating from the operating system, we disable all the mask cable interrupts.
 
 As explained in section \ref{arch_experiments}, we utilize the fast-loop mode of
