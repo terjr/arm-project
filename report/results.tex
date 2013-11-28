@@ -51,10 +51,15 @@ pairwise in parallel (one in each ALU), giving a peak performance of two
 instructions per CPU cycle. On the other hand, multi-cycle instructions needs to
 be carefully considered. Typically, multi-cycle instructions divide work which
 can be done only in a subset of the available CPUs (e.g. one) over several
+<<<<<<< Updated upstream
 cycles, lowering the average current draw. They consume less energy per
 time step, but also do less useful work. For all these reasons, we partition the
 measured data in two data sets; one for single-cycle instructions and one for
 multi-cycle instructions.
+=======
+cycles, lowering the average current draw. They consume less energy per time
+step, but also do less useful work.
+>>>>>>> Stashed changes
 
 Observational errors are accounted for by running the power measurement loop
 many times for each instruction. We also sleep 30 seconds in between
@@ -101,7 +106,7 @@ the {\ttfamily setend}-instruction merly changes some status flags.
 %in the execution path of these two categories.
 
 \subsection{Single-Cycle Instructions}
-On our target CPU, 70 of the 118 tested instructions consumes a single cycle,
+On our target CPU, 70 of the 116 tested instructions\footnote{118 including conditionals} consumes a single cycle,
 while the remaining 46 uses 2 or 3.
 
 \begin{figure}
@@ -151,12 +156,15 @@ a space-and-time filler.
 
 \subsection{Multi-Cycle Instructions}
 
-See \autoref{fig:multicycle} and \autoref{fig:allmul}
-\begin{itemize}
-    \item The difference between instructions are much larger in the multi-cycle
-        graphs.
-    \item Talk about mul, and why it might differ that much (especially 2 and 3 cycle ones)
-\end{itemize}
+%See \autoref{fig:multicycle} and \autoref{fig:allmul}
+%\begin{itemize}
+%    \item The difference between instructions are much larger in the multi-cycle
+%        graphs.
+%    \item Talk about mul, and why it might differ that much (especially 2 and 3 cycle ones)
+%\end{itemize}
+
+46 of the instructions that was compared used more than 1 cycle to complete their results, 
+
 
 \subsection{Evaluation}
 \begin{figure}
