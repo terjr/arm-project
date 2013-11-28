@@ -146,7 +146,9 @@ $m\Omega$ resistor, set up as shown in \autoref{fig:setup}. The multimeter is
 set to sample at full precision at its maximum rate of 1000 Hz. This gives one
 sample every 1.7 million instructions with an error of at most 0.002V. It is
 obvious that we are unable to observe inter-cycle fluctations, but as we run the
-same instruction practically indefinetely we get an average.
+same instruction practically indefinetely we get an average. The instruction
+loop runs for about 20 seconds for each instruction and we use 5 seconds in the
+middle of this period to gather 5000 samples.
 
 We decouple power consumption on the ARM cores and the development board by
 modifying the ODROID-X2 and providing a separate power supply for the A9 cores.

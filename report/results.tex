@@ -52,10 +52,15 @@ instructions per CPU cycle. On the other hand, multi-cycle instructions needs to
 be carefully considered. Typically, multi-cycle instructions divide work which
 can be done only in a subset of the available CPUs (e.g. one) over several
 cycles, lowering the average current draw. They consume less energy per
-time step, but also do less useful work.
+time step, but also do less useful work. For all these reasons, we partition the
+measured data in two data sets; one for single-cycle instructions and one for
+multi-cycle instructions.
 
-For all these reasons, we partition the measured data in two data sets; one for
-single-cycle instructions and one for multi-cycle instructions.
+Observational errors are accounted for by running the power measurement loop
+many times for each instruction. We also sleep 30 seconds in between
+instructions to diminish the effect of temperature variations. Running over all
+tested instructions typically takes 3 hours and we average the medians for each
+instruction run to get a single value.
 
 In the graphs, all bars colored green means that the tested instruction is a
 single-cycle instruction, the light blue is two-cycles, and dark blue is
@@ -63,9 +68,10 @@ three-cycle instructions. The red bar is the baseline for power measurement.
 This baseline is an alias for the least power-consuming instruction we could
 find, which is the {\ttfamily setend}-instruction. This instruction sets the
 endianness regarding memory operations to eiter big or little
-endian.\cite{armcompilerref}.
+endian \cite{armcompilerref} and setting it to the same endian repeatedly would
+resemble constant halting on our processor.
 
-The results presented in the gaphs are enumerated as Ampere
+The results presented in the graphs are enumerated as Ampere
 $\cdot$ cycles, which means that instructions using more time is normalized by
 adding up their power drain with the time used in the pipeline. The results are
 not converted into watts, joule or anything else that would be more convenient
@@ -95,8 +101,8 @@ the {\ttfamily setend}-instruction merly changes some status flags.
 %in the execution path of these two categories.
 
 \subsection{Single-Cycle Instructions}
-On our target CPU, 70 of the 116\footnote{118 including conditionals} tested
-instructions falls into this category (leaving 46 multi-cycle instructions).
+On our target CPU, 70 of the 118 tested instructions consumes a single cycle,
+while the remaining 46 uses 2 or 3.
 
 \begin{figure}
     \centering
