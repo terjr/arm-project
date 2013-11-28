@@ -6,15 +6,15 @@
     \begin{tabular}{l|l}
         \hline
         \hline
-    Manufacturer	&Hardkernel\\
-Platform	&Odroid-X2\\
-SoC	&Samsung Exynos 4412 "Prime"\\
-CPU Core	&ARM Cortex-A9\\
-Number of cores	&4\\
-Clock Freq.	&1.7GHz\\
-Core voltage	&1.3V\\
-OS	&Debian 7 “Wheezy” w/o DVFS\\
-Kernel	&3.9 custom\\
+    Manufacturer    &Hardkernel\\
+Platform            &Odroid-X2\\
+SoC                 &Samsung Exynos 4412 "Prime"\\
+CPU Core            &ARM Cortex-A9\\
+Number of cores     &4\\
+Clock Freq.         &1.7GHz\\
+Core voltage        &1.3V\\
+OS                  &Debian 7 ``Wheezy'' w/o DVFS\\
+Kernel              &3.8 custom\\
         \hline
         \hline
         Voltmeter   &Agilent 34410A\\
@@ -33,14 +33,13 @@ one core configured to run at a static frequency of $1.7$ GHz.
 The Cortex-A9 is a 32-bit out-of-order dual-issue speculative RISC processor,
 and even though its primary use is in mobile and embedded applications, it
 shares many features with current desktop processors. \cite{patterson}
-\cite{hennessy}.
-
-It can issue two instructions per cycle and branches its pipeline to four
-functional units, as depicted in \autoref{fig:pipeline}. Most instructions can
-execute in either of the two general ALU's, but multiply instructions must
-execute in the ALU with a hardware multiplyer. The processor core also has
-separate units for floating point operations (the NEON coprocessor) and address
-manipulation, but will not be further considered in this paper.
+\cite{hennessy}. It can issue two instructions per cycle and branches its
+pipeline to four functional units, as depicted in \autoref{fig:pipeline}. Most
+instructions can execute in either of the two general ALU's, but multiply
+instructions must execute in the ALU with a hardware multiplyer. The processor
+core also has separate units for floating point operations (the NEON
+coprocessor) and address manipulation, but will not be further considered in
+this paper.
 
 \begin{figure}
     \begin{centering}
@@ -51,70 +50,72 @@ manipulation, but will not be further considered in this paper.
     \end{centering}
 \end{figure}
 
-Because the energy efficiency is often different at different amounts of
-workload, we seek to stress the processor as much as possible when we run our
-tests. In order to run the processor at it's highest possible throughput, it is
-required that we gain some knowledge of it's pipeline and other components
-within the CPU. As we are using a proprietary platform as our target
-architecture, only some of these details are known. Thus, we define test
-programs to stress particular pipeline components and gather statistics using
-performance counters. By comparing execution unit counters and the total cycle
-count, we obtain detailed (although approximate, due to the speculativity in the
-core) information of a test program's execution. \todo[inline]{Elaborate in
-detail, see notes/alu-count.txt.}
+Energy consumption of a processor varies with respect to the workload; the
+harder it has to work, the more energy it uses. In this paper, we seek to
+achieve the highest possible ALU throughput the processor can offer. To
+accomplish this, we are required to gain knowledge of its pipeline and other
+components within the CPU.
 
-Official documentation of the internal structure of pipeline stages is limited
-to the ``Cortex-A9 Technical Reference Manual'' \cite{armtech} and ``The ARM
-Cortex-A9 Processors'' whitepaper \cite{a9whitepaper}. However, by running some
-architectural experiments and consulting the performance counters we are able to
+Official documentation of the pipeline structure is limited to the ``Cortex-A9
+Technical Reference Manual'' \cite{armtech} and ``The ARM Cortex-A9 Processors''
+whitepaper \cite{a9whitepaper}. However, by running some architectural
+experiments and consulting the performance counters we are able to
 infer some details.
 
 \subsection{Architectural Experiments}
 \label{arch_experiments}
-The A9 processor has 58 distinct events that each can be mapped to one of six
-generic event counters in the Performance Monitor Unit (i.e. only six generic
-events can be tracked simultaneously). It also has a separate cycle counter. A
-complete overview can be seen in table $A.18$ in the Cortex-A9 Technical
-Reference Manual \cite{armtech}.
+The A9 processor has 58 distinct events\footnote{A complete overview can be seen
+in table A.18 in the Cortex-A9 Technical Reference Manual \cite{armtech}} that
+each can be mapped to one of six generic event counters in the Performance
+Monitor Unit (i.e. only six generic events can be tracked simultaneously). It
+also has a separate cycle counter. By comparing execution unit counters for the
+two ALU's and the cycle counter, we obtain detailed statistics about the
+pipeline activity. For example, we run \texttt{add} instructions with and
+without hazards, and verify that counters for the hazard-less run completes
+twice in half the number of cycles. Note that these performance counters are
+approximate due to speculativity in the core, and is only being used as a sanity
+check for what we expected.
 
 Using performance counters as above, we are able to confirm a feature on the A9
-processor that is very vaguely documented; fast-loop\texttrademark mode. As the
-name suggests, this feature enables rapid execution of small loops. It does so
-by fetching from the instruction cache only at the first loop iteration,
+processor that is very vaguely documented; fast-loop\texttrademark{} mode. As
+the name suggests, this feature enables rapid execution of small loops. It does
+so by fetching from the instruction cache only at the first loop iteration,
 effectively voiding time and energy spent on instruction cache lookups between
 iterations. However, which loops that falls into this category is not
 documented, but by using performance counters we are able to determine this with
-confidence.
-\todo[inline]{Add appendix explaining fast-loop microbenchmark.}
+confidence. We disable the L1 cache making it easier to distinguish between runs
+that within and outside fast-loop. We find that for loops to be executed in
+fast-loop it must have two properties. First, the loop body must hold 15
+instructions or less. Secondly, it must fit in a 64 byte cache line. Violating
+any of these two properties causes a significant destruction of performance.
 
 Furthermore, executing code within fast-loop limits the number of cache
-mispredicts to 2 independently of the iteration count. We confirm this by
-looking at the cache mispredict \todo[inline]{name?} performance counter. The
-first miss is likely to occur at the end of the first iteration, while the
-second occurs on the way out of the loop.
+mispredicts to two independent of the iteration count. We confirm this by
+looking at the cache mispredict performance counter. The first miss is likely to
+occur at the end of the first iteration, while the second occurs on the way out
+of the loop.
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
 of identical instructions. The A9 core runs at a fixed frequency and we are
-providing a fixed core voltage, so energy usage of simple, one-cycle instruction
-could be retrieved by running for a fixed time period and applying the following
-formula.
+providing a fixed core voltage, so energy usage (in Watts) for a one-cycle
+instruction would be found with the following formula.
 
-\todo[inline]{fix formula}
 \begin{equation}
     P_{instruction} = A_{instruction} \cdot V_{core}
 \end{equation}
+
+Running for a fixed time period, we obtain an expression for the energy used.
+
 \begin{equation}
     E_{instruction} = P_{instruction} \cdot CPI_{instruction}
 \end{equation}
-
 
 This simple setup does not take the memory system into account; we are
 undoubtedly not able to feed the processor instructions at no cost in terms of
 access speed and -- more importantly -- memory system energy usage. Thus, we
 enhance our setup by running all benchmark code within fast-loop, as explained
-above.
-
+previously.
 
 \begin{figure}
     \begin{lstlisting}{language=[ARM]Assembler}
