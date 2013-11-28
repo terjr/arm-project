@@ -5,28 +5,30 @@ increasing performance is currently one of the greatest challenges hardware
 designers are facing. Performance alone can be improved by cramming more
 components onto integrated circuits \cite{moore1965cramming} by utilizing new
 processing technologies. However, it also incurs additional generation of heat
-which the surroundings must manage to dissipate. Thus, hardware designers has
+which the surroundings must manage to dissipate. Thus, computer designers have
 been forced to come up with new techniques, such as shutting down parts of the
 chip \cite{esmaeilzadeh2011dark} and designing specialized hardware.
 
 As processors grow more sophisticated, it becomes harder to reason about their
 energy efficiency. Even RISC processors, which is designed with simplicity in
-mind\cite{sivarama}, has got a steep increase in complexity over the last
-years\cite{alf_egil_bogen_cisc_risc_blog}. Features that previously only existed
-in CISC processors are now entering the RISC domain. Current RISC designs may
-have deep pipelines, increased component complexity, advanced branch predictor
-units and a high degree of instruction level parallelism. They include features
-that aims to reduce energy consumption and increase throughput in return for
-nondeterminism and added complexity. Moreover, processors are designed as more
-integrated components -- interacting more widely with the rest of the system.
+mind\cite{sivarama}, have seen a steep increase in complexity over the last
+couple of years\cite{alf_egil_bogen_cisc_risc_blog}. Features that previously
+only existed in CISC processors are now entering the RISC domain. Current RISC
+designs may have deep pipelines, increased component complexity, advanced branch
+predictor units and a high degree of instruction level parallelism. They include
+features that aims to reduce energy consumption and increase throughput in
+return for nondeterminism and added complexity. Moreover, processors are
+designed as more integrated components -- interacting extensively with the rest
+of the system.
 
-Since energy efficiency are becoming more and more important at all levels of
-computing, we need a broader understanding of how energy are consumed. Previous
-research correlates power drain seen from the wall outlet with performance
-counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others look at
-energy usage under different workloads\cite{carroll2010analysis}. The SHMAC
-project\cite{Umuroglu662354}\cite{rusten2012implementing} looks into energy
-efficient hardware through a tile-based architecture scheme.
+The need for energy efficient processors is increasing, and in order to get a
+better understanding of which operations that is expensive in terms of energyy,
+we propose a method to measure energy efficiency on the instruction level of a
+processor. Previous research correlates power drain seen from the wall outlet
+with performance counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}.
+Others look at energy usage under different workloads\cite{carroll2010analysis}.
+The SHMAC project\cite{Umuroglu662354}\cite{rusten2012implementing} looks into
+energy efficient hardware through a tile-based architecture scheme.
 
 Being able to model and monitor energy consumption has also
 got the industry's attention: Semiconductor companies are making software
@@ -38,10 +40,9 @@ stages affects the overall power consumption\cite{bertran}.
 In this paper we make two contributions. First, we analyze the instruction level
 energy efficiency of a modern RISC computer architecture. We try to isolate as
 many architecture components as possible by correlating performance counters
-with observed power drain, emphasizing components that directly relates to the
-pipeline activity for a specific instruction. Secondly, we show that it is
-feasible to get a per-instruction energy overview of an existing architecture by
-applying our method and writing benchmark programs. We look at both simple
+with observed power drain for a specific instruction. Secondly, we show that it
+is feasible to get a per-instruction energy overview of an existing architecture
+by applying our method and writing benchmark programs. We look at simple
 single-cycle instructions as well as the most complex instructions consuming
 multiple cycles on our target processor.
 

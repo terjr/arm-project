@@ -1,20 +1,19 @@
 \section{Methodology}
 
-
 \subsection{Test Environment}
 \begin{table}
     \begin{tabular}{l|l}
         \hline
         \hline
-    Manufacturer	&Hardkernel\\
-Platform	&Odroid-X2\\
-SoC	&Samsung Exynos 4412 "Prime"\\
-CPU Core	&ARM Cortex-A9\\
-Number of cores	&4\\
-Clock Freq.	&1.7GHz\\
-Core voltage	&1.3V\\
-OS	&Debian 7 “Wheezy” w/o DVFS\\
-Kernel	&3.9 custom\\
+    Manufacturer    &Hardkernel\\
+Platform            &Odroid-X2\\
+SoC                 &Samsung Exynos 4412 "Prime"\\
+CPU Core            &ARM Cortex-A9\\
+Number of cores     &4\\
+Clock Freq.         &1.7GHz\\
+Core voltage        &1.3V\\
+OS                  &Debian 7 ``Wheezy'' w/o DVFS\\
+Kernel              &3.8 custom\\
         \hline
         \hline
         Voltmeter   &Agilent 34410A\\
@@ -30,17 +29,22 @@ platform, which has an Exynos 4412 "Prime" System-on-Chip with four ARM
 Cortex-A9 (r3p0) processor cores. We disable three of the cores, leaving only
 one core configured to run at a static frequency of $1.7$ GHz.
 
+\begin{figure}
+    \input{figures/test_setup}
+    \caption{Experiment Setup}
+    \label{fig:setup}
+\end{figure}
+
 The Cortex-A9 is a 32-bit out-of-order dual-issue speculative RISC processor,
 and even though its primary use is in mobile and embedded applications, it
 shares many features with current desktop processors. \cite{patterson}
-\cite{hennessy}.
-
-It can issue two instructions per cycle and branches its pipeline to four
-functional units, as depicted in \autoref{fig:pipeline}. Most instructions can
-execute in either of the two general ALU's, but multiply instructions must
-execute in the ALU with a hardware multiplyer. The processor core also has
-separate units for floating point operations (the NEON coprocessor) and address
-manipulation, but will not be further considered in this paper.
+\cite{hennessy}. It can issue two instructions per cycle and branches its
+pipeline to four functional units, as depicted in \autoref{fig:pipeline}. Most
+instructions can execute in either of the two general ALU's, but multiply
+instructions must execute in the ALU with a hardware multiplyer. The processor
+core also has separate units for floating point operations (the NEON
+coprocessor) and address manipulation, but will not be further considered in
+this paper.
 
 \begin{figure}
     \begin{centering}
@@ -51,75 +55,82 @@ manipulation, but will not be further considered in this paper.
     \end{centering}
 \end{figure}
 
-Because the energy efficiency is often different at different amounts of
-workload, we seek to stress the processor as much as possible when we run our
-tests. In order to run the processor at it's highest possible throughput, it is
-required that we gain some knowledge of it's pipeline and other components
-within the CPU. As we are using a proprietary platform as our target
-architecture, only some of these details are known. Thus, we define test
-programs to stress particular pipeline components and gather statistics using
-performance counters. By comparing execution unit counters and the total cycle
-count, we obtain detailed (although approximate, due to the speculativity in the
-core) information of a test program's execution. \todo[inline]{Elaborate in
-detail, see notes/alu-count.txt.}
+Energy consumption of a processor varies with respect to the workload; the
+harder it has to work, the more energy it uses. In this paper, we seek to
+achieve the highest possible ALU throughput the processor can offer. To
+accomplish this, we are required to gain knowledge of its pipeline and other
+components within the CPU.
 
-Official documentation of the internal structure of pipeline stages is limited
-to the ``Cortex-A9 Technical Reference Manual'' \cite{armtech} and ``The ARM
-Cortex-A9 Processors'' whitepaper \cite{a9whitepaper}. However, by running some
-architectural experiments and consulting the performance counters we are able to
+Official documentation of the pipeline structure is limited to the ``Cortex-A9
+Technical Reference Manual'' \cite{armtech} and ``The ARM Cortex-A9 Processors''
+whitepaper \cite{a9whitepaper}. However, by running some architectural
+experiments and consulting the performance counters we are able to
 infer some details.
 
 \subsection{Architectural Experiments}
 \label{arch_experiments}
-The A9 processor has 58 distinct events that each can be mapped to one of six
-generic event counters in the Performance Monitor Unit (i.e. only six generic
-events can be tracked simultaneously). It also has a separate cycle counter. A
-complete overview can be seen in table $A.18$ in the Cortex-A9 Technical
-Reference Manual \cite{armtech}.
+The A9 processor has 58 distinct events\footnote{A complete overview can be seen
+in table A.18 in the Cortex-A9 Technical Reference Manual \cite{armtech}} that
+each can be mapped to one of six generic event counters in the Performance
+Monitor Unit (i.e. only six generic events can be tracked simultaneously). It
+also has a separate cycle counter. By comparing execution unit counters for the
+two ALU's and the cycle counter, we obtain detailed statistics about the
+pipeline activity. For example, we run \texttt{add} instructions with and
+without hazards, and verify that counters for the hazard-less run completes
+twice in half the number of cycles. Note that these performance counters are
+approximate due to speculativity in the core, and is only being used as a sanity
+check for what we expected.
 
 Using performance counters as above, we are able to confirm a feature on the A9
-processor that is very vaguely documented; fast-loop\texttrademark mode. As the
-name suggests, this feature enables rapid execution of small loops. It does so
-by fetching from the instruction cache only at the first loop iteration,
+processor that is very vaguely documented; fast-loop\texttrademark{} mode. As
+the name suggests, this feature enables rapid execution of small loops. It does
+so by fetching from the instruction cache only at the first loop iteration,
 effectively voiding time and energy spent on instruction cache lookups between
 iterations. However, which loops that falls into this category is not
 documented, but by using performance counters we are able to determine this with
-confidence.
-\todo[inline]{Add appendix explaining fast-loop microbenchmark.}
+confidence. We disable the L1 cache making it easier to distinguish between runs
+that within and outside fast-loop. We find that for loops to be executed in
+fast-loop it must have two properties. First, the loop body must hold 15
+instructions or less. Secondly, it must fit in a 64 byte cache line. Violating
+any of these two properties causes a significant destruction of performance.
 
 Furthermore, executing code within fast-loop limits the number of cache
-mispredicts to 2 independently of the iteration count. We confirm this by
-looking at the cache mispredict \todo[inline]{name?} performance counter. The
-first miss is likely to occur at the end of the first iteration, while the
-second occurs on the way out of the loop.
+mispredicts to two independent of the iteration count. We confirm this by
+looking at the cache mispredict performance counter. The first miss is likely to
+occur at the end of the first iteration, while the second occurs on the way out
+of the loop.
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
 of identical instructions. The A9 core runs at a fixed frequency and we are
-providing a fixed core voltage, so energy usage of simple, one-cycle instruction
-could be retrieved by running for a fixed time period and applying the following
-formula.
+providing a fixed core voltage, so energy usage (in Watts) for a one-cycle
+instruction would be found with the following formula.
 
-\todo[inline]{fix formula}
 \begin{equation}
     P_{instruction} = A_{instruction} \cdot V_{core}
 \end{equation}
+
+Running for a fixed time period, we obtain an expression for the energy used.
+
 \begin{equation}
     E_{instruction} = P_{instruction} \cdot CPI_{instruction}
 \end{equation}
-
 
 This simple setup does not take the memory system into account; we are
 undoubtedly not able to feed the processor instructions at no cost in terms of
 access speed and -- more importantly -- memory system energy usage. Thus, we
 enhance our setup by running all benchmark code within fast-loop, as explained
-above.
-
+previously. The technical manual states that branching to immediate locations
+does not consume execution unit cycles. Our microbenchmarks branches to
+immediate locations, but it does so conditionally. We assume that the
+calculation of this condition takes normal execution time, but that the branch
+is invisible.
 
 \begin{figure}
     \begin{lstlisting}{language=[ARM]Assembler}
-    label: instruction
-    ... (repeats 13X)
+    label:
+    instruction
+    ... ; repeats 13X
     instruction
     subs
     jne label
@@ -128,13 +139,6 @@ above.
     \label{list:inst_loop}
 \end{figure}
 
-The technical manual states that branching to immediate locations does not
-consume execution unit cycles. Our microbenchmarks branches to immediate
-locations, but it does so only when a certain condition is met. We assume that
-the calculation of this condition takes normal execution time, but that the
-branch is invisible.
-
-
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A
 multimeter\cite{agilent34410a} and measures voltage drop over a negligible $12$
@@ -142,13 +146,21 @@ $m\Omega$ resistor, set up as shown in \autoref{fig:setup}. The multimeter is
 set to sample at full precision at its maximum rate of 1000 Hz. This gives one
 sample every 1.7 million instructions with an error of at most 0.002V. It is
 obvious that we are unable to observe inter-cycle fluctations, but as we run the
-same instruction practically indefinetely we get an average.
+same instruction practically indefinetely we get an average. The instruction
+loop runs for about 20 seconds for each instruction and we use 5 seconds in the
+middle of this period to gather 5000 samples.
 
 We decouple power consumption on the ARM cores and the development board by
 modifying the ODROID-X2 and providing a separate power supply for the A9 cores.
 They get powered by an external power supply giving $1.3V$ DC, while the rest of
 the board is powered from a another power supply at $5.0V$, as depicted in
-figure \ref{fig:setup}.
+\autoref{fig:setup}.
+
+Since some instructions takes a different amount of time, the power drain has to
+be normalized using statistics gained from performance counters. By normalizing,
+we can convert point-in-time energy consumption in terms of wattage to energy
+per instruction in terms of Joules.
+
 
 \subsection{Pitfalls}
 % temperature, noise (inducted power, etc.), interrupts, memory latency
@@ -177,7 +189,7 @@ increase in power consumption is at max 10\% over 50$^\circ$ Celsius, we get
 \end{equation}
 
 Believing that this trend is at least close to linear, output will increase by
-0.2\% pr.  degree Celsius increased. Also, we start our measurements at least
+0.2\% pr. degree Celsius increased. Also, we start our measurements at least
 half a second after the benchmarks have been started, thus there is plenty of
 time for the CPU to gain work temperature. In our tests, the time used to get to
 work temperature was humanly instant. Note that we could not log temperature
@@ -195,7 +207,7 @@ amount of power running through them, unexpected power might be introduced.
 We are running Linux on the chip under test, this gives us a much simpler way of
 programming the processor to run our tests. The fact that we run an entire
 operating system beneath our benchmark programs implies that there is much going
-on that we have no direct controls over.  In order to mitigate the artifacts
+on that we have no direct controls over. In order to mitigate the artifacts
 originating from the operating system, we disable all the mask cable interrupts.
 
 As explained in section \ref{arch_experiments}, we utilize the fast-loop mode of

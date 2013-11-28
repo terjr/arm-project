@@ -1,20 +1,6 @@
 \section{ISA Dependent Energy Consumption}
 % General approach here? Implementation in methodology? Order of appearance?
 
-
-
-Thus, we need to gain insight of the processors energy characteristics by
-running real-world measurements on a specific processor. Compilers can then use
-these results to optimize for energy and not only performance.
-
-
-
-
-
-The need for energy efficient processors is increasing, and in order to achieve
-better understanding of how architectural decisions, we propose a method to
-measure energy efficiency on the instruction level of a processor.
-
 \todo[inline]{Give some background on what exactly burns energy in a processor.
 Be as precise as possible -- dissect the pipeline.}
 Since this paper investigates the ISA dependent power consumption, we do not
@@ -24,49 +10,9 @@ same supply rail\cite{rusu200765}. We try to disable or avoid usage of such
 components as much as possible.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Our scheme relies on fairly accurate core voltage and power measurements, thus
-we have to modify the processor in such a way that core power can be feed
-externally. The proposed test bench setup is shown in \autoref{fig:setup}. We
-run a customized instruction loop, one for each applicable instruction of the
-chosen ISA, and measure its power drain.
-
-\todo[inline]{From here on we go into some detail about the methodology, but
-that's probably OK?}
-As each instruction cannot be measured alone, we create an assembly loop that
-contains the instruction under test. This loop runs long enough to be measurable
-by ordinary laboratory equipment.
-
-Since some instructions takes a different amount of time, the power drain has to be
-normalized using statistics gained from performance counters. Applying this
-normalization, we can convert point-in-time energy consumption in terms of
-wattage to energy per instruction in terms of Joules.
-
-As each instruction runs only for a determined amount of time, the measured
-instruction loop has to be conditional, thus the list of equal instructions has
-to be ended by a conditional branch. The impact of these alien instructions
-can be mitigated using statistics and by knowing how the processor works. The
-latency introduced by the conditional jump is most likely hidden by the branch
-predictor in most modern architectures, either taking a single cycle or hidden
-entirely. It has to be noted that its energy consumption is not hidden, and must
-be accounted for to get accurate results. This method mainly focuses on
-comparison between instructions, and the energy consumption of the condition
-calculation and the conditional jump can then be seen as part of the common
-baseline.
+This method mainly focuses on comparison between instructions, and the energy
+consumption of the condition calculation and the conditional jump can then be
+seen as part of the common baseline.
 \todo[inline]{Correct assumption? Probably. Explain why we need a baseline
 instruction.}
 
