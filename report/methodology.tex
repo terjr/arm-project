@@ -1,6 +1,5 @@
 \section{Methodology}
 
-
 \subsection{Test Environment}
 \begin{table}
     \begin{tabular}{l|l}
@@ -29,6 +28,12 @@ In our experiments, we are using the ODROID-X2 \cite{odroid-x2} developer
 platform, which has an Exynos 4412 "Prime" System-on-Chip with four ARM
 Cortex-A9 (r3p0) processor cores. We disable three of the cores, leaving only
 one core configured to run at a static frequency of $1.7$ GHz.
+
+\begin{figure}
+    \input{figures/test_setup}
+    \caption{Experiment Setup}
+    \label{fig:setup}
+\end{figure}
 
 The Cortex-A9 is a 32-bit out-of-order dual-issue speculative RISC processor,
 and even though its primary use is in mobile and embedded applications, it
@@ -134,7 +139,6 @@ is invisible.
     \label{list:inst_loop}
 \end{figure}
 
-
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A
 multimeter\cite{agilent34410a} and measures voltage drop over a negligible $12$
@@ -148,7 +152,7 @@ We decouple power consumption on the ARM cores and the development board by
 modifying the ODROID-X2 and providing a separate power supply for the A9 cores.
 They get powered by an external power supply giving $1.3V$ DC, while the rest of
 the board is powered from a another power supply at $5.0V$, as depicted in
-figure \ref{fig:setup}.
+\autoref{fig:setup}.
 
 Since some instructions takes a different amount of time, the power drain has to
 be normalized using statistics gained from performance counters. By normalizing,
