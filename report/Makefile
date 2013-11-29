@@ -6,7 +6,7 @@ NAME=main
 
 # Find all .tex-files in current dir
 FILES=$(filter %.tex, $(shell /usr/bin/find .))
-TEMP_EXTS=aux log toc idx ind ilg lot lof bbl blg brf out
+TEMP_EXTS=aux log toc idx ind ilg lot lof bbl blg brf out eps
 TEMPS=$(patsubst %.tex, %, ${FILES})
 GRAPHS=$(shell find . -name '*.tex' | xargs grep -R includegraphics | sed 's|.*figures/graph_\(.*\)\}|figures/graph_\1.eps|;tx;d;:x')
 
@@ -57,5 +57,5 @@ spellcheck: ${FILES}
 figures/graph_%.eps: ../processed_results/unsorted/cycle_timings.csv ./generate_figures.sh ../scripts/gnuplot_barchart.sh
 	grep -R $* .| sed 's|.*width=\([^\\]*\)\\.*|\1|;tx;d;:x' | xargs ./generate_figures.sh $*
 
-figures/heat.eps: ../processed_results/heat-correlation.csv ../scripts/gnuplot_heat.sh
+figures/heat.eps: ../processed_results/heat-correlation.csv ../scripts/gnuplot_heat.sh Makefile
 	../scripts/gnuplot_heat.sh -r 0.6 -o eps -t 20 -g xy  > $@

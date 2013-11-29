@@ -10,6 +10,20 @@ Energy consumption is generally dominated by instruction cycle count.
 The results are stable (when doing multiple runs, each runs compare well with
         previous ones)
 
+Our measures of the multiply and other serializing instructions should probably
+be checked more into, as the performance counters in \autoref{tab:perf_mul} and
+\autoref{tab:perf_nonmul} shows different degree of idleness over the different
+instructions, even though we have tried to avoid this.  This is probably a
+matter of rewriting the kernel modules used for instruction testing, and we
+simply had no more time investigating this matter.
+
+Our final conclusion would be that the ARM Cortex-A9 is a processor core that
+seems to be well balanced in terms of energy consumption over each instruction,
+and there are no enormeous peaks or spikes in our measurements. It seems to be
+serialization due to the conditional execution paradigm and delayed result
+writing in multiplication that cause most problems. These instructions serialize
+this out-of-order core in such a way that a lot of stalls occur, and the
+processor wastes energy while idling.
 
 
 
@@ -18,7 +32,10 @@ The results are stable (when doing multiple runs, each runs compare well with
 Our work relies completely on synthetic benchmarks, and we do not know how this
 would differ from real world workloads. The synthetic tests fill the pipeline
 with equal instructions, while common workloads would at least contain a few
-different instructions simultaneously. 
+different instructions simultaneously.
+
+\todo{fix} Go deeper into the meaning of perf.counters and how they affect serialization, and
+how much power is really wasted on idle cycles.
 
 Also, we have not yet dived into how instruction operands affects the energy usage on
 modern processors. We believe that instruction patterns that causes a high

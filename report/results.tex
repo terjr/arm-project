@@ -39,7 +39,8 @@
 
 \subsection{Introduction}
 In this section we present data gathered from our experiments on the ARM
-Cortex-A9.
+Cortex-A9. A brief description of each instruction can be found in the "ARM and
+Thumb-2 Instruction Set Quick Reference Card"\cite{armasmref}.
 
 We distinguish between single-cycle instructions and multi-cycle instructions
 because they behave differently in and around the execution pipeline.
@@ -101,8 +102,12 @@ the {\ttfamily setend}-instruction merly changes some status flags.
 %in the execution path of these two categories.
 
 \subsection{Single-Cycle Instructions}
-On our target CPU, 70 of the 116 tested instructions\footnote{118 including conditionals} consumes a single cycle,
-while the remaining 46 uses 2 or 3.
+On our target CPU, 70 of the 115 tested instructions\footnote{119 including
+conditionals} consumes a single cycle, while the remaining 45 uses 2 or 3.
+Because multiply instructions count for nearly half of all tested instructions,
+we will discuss them later.
+\autoref{fig:singlecycle} displays a comparison of the 50 non-multiply
+single-cycle instructions.
 
 \begin{figure}
     \centering
@@ -117,7 +122,10 @@ top, which can be explained by looking on how these instructions move nearly all
 the operands around, while {\ttfamily cmp} and the different shift-instructios are most likely
 moving fewer bits around. A more interesting result is how instructions bearing the {\ttfamily s}-flag
 seems to have a lover consumption than their non-{\ttfamily s}-companion. It is hard to reason about
-such, since we do not have access to the inner workings of this processor.
+such, since we do not have access to the inner workings of this processor, but according to the performance
+counters in \autoref{tab:perf_nonmul}, there is reason to believe that the processor has to do some amount
+of idleing, and thus seems to save power. The actual result of being idle some amount of the time is that
+more cycles are consumed, and energy is wasted.
 
 The results from the conditional-execution scheme brought by this ISA are also an interesting matter. We
 can see from \autoref{fig:cond} how different versions of {\ttfamily add} compares. In the figured test,
@@ -133,13 +141,6 @@ serialize it self, and it is hard to fill the pipeline with this instruction. Wi
 that {\ttfamily nop} works in this way, as it is often used to fill out clock cycles with non-destructive work. It
 would not make sense to optimize the {\ttfamily nop} instruction, as it would merly fail to complete it's goal as
 a space-and-time filler.
-
-\begin{figure*}
-    \centering
-    \includegraphics[width=\textwidth]{figures/graph_0123_base_mul-0c6}
-    \caption{Energy profile of multiply instructions.}
-    \label{fig:allmul}
-\end{figure*}
 
 \begin{figure}
     \centering
@@ -158,8 +159,73 @@ a space-and-time filler.
 %    \item Talk about mul, and why it might differ that much (especially 2 and 3 cycle ones)
 %\end{itemize}
 
-46 of the instructions that was compared used more than 1 cycle to complete their results, 
+45 of the instructions that was compared used 2 or 3 cycles to complete their results. 18 of these instructions are non-multiply.
+These non-multiply instructions power measurements are displayed in \autoref{fig:multicycle} and a selection of the performance counter
+results are shown in \autoref{tab:perf_nonmul}. We see that the unsigned extend is cheaper than signed extend, which might indicate
+that some hardware is left idle when not needing sign extension. The instructions are normalized according to their stated cycle
+count in the ARM Cortex-A9 Technical Reference Manual Table B-5\cite{armtech}.
 
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/graph_0123_base_mul-0c6}
+    \caption{Energy profile of multiply instructions.}
+    \label{fig:allmul}
+\end{figure*}
+
+\subsection{Multiply}
+We will also discuss the 47 different multiply instructions. Since the ARM
+Cortex-A9 only contains a single multiply pipeline, but has two general
+ALUs\ref{fig:pipeline}, the multiply instructions are queued up and all are run
+though the same pipeline. This means that multiply instructions would have a
+lower continous power drain, and thus seem more energy efficient than compared
+to the general single-cycle instructions that uses the double amount of ALUs. We
+have not compensated for this matter other than multiplying the power drain with
+the number of cycles used to finish one multiply instruction, as it is not
+published knowledge how the different multiply instructions utilize the
+pipelines(s). We have reason to believe that at least some of the
+multiply-accumulate instructions utilize both pipelines\cite{ramangcc}, and thus
+utlize more hardware while still queueing up through the multiply-enabled main
+pipeline.
+
+By looking at \autoref{fig:allmul} we see that the single-cycle multiply
+instructions are quite similar, but those using two or three cycles are more
+interesting. We do not know why the results are as stated, as most of the
+internal architecture are not available for the public. According to the ARM
+Cortex-A9 Technical Reference Manual Table B-5, some multiply instructions uses
+more time than others before the results are acctually available\cite{armtech}.
+
+\begin{table*}
+    \centering
+    \begin{tabular}{|l|ccccccc|}
+        \hline
+        Instr.& Cycles & Main Ex. & Sec. Ex. & Predicted & Mispredicted & No dispatch & Issue Empty \\
+        \hline
+        \input{table_mul}
+        \hline
+    \end{tabular}
+    \caption{Performance counter regarding multiply instructions}
+This table shows data for 252 iterations of 13 instructions each. The mispredicts are most likely due to
+the branch predictor cannot correctly predict the first and the last conditional jump in the loop.
+    \label{tab:perf_mul}
+\end{table*}
+
+\begin{table*}
+    \centering
+    \begin{tabular}{|l|ccccccc|}
+        \hline
+        Instr.& Cycles & Main Ex. & Sec. Ex. & Predicted & Mispredicted & No dispatch & Issue Empty \\
+        \hline
+        \input{table_instr}
+        \hline
+    \end{tabular}
+    \caption{Performance counter regarding selected non-multiply instructions}
+    \label{tab:perf_nonmul}
+\end{table*}
+According to the performance counters in \autoref{tab:perf_mul}, we can see that there is a difference in how each
+instruction are beeing handled by the architecture. We have not had enough time to look deeper into each instruction,
+but in general will instructions that counts more "No dispatch" or "Issue Empty" have more idle time, thus a lower
+overall power drain. The results in \autoref{fig:allmul} show power drain in amperes multiplied by cycle counts stated in the ARM
+Cortex-A9 Technical Reference Manual Table B-5\cite{armtech} and is not normalized according to the performance counter values.
 
 \subsection{Evaluation}
 \begin{figure}
