@@ -38,69 +38,6 @@
 \end{figure*}
 
 
-\begin{table}
-    \centering
-    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.9cm}R{0.6cm}R{0.6cm}R{0.8cm}R{0.8cm}|}
-       \rowcolor{gray!50}
-        \hline
-        \centering
-        Instr. &
-        \centering
-        Cycles &
-        \centering
-        Main Ex. &
-        \centering
-        Second Ex. &
-        \centering
-        Pred. &
-        \centering
-        Mis pred. &
-        \centering
-        No disp. &
-        \begin{centering}
-        Issue Empty
-        \end{centering}
-        \\
-        \hline
-        \input{table_mul}
-        \hline
-    \end{tabular}
-    \caption{Performance counter data from 252 iterations of all tested multiply
-    instructions.}
-    \label{tab:perf_mul}
-\end{table}
-
-\begin{table}
-    \centering
-    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.9cm}R{0.6cm}R{0.6cm}R{0.8cm}R{0.8cm}|}
-       \rowcolor{gray!50}
-        \hline
-        \centering
-        Instr. &
-        \centering
-        Cycles &
-        \centering
-        Main Ex. &
-        \centering
-        Second Ex. &
-        \centering
-        Pred. &
-        \centering
-        Mis pred. &
-        \centering
-        No disp. &
-        \begin{centering}
-        Issue Empty
-        \end{centering}
-        \\
-        \hline
-        \input{table_instr}
-        \hline
-    \end{tabular}
-    \caption{Performance counter data from 252 iterations of all tested
-    instructions, excluding multiply.}
-    \label{tab:perf_nonmul}
-\end{table}
 
 \subsection{Introduction}
 In this section we present data gathered from our experiments on the ARM
@@ -112,21 +49,15 @@ because they behave differently in and around the execution pipeline.
 Instructions consuming only one cycle are fairly easy to reason about as there
 is no need to normalize energy consumption with respect to the cycle count (i.e.
 time). However, it is important to also recognize CPU capabilities such as dual
-issuing that we have on our processor: All single-cycle ALU instructions execute
-pairwise in parallel (one in each ALU), giving a peak performance of two
-instructions per CPU cycle. On the other hand, multi-cycle instructions needs to
-be carefully considered. Typically, multi-cycle instructions divide work which
-can be done only in a subset of the available CPUs (e.g. one) over several
-cycles, lowering the average current draw. They consume less energy per time
-step, but also do less useful work. For all these reasons, we partition the
-measured data in two data sets; one for single-cycle instructions and one for
-multi-cycle instructions.
-
-Observational errors are accounted for by running the power measurement loop
-many times for each instruction. We also sleep 30 seconds in between
-instructions to diminish the effect of temperature variations. Running over all
-tested instructions typically takes 3 hours and we average the medians for each
-instruction run to get a single value.
+issuing that we have on our processor: Most single-cycle ALU instructions
+execute pairwise in parallel -- one in each ALU -- giving a peak performance of
+two instructions per clock cycle. Multi-cycle instructions needs to be carefully
+considered. Typically, multi-cycle instructions divide work which can be done
+only in a subset of the available CPUs (e.g. one) over several cycles, lowering
+the average current draw. They consume less energy per time step, but also do
+less useful work. For all these reasons, we partition the measured data in two
+data sets; one for single-cycle instructions and one for multi-cycle
+instructions.
 
 In the graphs, all bars colored green means that the tested instruction is a
 single-cycle instruction, the light blue is two-cycles, and dark blue is
@@ -134,26 +65,23 @@ three-cycle instructions. The red bar is the baseline for power measurement.
 This baseline is an alias for the least power-consuming instruction we could
 find, which is the {\ttfamily setend}-instruction. This instruction sets the
 endianness regarding memory operations to eiter big or little
-endian \cite{armcompilerref} and setting it to the same endian repeatedly would
-resemble constant halting on our processor.
+endian \cite{armcompilerref} and setting it to the same endianess repeatedly
+would resemble continous halting on our processor.
 
-The results presented in the graphs are enumerated as Ampere
-$\cdot$ cycles, which means that instructions using more time is normalized by
-adding up their power drain with the time used in the pipeline. The results are
-not converted into watts, joule or anything else that would be more convenient
-in order to state a number on each instructions energy consumption. This is
-because this paper investigates how each instruction differs from other
-instructions in the same ISA, and thus we look at the power drain at the
-processor core when a given instruction resides within it, multiplied by the
-number of cycles the instruction consumes. 
+The results presented in the graphs are enumerated as Ampere $\cdot$ cycles,
+which means that instructions using more time is normalized by adding up their
+power drain with the cycles used in the pipeline. We are more interested in how
+each instruction performs with respect to the other instructions in the same ISA
+than looking at specific numbers. Note that this unit could be converted to
+Watts or Joules from \autoref{eq:1}.
 
-During measurements, the core voltage was keept stable at
-$1.3V\pm50mV$ during testing. The measurements where done with as full
-pipelines as possible, avoiding hazards and instruction loading as much as
-possible. This means that instructions that utilize more parts of the processor
-will most likely be more energy consuming than those using only few components.
-This is also shown with our {\ttfamily baseline}-measurement, as we assume that
-the {\ttfamily setend}-instruction merly changes some status flags.
+During measurements, the core voltage was keept stable at $1.3V\pm50mV$, well
+within the specifications of the processor. The pipelines were kept as full as
+possible, avoiding hazards and instruction loading. This means that instructions
+utilizeing large parts of the processor will most likely be more energy
+consuming than those using only few components. This is confirmed with our
+{\ttfamily baseline}-measurement, as we assume that the {\ttfamily
+setend}-instruction merly changes some status flags.
 
 
 
