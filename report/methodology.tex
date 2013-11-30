@@ -5,29 +5,33 @@
     \begin{tabular}{l|l}
         \hline
         \hline
-    Manufacturer    &Hardkernel\\
-Platform            &Odroid-X2\\
-SoC                 &Samsung Exynos 4412 "Prime"\\
-CPU Core            &ARM Cortex-A9\\
-Number of cores     &4\\
-Clock Freq.         &1.7GHz\\
-Core voltage        &1.3V\\
-OS                  &Debian 7 ``Wheezy'' w/o DVFS\\
-Kernel              &3.8 custom\\
+    Manufacturer    & Hardkernel\\
+    Platform        & Odroid-X2\\
+    SoC             & Samsung Exynos 4412 "Prime"\\
+    CPU Core        & ARM Cortex-A9\\
+    Number of cores & 4\\
+    Clock Freq.     & 1.7GHz\\
+    Core Voltage    & 1.3V\\
+    OS              & Debian 7``Wheezy'' w/o DVFS\\
+    Kernel          & 3.8 custom\\
         \hline
         \hline
-        Voltmeter   &Agilent 34410A\\
-        Power supply &Agilent E3631A\\
-        Shunt resistor &12m$\Omega$\\
+    Voltmeter       & Agilent 34410A\\
+    Power supply    & Agilent E3631A\\
+    Shunt resistor  & 12m$\Omega$\\
         \hline
         \hline
     \end{tabular}
     \caption{System specifications}
+    \label{table:system_spec}
 \end{table}
+
 In our experiments, we are using the ODROID-X2 \cite{odroid-x2} developer
 platform, which has an Exynos 4412 "Prime" System-on-Chip with four ARM
 Cortex-A9 (r3p0) processor cores. We disable three of the cores, leaving only
-one core configured to run at a static frequency of $1.7$ GHz.
+one core configured to run at a fixed frequency of $1.7$ GHz. The test
+environment is sketched in \ref{fig:setup}, while the details are summarized in
+\ref{table:system_spec}.
 
 \begin{figure}
     \input{figures/test_setup}
@@ -41,7 +45,7 @@ shares many features with current desktop processors. \cite{patterson}
 \cite{hennessy}. It can issue two instructions per cycle and branches its
 pipeline to four functional units, as depicted in \autoref{fig:pipeline}. Most
 instructions can execute in either of the two general ALU's, but multiply
-instructions must execute in the ALU with a hardware multiplyer. The processor
+instructions must go through the ALU with a hardware multiplyer. The processor
 core also has separate units for floating point operations (the NEON
 coprocessor) and address manipulation, but will not be further considered in
 this paper.
@@ -55,9 +59,9 @@ this paper.
     \end{centering}
 \end{figure}
 
-Energy consumption of a processor varies with respect to the workload; the
-harder it has to work, the more energy it uses. In this paper, we seek to
-achieve the highest possible ALU throughput the processor can offer. To
+In general, energy consumption of a processor varies with respect to the
+workload; the harder it has to work, the more energy it uses. In this paper, we
+seek to achieve the highest possible ALU throughput the processor can offer. To
 accomplish this, we are required to gain knowledge of its pipeline and other
 components within the CPU.
 
@@ -77,7 +81,7 @@ also has a separate cycle counter. By comparing execution unit counters for the
 two ALU's and the cycle counter, we obtain detailed statistics about the
 pipeline activity. For example, we run \texttt{add} instructions with and
 without hazards, and verify that counters for the hazard-less run completes
-twice in half the number of cycles. Note that these performance counters are
+twice in about half the number of cycles. Note that these performance counters are
 approximate due to speculativity in the core, and is only being used as a sanity
 check for what we expected.
 
