@@ -28,6 +28,7 @@
 %    }
 %    \caption{test}
 %\end{figure*}
+\rowcolors{2}{gray!25}{white}
 
 \begin{figure*}[ht]
     \centering
@@ -36,6 +37,70 @@
     \label{fig:singlecycle}
 \end{figure*}
 
+
+\begin{table}
+    \centering
+    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.9cm}R{0.6cm}R{0.6cm}R{0.8cm}R{0.8cm}|}
+       \rowcolor{gray!50}
+        \hline
+        \centering
+        Instr. &
+        \centering
+        Cycles &
+        \centering
+        Main Ex. &
+        \centering
+        Second Ex. &
+        \centering
+        Pred. &
+        \centering
+        Mis pred. &
+        \centering
+        No disp. &
+        \begin{centering}
+        Issue Empty
+        \end{centering}
+        \\
+        \hline
+        \input{table_mul}
+        \hline
+    \end{tabular}
+    \caption{Performance counter data from 252 iterations of all tested multiply
+    instructions.}
+    \label{tab:perf_mul}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.9cm}R{0.6cm}R{0.6cm}R{0.8cm}R{0.8cm}|}
+       \rowcolor{gray!50}
+        \hline
+        \centering
+        Instr. &
+        \centering
+        Cycles &
+        \centering
+        Main Ex. &
+        \centering
+        Second Ex. &
+        \centering
+        Pred. &
+        \centering
+        Mis pred. &
+        \centering
+        No disp. &
+        \begin{centering}
+        Issue Empty
+        \end{centering}
+        \\
+        \hline
+        \input{table_instr}
+        \hline
+    \end{tabular}
+    \caption{Performance counter data from 252 iterations of all tested
+    instructions, excluding multiply.}
+    \label{tab:perf_nonmul}
+\end{table}
 
 \subsection{Introduction}
 In this section we present data gathered from our experiments on the ARM
@@ -194,33 +259,6 @@ internal architecture are not available for the public. According to the ARM
 Cortex-A9 Technical Reference Manual Table B-5, some multiply instructions uses
 more time than others before the results are acctually available\cite{armtech}.
 
-\begin{table*}
-    \centering
-    \begin{tabular}{|l|ccccccc|}
-        \hline
-        Instr.& Cycles & Main Ex. & Sec. Ex. & Predicted & Mispredicted & No dispatch & Issue Empty \\
-        \hline
-        \input{table_mul}
-        \hline
-    \end{tabular}
-    \caption{Performance counter regarding multiply instructions}
-This table shows data for 252 iterations of 13 instructions each. The mispredicts are most likely due to
-the branch predictor cannot correctly predict the first and the last conditional jump in the loop.
-    \label{tab:perf_mul}
-\end{table*}
-
-\begin{table*}
-    \centering
-    \begin{tabular}{|l|ccccccc|}
-        \hline
-        Instr.& Cycles & Main Ex. & Sec. Ex. & Predicted & Mispredicted & No dispatch & Issue Empty \\
-        \hline
-        \input{table_instr}
-        \hline
-    \end{tabular}
-    \caption{Performance counter regarding selected non-multiply instructions}
-    \label{tab:perf_nonmul}
-\end{table*}
 According to the performance counters in \autoref{tab:perf_mul}, we can see that there is a difference in how each
 instruction are beeing handled by the architecture. We have not had enough time to look deeper into each instruction,
 but in general will instructions that counts more "No dispatch" or "Issue Empty" have more idle time, thus a lower

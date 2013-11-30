@@ -1,5 +1,8 @@
 % List of common errors in written English
 % http://public.wsu.edu/~brians/errors/errors.html
+
+\PassOptionsToPackage{table}{xcolor}
+
 \documentclass[journal]{IEEEtran}
 
 \usepackage[utf8]{inputenc}
@@ -15,7 +18,11 @@
 \usepackage{listings}
 \usepackage{url}
 \usepackage{caption}
-
+\usepackage{xcolor}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \hypersetup{
     %bookmarks=true,         % show bookmarks bar?
@@ -59,6 +66,7 @@ Power consumption, ARM, performance counters, instruction level energy efficienc
 \end{IEEEkeywords}
 
 \input{./introduction}
+
 \input{./methodology}
 \input{./results}
 \input{./conclusion}

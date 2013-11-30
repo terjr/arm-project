@@ -16,12 +16,12 @@ then
 fi
 
 cat $1 |
-awk '$9=="done."            {print INSTR "&" CYCLE "&" MAIN "&" SECOND "&" PRED "&" MISPRED "&" NODISP "&" EMPTY "\\\\"} \
-     $8=="tdt4501:Running"  {INSTR=$9} \
-     $8=="tdt4501:cycle_count" {CYCLE=$9} \
-     $8=="tdt4501:main_ex" {MAIN=$9} \
-     $8=="tdt4501:second_ex" {SECOND=$9} \
-     $8=="tdt4501:pred_branch" {PRED=$9} \
-     $8=="tdt4501:mispred_branch" {MISPRED=$9} \
-     $8=="tdt4501:issue_no_dispatch" {NODISP=$9} \
-     $8=="tdt4501:issue_empty" {EMPTY=$9}'
+awk '$8=="done."            {print INSTR "&" CYCLE "&" MAIN "&" SECOND "&" PRED "&" MISPRED "&" NODISP "&" EMPTY "\\\\"} \
+     $7=="tdt4501:Running"  {INSTR=$8} \
+     $7=="tdt4501:cycle_count" {CYCLE=$8} \
+     $7=="tdt4501:main_ex" {MAIN=$8} \
+     $7=="tdt4501:second_ex" {SECOND=$8} \
+     $7=="tdt4501:pred_branch" {PRED=$8} \
+     $7=="tdt4501:mispred_branch" {MISPRED=$8} \
+     $7=="tdt4501:issue_no_dispatch" {NODISP=$8} \
+     $7=="tdt4501:issue_empty" {EMPTY=$8}'

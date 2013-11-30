@@ -12,13 +12,13 @@ CPU Core            &ARM Cortex-A9\\
 Number of cores     &4\\
 Clock Freq.         &1.7GHz\\
 Core voltage        &1.3V\\
-OS                  &Debian 7 ``Wheezy'' w/o DVFS\\
-Kernel              &3.8 custom\\
+OS                  &Debian testing ``Jessie''\\
+Kernel              &3.8.13.10 custom w/o DVFS\\
         \hline
         \hline
         Voltmeter   &Agilent 34410A\\
         Power supply &Agilent E3631A\\
-        Shunt resistor &12m$\Omega$\\
+        Shunt resistor &Thermovolt AB 5697 0002 - 12m$\Omega$\\
         \hline
         \hline
     \end{tabular}
@@ -40,10 +40,10 @@ and even though its primary use is in mobile and embedded applications, it
 shares many features with current desktop processors. \cite{patterson}
 \cite{hennessy}. It can issue two instructions per cycle and branches its
 pipeline to four functional units, as depicted in \autoref{fig:pipeline}. Most
-instructions can execute in either of the two general ALU's, but multiply
-instructions must execute in the ALU with a hardware multiplyer. The processor
+instructions can execute in either of the two general ALUs, but multiply
+instructions must execute in the ALU with a hardware multiplier. The processor
 core also has separate units for floating point operations (the NEON
-coprocessor) and address manipulation, but will not be further considered in
+co-processor) and address manipulation, but will not be further considered in
 this paper.
 
 \begin{figure}
@@ -74,7 +74,7 @@ in table A.18 in the Cortex-A9 Technical Reference Manual \cite{armtech}} that
 each can be mapped to one of six generic event counters in the Performance
 Monitor Unit (i.e. only six generic events can be tracked simultaneously). It
 also has a separate cycle counter. By comparing execution unit counters for the
-two ALU's and the cycle counter, we obtain detailed statistics about the
+two ALUs and the cycle counter, we obtain detailed statistics about the
 pipeline activity. For example, we run \texttt{add} instructions with and
 without hazards, and verify that counters for the hazard-less run completes
 twice in half the number of cycles. Note that these performance counters are
@@ -95,8 +95,8 @@ instructions or less. Secondly, it must fit in a 64 byte cache line. Violating
 any of these two properties causes a significant destruction of performance.
 
 Furthermore, executing code within fast-loop limits the number of cache
-mispredicts to two independent of the iteration count. We confirm this by
-looking at the cache mispredict performance counter. The first miss is likely to
+miss predicts to two independent of the iteration count. We confirm this by
+looking at the cache miss predict performance counter. The first miss is likely to
 occur at the end of the first iteration, while the second occurs on the way out
 of the loop.
 
@@ -141,8 +141,8 @@ is invisible.
 
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A
-multimeter\cite{agilent34410a} and measures voltage drop over a negligible $12$
-$m\Omega$ resistor, set up as shown in \autoref{fig:setup}. The multimeter is
+multimeter\cite{agilent34410a} and measures voltage drop over a negligible 12m$\Omega$
+resistor, set up as shown in \autoref{fig:setup}. The multimeter is
 set to sample at full precision at its maximum rate of 1000 Hz. This gives one
 sample every 1.7 million instructions with an error of at most 0.002V. It is
 obvious that we are unable to observe inter-cycle fluctations, but as we run the
