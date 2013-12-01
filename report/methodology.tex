@@ -71,6 +71,7 @@ whitepaper \cite{a9whitepaper}. However, by running some architectural
 experiments and consulting the performance counters we are able to
 infer some details.
 
+\rowcolors{2}{gray!25}{white}
 \subsection{Architectural Experiments}
 \label{arch_experiments}
 The A9 processor has 58 distinct events\footnote{A complete overview can be seen
@@ -84,6 +85,71 @@ without hazards, and verify that counters for the hazard-less run completes
 twice in about half the number of cycles. Note that these performance counters are
 approximate due to speculativity in the core, and is only being used as a sanity
 check for what we expected.
+
+\begin{table}
+    \centering
+    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.9cm}R{0.6cm}R{0.6cm}R{0.8cm}R{0.8cm}|}
+       \rowcolor{gray!50}
+        \hline
+        \centering
+        Instr. &
+        \centering
+        Cycles &
+        \centering
+        Main Ex. &
+        \centering
+        Second Ex. &
+        \centering
+        Pred. &
+        \centering
+        Mis pred. &
+        \centering
+        No disp. &
+        \begin{centering}
+        Issue Empty
+        \end{centering}
+        \\
+        \hline
+        \input{table_mul}
+        \hline
+    \end{tabular}
+    \caption{Performance counter data from 252 iterations of all tested multiply
+    instructions.}
+    \label{tab:perf_mul}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.9cm}R{0.6cm}R{0.6cm}R{0.8cm}R{0.8cm}|}
+       \rowcolor{gray!50}
+        \hline
+        \centering
+        Instr. &
+        \centering
+        Cycles &
+        \centering
+        Main Ex. &
+        \centering
+        Second Ex. &
+        \centering
+        Pred. &
+        \centering
+        Mis pred. &
+        \centering
+        No disp. &
+        \begin{centering}
+        Issue Empty
+        \end{centering}
+        \\
+        \hline
+        \input{table_instr}
+        \hline
+    \end{tabular}
+    \caption{Performance counter data from 252 iterations of all tested
+    instructions, excluding multiply.}
+    \label{tab:perf_nonmul}
+\end{table}
+
 
 Using performance counters as above, we are able to confirm a feature on the A9
 processor that is very vaguely documented; fast-loop\texttrademark{} mode. As
