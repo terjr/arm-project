@@ -28,7 +28,7 @@
 %    }
 %    \caption{test}
 %\end{figure*}
-\rowcolors{2}{gray!25}{white}
+%\rowcolors{2}{gray!25}{white}
 
 \begin{figure*}[ht]
     \centering
@@ -97,8 +97,9 @@ setend}-instruction merly changes some status flags.
 \subsection{Single-Cycle Instructions}
 On our target CPU, 70 of the 115 tested instructions\footnote{119 including
 conditionals} consumes a single cycle, while the remaining 45 uses 2 or 3.
-Because multiply instructions count for nearly half of all tested instructions,
-we will discuss them later.
+Nearly half of the instructions are multiply instructions, so these will be
+discussed separately.
+
 \autoref{fig:singlecycle} displays a comparison of the 50 non-multiply
 single-cycle instructions.
 
@@ -109,31 +110,41 @@ single-cycle instructions.
     \label{fig:cond}
 \end{figure}
 
-The results in \autoref{fig:singlecycle} shows that the ordinary single-cycle instructions
-does not differ very much. Instructions like {\ttfamily rev} and {\ttfamily sel} are on the
-top, which can be explained by looking on how these instructions move nearly all bits in
-the operands around, while {\ttfamily cmp} and the different shift-instructios are most likely
-moving fewer bits around. A more interesting result is how instructions bearing the {\ttfamily s}-flag
-seems to have a lover consumption than their non-{\ttfamily s}-companion. It is hard to reason about
-such, since we do not have access to the inner workings of this processor, but according to the performance
-counters in \autoref{tab:perf_nonmul}, there is reason to believe that the processor has to do some amount
-of idleing, and thus seems to save power. The actual result of being idle some amount of the time is that
-more cycles are consumed, and energy is wasted.
+The results in \autoref{fig:singlecycle} shows that the ordinary single-cycle
+instructions do not differ very much. Instructions like {\ttfamily rev} and
+{\ttfamily sel} are on the top, which can be explained by looking on how these
+instructions move nearly all bits in the operands around, while {\ttfamily cmp}
+and the different shift-instructios are most likely moving fewer bits around.
 
-The results from the conditional-execution scheme brought by this ISA are also an interesting matter. We
-can see from \autoref{fig:cond} how different versions of {\ttfamily add} compares. In the figured test,
-{\ttfamily addne} is committed every time, while {\ttfamily addeq} never has its results committed. It is
-interesting to see that even though {\ttfamily addeq} is never committed, it uses almost as much power as
-the other {\ttfamily add}s. We can assume that with the addition of out-of-order scheduling, conditional
-execution might be harder to implement.
+A more interesting result is how instructions bearing the {\ttfamily s}-flag
+seems to have a lower consumption than their non-{\ttfamily s} companion. It is
+hard to reason about such, since we do not have access to the inner workings of
+this processor, but according to the performance counters in
+\autoref{tab:perf_nonmul}, there is reason to believe that the processor has to
+do some amount of idleing, and thus seems to save power. The actual result of
+being idle some amount of the time is that more cycles are consumed, and energy
+is wasted.
 
-\autoref{fig:singlecycle} shows that the {\ttfamily nop}-instruction has a rather low power consumption. This
-is a bit missguiding, as the {\ttfamily nop}-instruction is actually a {\ttfamily mov r0,r0}-instruction, and thus
-has both a read-after-write and a write-after-write hazard on it self. This makes the {\ttfamily nop}-instruction
-serialize it self, and it is hard to fill the pipeline with this instruction. With this in mind, it makes sense
-that {\ttfamily nop} works in this way, as it is often used to fill out clock cycles with non-destructive work. It
-would not make sense to optimize the {\ttfamily nop} instruction, as it would merly fail to complete it's goal as
-a space-and-time filler.
+The results from the conditional-execution scheme brought by this ISA are also
+an interesting matter. We can see from \autoref{fig:cond} how different versions
+of {\ttfamily add} compares. In the figured test, {\ttfamily addne} is committed
+every time, while {\ttfamily addeq} never has its results committed. It is
+interesting to see that even though {\ttfamily addeq} is never committed, it
+uses almost as much power as the other {\ttfamily add}s. We can assume that with
+the addition of out-of-order scheduling, conditional execution might be harder
+to implement. Also note that this test is very synthetic and the ISA is likely
+to be unoptimized for such activity.
+
+\autoref{fig:singlecycle} shows that the {\ttfamily nop}-instruction has a
+rather low power consumption. This is a bit misguiding, as the {\ttfamily
+nop}-instruction assembles to {\ttfamily mov r0, r0}, having both a
+read-after-write and a write-after-write hazard on itself. This makes the
+{\ttfamily nop}-instruction serialize itself, and it is hard to fill the
+pipeline with this instruction. Knowing this, it makes sense that {\ttfamily
+nop} works in this way, as it is often used to fill out clock cycles with
+non-destructive work. It would not make sense to optimize the {\ttfamily nop}
+instruction, as it would merly fail to complete it's goal as a space-and-time
+filler.
 
 \begin{figure}
     \centering
@@ -152,11 +163,15 @@ a space-and-time filler.
 %    \item Talk about mul, and why it might differ that much (especially 2 and 3 cycle ones)
 %\end{itemize}
 
-45 of the instructions that was compared used 2 or 3 cycles to complete their results. 18 of these instructions are non-multiply.
-These non-multiply instructions power measurements are displayed in \autoref{fig:multicycle} and a selection of the performance counter
-results are shown in \autoref{tab:perf_nonmul}. We see that the unsigned extend is cheaper than signed extend, which might indicate
-that some hardware is left idle when not needing sign extension. The instructions are normalized according to their stated cycle
-count in the ARM Cortex-A9 Technical Reference Manual Table B-5\cite{armtech}.
+45 of the instructions that was compared used 2 or 3 cycles to complete their
+results, and we will discuss them here. 18 of these instructions are
+non-multiply.  These non-multiply instructions power measurements are displayed
+in \autoref{fig:multicycle} and a selection of the performance counter results
+are shown in \autoref{tab:perf_nonmul}. We see that the unsigned extend is
+cheaper than signed extend, which might indicate that some hardware is left idle
+when not needing sign extension. The instructions are normalized according to
+their stated cycle count in the ARM Cortex-A9 Technical Reference Manual Table
+B-5\cite{armtech}.
 
 \begin{figure*}
     \centering
@@ -175,7 +190,7 @@ to the general single-cycle instructions that uses the double amount of ALUs. We
 have not compensated for this matter other than multiplying the power drain with
 the number of cycles used to finish one multiply instruction, as it is not
 published knowledge how the different multiply instructions utilize the
-pipelines(s). We have reason to believe that at least some of the
+pipeline(s). We have reason to believe that at least some of the
 multiply-accumulate instructions utilize both pipelines\cite{ramangcc}, and thus
 utlize more hardware while still queueing up through the multiply-enabled main
 pipeline.
@@ -187,28 +202,32 @@ internal architecture are not available for the public. According to the ARM
 Cortex-A9 Technical Reference Manual Table B-5, some multiply instructions uses
 more time than others before the results are acctually available\cite{armtech}.
 
-According to the performance counters in \autoref{tab:perf_mul}, we can see that there is a difference in how each
-instruction are beeing handled by the architecture. We have not had enough time to look deeper into each instruction,
-but in general will instructions that counts more "No dispatch" or "Issue Empty" have more idle time, thus a lower
-overall power drain. The results in \autoref{fig:allmul} show power drain in amperes multiplied by cycle counts stated in the ARM
-Cortex-A9 Technical Reference Manual Table B-5\cite{armtech} and is not normalized according to the performance counter values.
+According to the performance counters in \autoref{tab:perf_mul}, we can see that
+there is a difference in how each instruction are beeing handled by the
+architecture. We have not had enough time to look deeper into each instruction,
+but in general will instructions that counts more "No dispatch" or "Issue Empty"
+have more idle time, thus a lower overall power drain. The results in
+\autoref{fig:allmul} show power drain in amperes multiplied by cycle counts
+stated in the ARM Cortex-A9 Technical Reference Manual Table B-5\cite{armtech}
+and is not normalized according to the performance counter values.
 
 \subsection{Evaluation}
 \begin{figure}
     \centering
     \includegraphics[width=0.48\textwidth]{figures/heat}
-    \caption{Changes in heat and energy consumption for {\ttfamily add} at different runs together with heatsink and ambient temperature}
+    \caption{Changes in heat and energy consumption for {\ttfamily add} at
+    different runs together with heatsink and ambient temperature}
     \label{fig:heat}
 \end{figure}
 
 Each instruction was measured 41 times. For each run, there was small changes in
-power consumption, but the relation trends was equal for every run.
-As stated in \autoref{sec:temperature}, the power consumption is not easily pushed by temperature. \autoref{fig:heat} shows how the change in power consumption of the instruction
-{\ttfamily add} over different runs combined with the ambient temperature the
-heatsink temperature. According to these results, we assume that the change in
-power consumption was not due to heat. We did not log heat for all test runs,
-but assume that the results from \autoref{fig:heat} holds, and that this small
-change in heat is not responsible for any disturbance in the power consumption
-measurements.
-
+power consumption, but the relation trends was equal for every run.  As stated
+in \autoref{sec:temperature}, the power consumption is not easily pushed by
+temperature. \autoref{fig:heat} shows how the change in power consumption of the
+instruction {\ttfamily add} over different runs combined with the ambient
+temperature the heatsink temperature. According to these results, we assume that
+the change in power consumption was not due to heat. We did not log heat for all
+test runs, but assume that the results from \autoref{fig:heat} holds, and that
+this small change in heat is not responsible for any disturbance in the power
+consumption measurements.
 
