@@ -30,8 +30,8 @@ In our experiments, we are using the ODROID-X2 \cite{odroid-x2} developer
 platform, which has an Exynos 4412 "Prime" System-on-Chip with four ARM
 Cortex-A9 (r3p0) processor cores. We disable three of the cores, leaving only
 one core configured to run at a fixed frequency of $1.7$ GHz. The test
-environment is sketched in \ref{fig:setup}, while the details are summarized in
-\ref{table:system_spec}.
+environment is sketched in \autoref{fig:setup}, while the details are summarized in
+\autoref{table:system_spec}.
 
 \begin{figure}
     \input{figures/test_setup}
@@ -297,7 +297,7 @@ order to mitigate the artifacts originating from the operating system, we
 disable all the maskable interrupts and run our benchmark programs entirely
 uninterupted.
 
-As explained in section \ref{arch_experiments}, we utilize the fast-loop mode of
+As explained in section \autoref{arch_experiments}, we utilize the fast-loop mode of
 the processor to mitigate memory access latency. We disable the L1 cache to
 easier detect when we are outside the fast-loop mode, and thus we are certain
 that there is no memory access going on.
