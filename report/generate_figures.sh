@@ -49,9 +49,9 @@ else
     FILTER="("${FILTER:2}" ) && ( "
     for group in $GROUP_FILTER
     do
-        FILTER=$(echo $FILTER "\$5==\""$group"\" || ")
+        FILTER=$(echo $FILTER "\$6==\""$group"\" || ")
     done
     FILTER=$(echo ${FILTER:0:-3} ")")
 fi
 echo Saving EPS figure to figures/graph_$1.eps
-$GNUPLOT -f <( awk -F , "$FILTER {print \$1, \$4, \$2}" $RESULTS_CSV | sort -n -k 2 ) $ASPECT_RATIO -o eps -g xy -y '0:*' -t $FONTSIZE > figures/graph_$1.eps
+$GNUPLOT -f <( awk -F , "$FILTER {print \$1, \$4, \$2, \$5}" $RESULTS_CSV | sort -n -k 2 ) $ASPECT_RATIO -o eps -g xy -y '0:*' -t $FONTSIZE > figures/graph_$1.eps
