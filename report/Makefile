@@ -19,7 +19,7 @@ graphs: ${GRAPHS}
 clean_all: clean
 	if [ -e '${NAME}.pdf' ]; then rm -f ${NAME}.pdf; fi
 
-${NAME}.pdf: ${NAME}.tex ${NAME}.bbl ${GRAPHS} figures/heat.eps
+${NAME}.pdf: ${NAME}.tex ${NAME}.bbl ${GRAPHS} figures/heat.eps figures/test_setup.tex
 	${TEX} ${NAME}.tex
 	${TEX} ${NAME}.tex
 
@@ -60,3 +60,8 @@ figures/graph_%.eps: ../processed_results/unsorted/cycle_timings.csv ./generate_
 figures/heat.eps: ../processed_results/heat-correlation.csv ../scripts/gnuplot_heat.sh Makefile
 	../scripts/gnuplot_heat.sh -r 0.6 -o eps -t 20 -g xy  > $@
 	../scripts/fixbb $@
+
+figures/test_setup.tex: figures/test_setup.xml
+	dia figures/test_setup.xml -t pgf-tex -e figures/test_setup.tex
+	sed -i -e 's|12mOhm|12m$$\\Omega$$|' -e 's|Vcore|$$V{core}$$|' -e 's|Vsys|V$${sys}$$|' figures/test_setup.tex
+
