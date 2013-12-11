@@ -1,0 +1,63 @@
+Mashe sammen intro, resultat og konklusjon, slik at man finner ut om man gidder å lese paperet, ikke reklame,
+men oppsummering. (Sammendrag).
+
+
+Abstract - få med resultat og konklusjon
+
+Rephrase nondeterminism in intro
+
+Litt mer om RISC og CISC, hvorfor vi er nødt til å måle via både ytelsestellere og voltmeter
+
+SHMAC er ikke related work, men heller trekk ut et avsnitt om dette, og hvordan vi er motivert av SHMAC.
+Plasseringen er bra, men vi kan ikke si at SHMAC måler strøm på lik linje med oss. Skriv også om hvordan 
+SHMAC kan ta nytte av resultatene. Fjern avsnittet om at SHMAC "shows" forskjellige ting.
+
+Se litt på oppdelingen av contribution. Del opp isolasjon av komponenter og arch.experiments.
+
+Grei ut om hva disabling av kjernene betyr.
+
+Methodology: hvorfor ODROID (SHMAC er ARM-basert, kan lodde ut spole), Vcore på Exynos går til ukjente ting,
+bla. cache og fast-loop, men sannsynligvis ikke f.eks. GPU og større enheter (GPU har egen power).
+
+Forklare overskriftene på tabellene, forklare figurene (holder ikke bare å referere til dem)
+
+Energy / Watts !!! Pass på at vi nevner motstanden og spenningsfallet. Hvorfor er ikke denne med. Nevne Vcore 
+med tall. Skriv at vi måler i Amp. da vi slipper unna med enda en feilkilde (korrelering med spenning, både
+i tid og nøyaktighet)
+
+30 sek. between each instruction!!! (bytt ut med each run, elns)
+
+asynchronus -> run seperatly
+
+få med average 4%, mul 7%
+
+hvorfor er DVFS disablet
+
+ref. på lineær temp/strøm
+
+induce current / ikke induce power
+
+hvordan unngå støy / induced current
+
+E: Pitfalls - operander, hvordan KAN dette variere, hva har vi gjort for å mitigere? (konstanter)
+
+ikke bruke "consume" om sykler.
+
+skriv heller at ex.pipene ikke brukes, heller enn at CPUen halter. Gjentaes litt seinere.
+
+"adding up their power drain..." må skrives klarere
+
+fikse font-size på tabellene
+
+argumentet for at sel og rev bruker mye strøm burde kobles litt opp mot operander. Farlig å snakke om
+strøm i flip-flop, da dette avhenger av veldig mye uvist. 
+
+Få med add i regnskapet addne/addeq.
+
+Finn standardavviket på alle medianene.
+
+Hvorfor normaliserer vi ikke etter perf.counters, men etter whitepaper? Pga. tid igjen til leveranse.
+
+Fikse konklusjon.
+
+Litt mye diskusjon i further work. Flytt over i results og pitfalls. Kun helt klare punkt i further work.
