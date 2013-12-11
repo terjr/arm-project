@@ -25,6 +25,7 @@ echo "Fontsize is $FONTSIZE"
 
 BASE=$(dirname $(readlink -f $0))
 GNUPLOT=$BASE/../scripts/gnuplot_barchart.sh
+FIXBB=$BASE/../scripts/fixbb
 RESULTS_CSV=$BASE/../processed_results/unsorted/cycle_timings.csv
 
 GROSS_FILTER=$(echo $1 | tr '_' '\n')
@@ -55,3 +56,4 @@ else
 fi
 echo Saving EPS figure to figures/graph_$1.eps
 $GNUPLOT -f <( awk -F , "$FILTER {print \$1, \$4, \$2, \$5}" $RESULTS_CSV | sort -n -k 2 ) $ASPECT_RATIO -o eps -g xy -y '0:*' -t $FONTSIZE > figures/graph_$1.eps
+$FIXBB figures/graph_$1.eps

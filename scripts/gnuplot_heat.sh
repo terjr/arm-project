@@ -71,11 +71,11 @@ esac
 
 
 echo "set style fill solid 1 border 0"
-echo "set xtics rotate by -270"
+#echo "set xtics rotate by -270"
 echo "set key outside top right horizontal nobox"
-echo 'set style line 1 lt 1 lw 3 pt 2 linecolor rgb "red"'
-echo 'set style line 2 lt 2 lw 3 pt 2 linecolor rgb "#4444DB"'
-echo 'set style line 3 lt 3 lw 3 pt 2 linecolor rgb "#22CC22"'
+echo 'set style line 1 lt 1 lw 4 pt 2 linecolor rgb "red"'
+echo 'set style line 2 lt 2 lw 7 pt 2 linecolor rgb "#4444DB"'
+echo 'set style line 3 lt 5 lw 8 pt 2 linecolor rgb "#22CC22"'
 #echo 'set palette model RGB defined (0 "#ff0000", 0.33 "#22CC22", 1 "#0000AB")'
 echo 'set palette model RGB defined (0 "#ff0000", 0.33 "#66CC66", 1 "#4444DB")'
 if [ -z $FONTSIZE ]
@@ -83,7 +83,8 @@ then
     FONTSIZE=12
 fi
 echo "set xtics font \"Arial, $FONTSIZE\""
-echo "set xlabel \"Run no.\" font \"Arial, $FONTSIZE\" offset 0,-1"
+echo "set ytics font \"Arial, $FONTSIZE\""
+echo "set xlabel \"Run\" font \"Arial, $FONTSIZE\" offset 0,-1"
 
 
 if [ ! -z $XRANGE ]
@@ -109,7 +110,7 @@ do
     then
         DESC="Ambient temp. (C)"
     fi
-    awk -F, "BEGIN {print \"\n\n\\\"$DESC\\\"\"} NR>1 && \$7!=\"\" {print NR-1,\$2,\$$n,$n}" $DIR/../processed_results/heat-correlation.csv >> $FILE
+    awk -F, "BEGIN {print \"\n\n\\\"$DESC\\\"\"} NR>1 && NR<27 && \$7!=\"\" {print NR-6,\$2,\$$n,$n}" $DIR/../processed_results/heat-correlation.csv >> $FILE
 done
 
 echo "plot for [IDX=0:2] '$FILE' i IDX using 1:3:xtic(1) w lines ls IDX+1 title columnheader(1)"

@@ -79,7 +79,15 @@ then
     FONTSIZE=12
 fi
 echo "set xtics font \"Arial, $FONTSIZE\""
-echo "set ylabel \"Ampere {/Symbol \\327} cycles\" font \"Arial, $FONTSIZE\""
+echo "set ytics font \"Arial, $FONTSIZE\""
+
+if [ $FONTSIZE -gt 12 ]
+then
+    echo "set ylabel \"Ampere {/Symbol \\327} cycles\" font \"Arial, $FONTSIZE\" offset -2"
+else
+    echo "set ylabel \"Ampere {/Symbol \\327} cycles\" font \"Arial, $FONTSIZE\" offset 3"
+fi
+
 #echo "set xlabel \"Instruction\" font \"Arial, $FONTSIZE\""
 
 

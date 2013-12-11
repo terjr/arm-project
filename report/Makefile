@@ -59,3 +59,4 @@ figures/graph_%.eps: ../processed_results/unsorted/cycle_timings.csv ./generate_
 
 figures/heat.eps: ../processed_results/heat-correlation.csv ../scripts/gnuplot_heat.sh Makefile
 	../scripts/gnuplot_heat.sh -r 0.6 -o eps -t 20 -g xy  > $@
+	../scripts/fixbb $@
