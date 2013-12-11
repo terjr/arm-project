@@ -5,43 +5,52 @@ increasing performance is currently one of the greatest challenges hardware
 designers are facing. Performance alone can be improved by cramming more
 components onto integrated circuits \cite{moore1965cramming} utilizing new
 process technologies. However, due to the end of Dennard scaling \cite{dennard},
-power density on a chip will remain constant. Computer designers is forced to
+power density on a chip will remain constant. Computer designers are forced to
 employ novel techniques mitigating this issue, such as shutting down parts of
 the chip \cite{esmaeilzadeh2011dark} and designing specialized hardware.
 
 As processors grow more sophisticated, it becomes harder to reason about their
-energy efficiency. Even RISC processors, which is designed with simplicity in
+energy efficiency. Even RISC processors, which are designed with simplicity in
 mind\cite{sivarama}, have seen a steep increase in complexity over the last
 couple of years\cite{alf_egil_bogen_cisc_risc_blog}. Features that previously
 only existed in CISC processors are now entering the RISC domain; more complex
 operations are done per clock cycle. Current RISC designs may have deep
 pipelines, increased component complexity, advanced branch predictor units and a
 high degree of instruction level parallelism. They include features that aims to
-reduce energy consumption and increase throughput in return for nondeterminism
-and added complexity.  Moreover, processors are designed as more integrated
-components -- interacting extensively with the rest of the system.
+reduce energy consumption and increase throughput in return for added
+complexity.  Moreover, processors are designed as more integrated components --
+interacting extensively with the rest of the system.
 
 The need for energy efficient processors is increasing, and in order to get a
-better understanding of which operations that is expensive in terms of energy,
+better understanding of which operations that are expensive in terms of energy,
 we propose a method to measure energy efficiency on the instruction level of a
-processor. Being able to model and monitor energy consumption has recently
-got the industry's attention: Semiconductor companies are making software
-targeting the embedded market to live monitor energy consumption on-chip, giving
+processor. Being able to model and monitor energy consumption has recently got
+the industry's attention: Semiconductor companies are making software targeting
+the embedded market providing a monitor for energy consumption on-chip, giving
 application engineers the opportunity to optimize for energy.
 
 With the emergence of performance counters, it is now possible to detect how
 different pipeline stages affects the overall power consumption. Previous
 research correlates power drain seen from the wall outlet with performance
 counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others look at
-energy usage under different workloads\cite{carroll2010analysis}. The SHMAC
-project\cite{Umuroglu662354}\cite{rusten2012implementing} aims to build an
-energy aware computer architecture, where processing cores can be tailored to
-the application.
+energy usage under different workloads\cite{carroll2010analysis}.
+
+This research is highly related to and motivated by the SHMAC
+project\cite{Umuroglu662354}\cite{rusten2012implementing} at NTNU. The goal of
+the SHMAC project is to build an energy efficient heterogenous many-core
+computer architecture. Some of the essence of SHMAC is that multiple processing
+cores with different capabilities share a single ISA and interface, and thus one
+can simply put together a processor tailored for a specific application.  Energy
+profiles provides us a better view of how different ISA implementations perform
+at different tasks\cite{kumar2003single}. The SHMAC project can benefit from
+energy profiles to design different cores that are more energy efficient for
+different task. This paper investigates an ARM architecture, since SHMAC is
+implementing the non-protected ARMv2 ISA.
 
 In this paper we make two contributions. First, we analyze the instruction level
 energy efficiency of a modern RISC architecture. We try to isolate as many
 architecture components as possible by correlating performance counters with
-observed power drain for a specific instruction. Second, we show that it is
+observed power drain for a specific instruction. We also show that it is
 feasible to get a per-instruction energy overview of an existing architecture by
 understanding the hardware and writing benchmark programs. We look at simple
 single-cycle instructions as well as the most complex instructions consuming
@@ -49,19 +58,13 @@ multiple cycles on our target processor.
 
 When each relevant instruction has been measured, we can compare their
 normalized energy consumption and possibly identify patterns where consumption
-is greater than expected. In the future, this can help computer designers
-recognize energy bottlenecks in previous designs. Also, with energy profiles on
-the instruction level, compilers can optimize their programs for energy
-efficiency and not only performance. Furthermore, it will enable simulators to
-estimate energy consumption of a given program and even compare it across
-different cores.
-
-The SHMAC project shows that it is possible to use the instruction energy
-profiles to design hardware that is more energy efficient for a given task in
-more sophisticated ways than previously possible. Energy profiles provides us a
-better view of how different cores perform at different
-tasks\cite{kumar2003single}. A system can then be composed of tiles with energy
-profiles matching the given application.
+is greater than expected. This can help computer designers recognize energy
+bottlenecks in previous designs and enhance new designs. This is directly
+related to how we can help the SHMAC project designing better hardware. Even
+another use for energy profiles on the instruction level is that compilers can
+optimize their output for energy efficiency and not only performance.
+Furthermore, it will also enable simulators to estimate energy consumption of a
+given program and even compare its energy consumption across different cores.
 
 
 %Our research is highly motivated by the SHMAC project from the Energy Efficient
