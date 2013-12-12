@@ -1,48 +1,78 @@
 \section{Conclusion}
-The ultimate goal of an experiment 
+We have dived into the inner workings of the ARM Cortex-A9 processor core, and
+have found that the energy consumption of the simple instructions are rather
+equal. This RISC processor also includes a range of more advanced instructions,
+of those we have looked into those related to multiply, multiply-accumulate and
+a few register level data movement instructions.
 
+Our main observation is that those instructions that are unable to fully fill
+the pipelines comes out as more energy efficient on the current readings. This
+is most likely due to that a pipeline that is not full uses less energy than a
+filled pipeline. We must empesise that these instructions are not more energy
+efficient than their counterparts, only slower in producing their intended
+results.  After acknowledging this issue, the numbers tell that the most
+efficient instructions are \texttt{sub} and \texttt{add}, followed by other
+common logical functions. This is expected as all these instruction are both
+easily implemented and commonly used.
 
-This is where we will put the conclusion
+We observe this in all the different aspects of conditional
+execution, which is used in different ARM ISAs. The conditional execution
+instructions, both those setting the flags and those which are conditionally
+executed, is subject to a far less efficient instruction dispatching. We assume
+that a lot of syncronization is needed for this matter. Most likely is
+conditional execution a far better idea in a simple in-order CPU than in this
+advanced out-of-order CPU core. We also notice that instructions that should not
+be commited is issued, executed and then discarded.
 
-Observations (regarding this architecture):
-Status flag update instructions are cheaper than their non-updating counterpart.
-Energy consumption is generally dominated by instruction cycle count.
-The results are stable (when doing multiple runs, each runs compare well with
-        previous ones)
+Regarding the multicycle instructions, we observed that even though the processor
+datasheet\cite{armtech} states a number of cycles for each instruction to complete
+its result, different pipelining schemes apply to the different instructions. Multiply
+can only be done in the main execution unit, while accumulate is seemingly executed in
+the second pipeline. This means that even though \texttt{mul} introduces queueing for access
+to the main pipeline, multiply-accumulate, or \texttt{mla}, is equally fast, see \autoref{tab:perf_mul}.
 
-Our measures of the multiply and other serializing instructions should probably
-be checked more into, as the performance counters in \autoref{tab:perf_mul} and
-\autoref{tab:perf_nonmul} shows different degree of idleness over the different
-instructions, even though we have tried to avoid this.  This is probably a
-matter of rewriting the kernel modules used for instruction testing, and we
-simply had no more time investigating this matter.
-
-Our final conclusion would be that the ARM Cortex-A9 is a processor core that
-seems to be well balanced in terms of energy consumption over each instruction,
-and there are no enormeous peaks or spikes in our measurements. It seems to be
-serialization due to the conditional execution paradigm and delayed result
-writing in multiplication that cause most problems. These instructions serialize
-this out-of-order core in such a way that a lot of stalls occur, and the
-processor wastes energy while idling.
+%Observations (regarding this architecture):
+%Status flag update instructions are cheaper than their non-updating counterpart.
+%Energy consumption is generally dominated by instruction cycle count.
+%The results are stable (when doing multiple runs, each runs compare well with
+%        previous ones)
+%
+%Our measures of the multiply and other serializing instructions should probably
+%be checked more into, as the performance co:e unters in \autoref{tab:perf_mul} and
+%\autoref{tab:perf_nonmul} shows different degree of idleness over the different
+%instructions, even though we have tried to avoid this.  This is probably a
+%matter of rewriting the kernel modules used for instruction testing, and we
+%simply had no more time investigating this matter.
+%
+%Our final conclusion would be that the ARM Cortex-A9 is a processor core that
+%seems to be well balanced in terms of energy consumption over each instruction,
+%and there are no enormeous peaks or spikes in our measurements. It seems to be
+%serialization due to the conditional execution paradigm and delayed result
+%writing in multiplication that cause most problems. These instructions serialize
+%this out-of-order core in such a way that a lot of stalls occur, and the
+%processor wastes energy while idling.
 
 
 
 \subsection{Further Work}
-
 Our work relies completely on synthetic benchmarks, and we do not know how this
 would differ from real world workloads. The synthetic tests fill the pipeline
 with equal instructions, while common workloads would at least contain a few
 different instructions simultaneously.
 
-\todo{fix} Go deeper into the meaning of perf.counters and how they affect serialization, and
-how much power is really wasted on idle cycles.
+The normalized results was normalized according to numbers found in the CPUs
+datasheet.  We believe that more informative results would emerge if the
+performance counter data was used to adjust the measured current drain, rather
+than number of cycles used. This is after all a multiple-issue pipelined
+processor core.
 
-Also, we have not yet dived into how instruction operands affects the energy usage on
-modern processors. We believe that instruction patterns that causes a high
-degree of bit toggling would yield higher energy usage, due to the amount of
-energy used to charge and release the transistors. A problem rising is the fact
-that we do not know how the processor schedules or distributes the different
-instructions, thus one has to be very careful when writing the benchmarks.
+Also, we have not yet dived into how instruction arguments affects the energy
+usage on modern processors. We believe that instruction patterns that causes a
+high degree of bit toggling would yield higher energy usage, due to the amount
+of energy used to charge and release the transistors. A problem rising is the
+fact that we do not know how the processor schedules or distributes the
+different instructions, thus one has to be very careful when writing the
+benchmarks.
 
 When selecting instructions for our benchmarks, we have omitted the set of
 floating-point instructions. This is because in the ARM Cortex-A9, the floating
@@ -50,9 +80,13 @@ point unit (NEON) is considered a co-processor\cite{armtech}, and thus out of
 our scope. Investigating the energy efficiency of co-processors versus
 processors that embed such functionality would add value to our results.
 
-There are also room for improvement regarding the experimental setup. Ultimately,
-one would like to be able to measure each instruction individualy, but according
-to the Nyquist-Shannon theorem\cite{shannon1949communication}, this would
-require a sampling rate of at least 3.4 GHz. We could not simply go slower on
-the clock, as a clock frequency reduction will affect the energy
+There are also room for improvement regarding the experimental setup.
+Ultimately, one would like to be able to measure each instruction individualy,
+but according to the Nyquist-Shannon theorem\cite{shannon1949communication},
+this would require a sampling rate of at least 3.4 GHz. We could not simply go
+slower on the clock, as a clock frequency reduction will affect the energy
 efficiency, possibly in the negative direction\cite{burd1995energy}.
+
+Compilers, simulators and synthesis tools would benefit from this kind of
+information, and one could possibly generate output that is more energy
+optimized then currently available.

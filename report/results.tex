@@ -141,11 +141,11 @@ In the graphs, all bars colored green means that the tested instruction is a
 single-cycle instruction, the light blue is two-cycles, and dark blue is
 three-cycle instructions. The red bar is the baseline for current measurement.
 This baseline is an alias for the least power-consuming instruction we could
-find, which is the \texttt{setend}-instruction. This instruction sets the
-endianness regarding memory operations to either big or little endian
-\cite{armcompilerref} and setting it to the same endianess repeatedly would
-force pipelines to be empty most of the time. The instructions is sorted by
-Ampere cycles.
+find, which is the \texttt{setend}-instruction with a current drain of
+$161.3mA$. This instruction sets the endianness regarding memory operations to
+either big or little endian \cite{armcompilerref} and setting it to the same
+endianess repeatedly would force pipelines to be empty most of the time. The
+instructions is sorted by Ampere cycles.
 
 The results presented in the graphs are given in Ampere $\cdot$ cycles, which
 means that instructions using more time is normalized by multiplying their
@@ -166,10 +166,10 @@ merely changes some status flags.
 
 \subsection{Single-Cycle Instructions}
 On our target CPU, 70 of the 115 tested instructions\footnote{119 including
-conditionals} use a single cycle, while the remaining 45 uses 2 or 3.
-Nearly half of the instructions are multiply instructions, so these will be
-discussed separately. \autoref{fig:singlecycle} displays a comparison of the 50 non-multiply
-single-cycle instructions.
+conditionals} use a single cycle, while the remaining 45 uses 2 or 3.  Nearly
+half of the instructions are multiply instructions, so these will be discussed
+separately. \autoref{fig:singlecycle} displays a comparison of the 50
+non-multiply single-cycle instructions.
 
 \begin{figure}
     \centering
@@ -179,38 +179,40 @@ single-cycle instructions.
 \end{figure}
 
 The results in \autoref{fig:singlecycle} shows that the ordinary single-cycle
-instructions do not differ very much. Instructions like \texttt{rev} and
-\texttt{sel} are on the top, which can be explained by looking on how these
-instructions move nearly all bits in the operands around, while \texttt{cmp} and
-the different shift-instructios are most likely moving fewer bits around.
+instructions do not differ very much. An interesting result is how instructions
+bearing the \texttt{s}-flag seems to have a lower consumption than their
+non-\texttt{s} companion. These instructions updates status flags and will
+likely force in-order execution.  According to the performance counters in
+\autoref{tab:perf_nonmul} there is reason to believe that the processor has to
+stall one cycle between each issue.  This saves power in our synthetic program,
+but would be inefficient in a real world scenario.
 
-A more interesting result is how instructions bearing the \texttt{s}-flag seems
-to have a lower consumption than their non-\texttt{s} companion. These
-instructions updates status flags and will likely force in-order execution.
-According to the performance counters in \autoref{tab:perf_nonmul} there is
-reason to believe that the processor has to stall one cycle between each issue.
-This saves power in our synthetic program, but would be inefficient in a real
-world scenario.
+The results from the conditional-executed instructions is probably also subject
+to forced in-order execution. We can see from \autoref{fig:cond} how different
+versions of \texttt{add} compares. In the figured test, \texttt{addne} is
+committed every time, while \texttt{addeq} never has its results committed. It
+is interesting to see that even though \texttt{addeq} is never committed, it
+uses almost as much power as the other \texttt{add}s. By looking at
+\autoref{tab:perf_nonmul} we see that \texttt{addeq} and \texttt{addne}
+introduces a lot of both \emph{No disp.} and \emph{Issue Empty}. We do not know
+exactly why, but it is reasonable to believe that one must assure that previous
+instruction did not alter the status flag before the results are committed or
+discarded. In a in-order single-issue processor, conditional execution provides
+a framework to avoid unneccessary jumps, while in an out-of-order core,
+conditional execution is most likely much harder to implement.  Also note that
+this test is very synthetic and the ISA is likely to be unoptimized for such
+activity. In a real world workload, it is possible that the needed
+synchronization is mostly hidden.
 
-The results from the conditional-execution scheme brought by this ISA are also
-an interesting matter. We can see from \autoref{fig:cond} how different versions
-of \texttt{add} compares. In the figured test, \texttt{addne} is committed every
-time, while \texttt{addeq} never has its results committed. It is interesting to
-see that even though \texttt{addeq} is never committed, it uses almost as much
-power as the other \texttt{add}s. We can assume that with the addition of
-out-of-order scheduling, conditional execution might be harder to implement.
-Also note that this test is very synthetic and the ISA is likely to be
-unoptimized for such activity.
-
-\autoref{fig:singlecycle} shows that the \texttt{nop}-instruction has a rather
-low power consumption. This is a bit misguiding, as the \texttt{nop}-instruction
-assembles to \texttt{mov r0, r0}, having both a read-after-write and a
-write-after-write hazard on itself. This makes the \texttt{nop}-instruction
-serialize itself, and it is hard to fill the pipeline with this instruction.
-Knowing this, it makes sense that \texttt{nop} works in this way, as it is often
-used to fill out clock cycles with non-destructive work. It would not make sense
-to optimize the \texttt{nop} instruction, as it would merely fail to complete
-it's goal as a space-and-time filler.
+Further, \autoref{fig:singlecycle} shows that the \texttt{nop}-instruction has a
+rather low power consumption. This is a bit misguiding, as the
+\texttt{nop}-instruction assembles to \texttt{mov r0, r0}, having both a
+read-after-write and a write-after-write hazard on itself. This makes the
+\texttt{nop}-instruction serialize itself, and it is hard to fill the pipeline
+with this instruction.  Knowing this, it makes sense that \texttt{nop} works in
+this way, as it is often used to fill out clock cycles with non-destructive
+work. It would not make sense to optimize the \texttt{nop} instruction, as it
+would merely fail to complete it's goal as a space-and-time filler.
 
 \begin{figure}
     \centering
@@ -219,6 +221,13 @@ it's goal as a space-and-time filler.
     \label{fig:multicycle}
 \end{figure}
 
+Generally, when accounting for the number of cycles used to the same amount of
+instructions, we see that the least current demanding single cycle instructions
+are \texttt{add} and \texttt{sub} at $216.2mA$, while \texttt{rev} and
+\texttt{sel} consumes slightly more with a drain of $225.4mA$. The meassurements
+have a standard deviation of $4mA$ and $3.7mA$, which is just enough to support
+this statement. The rest of the measurements have a standard deviation ranging
+from $2mA$ to $7mA$
 
 \subsection{Multi-Cycle Instructions}
 
