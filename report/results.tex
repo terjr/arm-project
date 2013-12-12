@@ -37,12 +37,90 @@
     \label{fig:singlecycle}
 \end{figure*}
 
-
-
 \subsection{Introduction}
 In this section we present data gathered from our experiments on the ARM
 Cortex-A9. A brief description of each instruction can be found in the "ARM and
-Thumb-2 Instruction Set Quick Reference Card"\cite{armasmref}.
+Thumb-2 Instruction Set Quick Reference Card"\cite{armasmref}. We will first look at and discuss
+how data from the performance counters together with the sparse official documentation
+enables us to make some assumptions on the processors instruction specific behaviour. Then we
+will look at and discuss the results from the per instruction energy analysis.
+
+\subsection{Decomposing the core}
+Each instruction executed within the processor will utilize a subset
+of all the available components within the core. The ARM cores are in general a
+closed product, but by combining the components described in
+\autoref{fig:pipeline} with the performance counter data depicted in
+\autoref{tab:perf_nonmul} and \autoref{tab:perf_mul}, we can deduce which
+instructions that trigger what parts. We can also see how frequently each part
+of the pipeline is used, as a fraction of cycle count and the given components
+event counter.
+
+\begin{table}
+    \centering
+    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.85cm}R{0.6cm}R{0.45cm}R{0.75cm}R{0.72cm}|}
+       \rowcolor{gray!50}
+        \hline
+        \centering
+        Instr. &
+        \centering
+        Cycles &
+        \centering
+        Main Ex. &
+        \centering
+        Second Ex. &
+        \centering
+        Pred.&
+        \centering
+        Mis pred.&
+        \centering
+        No disp. &
+        \begin{centering}
+        Issue Empty
+        \end{centering}
+        \\
+        \hline
+        \input{table_instr}
+        \hline
+    \end{tabular}
+    \caption{Performance counter data from 252 iterations of all tested
+    instructions, excluding multiply.}
+    \label{tab:perf_nonmul}
+    \hfill
+\end{table}
+
+
+All results in \autoref{tab:perf_nonmul} and \autoref{tab:perf_mul} are gathered
+by running each instruction included in our experiments using the scheme listed
+in \autoref{list:inst_loop}.  The cycle count (\emph{Cycles}) tells us how long
+time, in terms of clock cycles, it took for the processor to execute the $252
+\cdot (13+2)$ instructions. 13 is the number of the tested instruction, the last
+2 is \texttt{subs} and \texttt{jne}.  \emph{Main Ex.} is the number of cycles
+where the main execution pipeline is active, labeled ALU/MUL in
+\autoref{fig:pipeline}, \emph{Second Ex.} is for the second execution pipeline,
+labeled ALU.  All instructions in our test bench have a correct branch
+prediction count of 251 (\emph{Pred.}). This is most likely because the first
+and the last iteration of the loop is mispredicted (\emph{Mis pred.}).  \emph{No
+disp.} is the amount of cycles where there the processor was not able to
+dispatch any instructions to any execution pipeline, while \emph{Issue Empty} is
+the number of cycles where there was no instructions in the instruction queue.
+We can see when the processor is stalling by looking at the \emph{No disp.} and
+the \emph{Issue Empty} numbers.  When the \emph{No disp.} number is higher than
+\emph{Issue Empty}, it means that the processor had to do stalling, most likely
+because of hazards. In special cases, such as our baseline instruction
+\texttt{setend}, we see that the amount of \emph{No disp.} is extremely high,
+which again means that the CPU is mostly stalling. It seems to be a strong
+relation between low power usage and high stall numbers.
+
+%Some instructions use variable amount of time. This section will contain
+%information about how we normalize and compare energy consumption of
+%these instructions. It will be difficult to compare single cycle instructions
+%to the multi cycle ones, as the single cycle instructions is often the ones
+%utilizing more than one ALU at a time. Also, the multi-cycle ones will most
+%likely pipeline up very differently than the single cycle ones. We will try to
+%draw a conclusion about the results, but it is important to note the differences
+%in the execution path of these two categories.
+
+\subsection{Instruction level energy efficiency}
 
 We distinguish between single-cycle instructions and multi-cycle instructions
 because they behave differently in and around the execution pipeline.
@@ -84,45 +162,7 @@ than those using only few components. This is confirmed with our
 \texttt{baseline}-measurement, as we assume that the \texttt{setend}-instruction
 merely changes some status flags.
 
-\subsection{Decomposing the core}
-When an instruction is executed within the processor, it will utilize a subset
-of all the available components within the core. The ARM cores are in general a
-closed product, but by combining the components described in
-\autoref{fig:pipeline} with the performance counter data depicted in
-\autoref{tab:perf_nonmul} and \autoref{tab:perf_mul}, we can deduce which
-instructions that trigger what parts. We can also see how much each component is
-used, as a fraction of cycle count and the given components event counter.
 
-\subsection{Performance Counters}
-\autoref{tab:perf_nonmul} and \autoref{tab:perf_mul} shows the results from
-running each instruction through a loop with 252 iterations. All instructions
-have a  correct branch prediction count of 251 (\emph{Pred.}). This is most
-likely because the first and the last iteration of the loop is mispredicted
-(\emph{Mis pred.}). The cycle count tells us how long time, in terms of clock
-cycles, it took for the processor to execute $252 \cdot (13+2)$ instructions. 13
-is the number of the tested instruction, the last 2 is \texttt{subs} and
-\texttt{jne} as shown in \autoref{list:inst_loop}. \emph{Main Ex.} is the number
-of cycles where the main execution pipeline is active, labeled ALU/MUL in
-\autoref{fig:pipeline}, \emph{Second Ex.} is for the second execution pipeline,
-labeled ALU. \emph{No disp.} is the amount of cycles where there the processor
-was not able to dispatch any instructions to any execution pipeline, while
-\emph{Issue Empty} is the number of cycles where there was no instructions in
-the instruction queue. We can see when the processor is stalling by looking at
-the \emph{No disp.} and the \emph{Issue Empty} numbers. When the \emph{No disp.}
-number is higher than \emph{Issue Empty}, it means that the processor had to do
-stalling, most likely because of hazards. In special cases, such as our baseline
-instruction \texttt{setend}, we see that the amount of \emph{No disp.} is
-extremely high, which again means that the CPU is mostly stalling. It seems to
-be a strong relation between low power usage and high stall numbers.
-
-%Some instructions use variable amount of time. This section will contain
-%information about how we normalize and compare energy consumption of
-%these instructions. It will be difficult to compare single cycle instructions
-%to the multi cycle ones, as the single cycle instructions is often the ones
-%utilizing more than one ALU at a time. Also, the multi-cycle ones will most
-%likely pipeline up very differently than the single cycle ones. We will try to
-%draw a conclusion about the results, but it is important to note the differences
-%in the execution path of these two categories.
 
 \subsection{Single-Cycle Instructions}
 On our target CPU, 70 of the 115 tested instructions\footnote{119 including
@@ -201,62 +241,12 @@ some hardware is left idle when not needing sign extension. The instructions are
 normalized according to their stated cycle count in the table B-5 in
 \cite{armtech}.
 
-
-\begin{table}
-    \centering
-    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.85cm}R{0.6cm}R{0.45cm}R{0.75cm}R{0.72cm}|}
-       \rowcolor{gray!50}
-        \hline
-        \centering
-        Instr. &
-        \centering
-        Cycles &
-        \centering
-        Main Ex. &
-        \centering
-        Second Ex. &
-        \centering
-        Pred.&
-        \centering
-        Mis pred.&
-        \centering
-        No disp. &
-        \begin{centering}
-        Issue Empty
-        \end{centering}
-        \\
-        \hline
-        \input{table_instr}
-        \hline
-    \end{tabular}
-    \caption{Performance counter data from 252 iterations of all tested
-    instructions, excluding multiply.}
-    \label{tab:perf_nonmul}
-    \hfill
-\end{table}
-
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth]{figures/graph_0123_base_mul-0c6}
     \caption{Energy profile of multiply instructions.}
     \label{fig:allmul}
 \end{figure*}
-
-\subsection{Multiply}
-We will also discuss the 47 different multiply instructions. Since the ARM
-Cortex-A9 only contains a single multiply pipeline, but has two general
-ALUs\autoref{fig:pipeline}, the multiply instructions are queued up waiting to
-execute through the same pipeline. This implies that multiply instructions would
-have a lower continuous power drain because it does less useful work and will
-seemingly use less energy compared to instructions utilizing both pipelines at
-its full potential. We have not compensated for this matter other than
-multiplying the power drain with the number of cycles used to finish one
-multiply instruction, as it is not known how the different multiply instructions
-utilize the pipeline(s). As we can see from \autoref{tab:perf_mul}, there is
-reason to believe that at least some of the multiply-accumulate instructions
-utilize both pipelines\cite{ramangcc}, and thus utilize more hardware while
-still queuing up through the multiply-enabled main
-pipeline.
 
 \begin{table}
     \centering
@@ -289,6 +279,23 @@ pipeline.
     instructions.}
     \label{tab:perf_mul}
 \end{table}
+
+
+\subsection{Multiply}
+We will also discuss the 47 different multiply instructions. Since the ARM
+Cortex-A9 only contains a single multiply pipeline, but has two general
+ALUs\autoref{fig:pipeline}, the multiply instructions are queued up waiting to
+execute through the same pipeline. This implies that multiply instructions would
+have a lower continuous power drain because it does less useful work and will
+seemingly use less energy compared to instructions utilizing both pipelines at
+its full potential. We have not compensated for this matter other than
+multiplying the power drain with the number of cycles used to finish one
+multiply instruction, as it is not known how the different multiply instructions
+utilize the pipeline(s). As we can see from \autoref{tab:perf_mul}, there is
+reason to believe that at least some of the multiply-accumulate instructions
+utilize both pipelines\cite{ramangcc}, and thus utilize more hardware while
+still queuing up through the multiply-enabled main
+pipeline.
 
 By looking at \autoref{fig:allmul} we see that the single-cycle multiply
 instructions are quite similar, but those using two or three cycles are more

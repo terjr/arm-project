@@ -46,14 +46,13 @@ SHMAC can benefit from energy profiles to design different cores that are more
 energy efficient for different task.  This paper investigates an ARM
 architecture, since SHMAC is implementing the non-protected ARMv2 ISA.
 
-In this paper we make two contributions. First, we analyze the instruction level
-energy efficiency of a modern RISC architecture. We try to isolate as many
-architecture components as possible by correlating performance counters with
-observed power drain for a specific instruction. We also show that it is
-feasible to get a per-instruction energy overview of an existing architecture by
-understanding the hardware and writing benchmark programs. We look at simple
-single-cycle instructions as well as the most complex instructions consuming
-multiple cycles on our target processor.
+In this paper we analyze the instruction level energy efficiency of a modern
+RISC architecture. We try to isolate as many architecture components as possible
+by correlating performance counters with observed power drain for a specific
+instruction. We also show that it is feasible to get a per-instruction energy
+overview of an existing architecture by understanding the hardware and writing
+benchmark programs. We look at simple single-cycle instructions as well as the
+most complex instructions consuming multiple cycles on our target processor.
 
 When each relevant instruction has been measured, we can compare their
 normalized energy consumption and possibly identify patterns where consumption
