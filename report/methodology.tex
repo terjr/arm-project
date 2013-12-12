@@ -169,16 +169,16 @@ To measure energy consumption, we use an Agilent 34410A
 multimeter\cite{agilent34410a} to sense the voltage drop over a negligible
 12m$\Omega$ resistor, set up as shown in \autoref{fig:setup}. The multimeter is
 configured to sample at its highest sampling rate of 10000 Hz. This yields one
-sample every 1.7 million instructions with an error of at most
-0.002V\todo{verify}. It is obvious that we are unable to observe inter-cycle
-fluctations with this equipment, but as we run the same instruction practically
-indefinetely we extract the average. The loop for each instruction runs for
-about 20 seconds and we gather 50000 samples (over a period of 5 seconds) in the
-middle of this loop. Observational errors are accounted for by running the power
-measurement loop many times for each instruction. We also sleep 30 seconds in
-between runs to diminish the effect of temperature variations. Running over the
-entire testbench takes about 100 minutes and we average the medians for each
-instruction run to get a single value.
+sample every 1.7 million instructions with an error of at most $1 mV$. It is
+obvious that we are unable to observe inter-cycle fluctations with this
+equipment, but as we run the same instruction practically indefinetely we
+extract the average. The loop for each instruction runs for about 20 seconds and
+we gather 50000 samples (over a period of 5 seconds) in the middle of this loop.
+Observational errors are accounted for by running the power measurement loop
+many times for each instruction. We also sleep 30 seconds in between runs to
+diminish the effect of temperature variations. Running over the entire testbench
+takes about 100 minutes and we average the medians for each instruction run to
+get a single value.
 
 We separate power consumption on the ARM cores and the development board by
 modifying the ODROID-X2 and providing a separate power supply for the A9 cores.

@@ -101,19 +101,19 @@ likely because the first and the last iteration of the loop is mispredicted
 (\emph{Mis pred.}). The cycle count tells us how long time, in terms of clock
 cycles, it took for the processor to execute $252 \cdot (13+2)$ instructions. 13
 is the number of the tested instruction, the last 2 is \texttt{subs} and
-\texttt{jne} as shown in \autoref{list:inst_loop}. \emph{Main Ex.} is the number of
-cycles where the main execution pipeline is active, labeled ALU/MUL in
-\autoref{fig:pipeline}, \emph{Second Ex.} is for the second execution pipeline, labeled
-ALU. \emph{No disp.} is the amount of cycles where there the processor was not
-able to dispatch any instructions to any execution pipeline, while \emph{Issue
-Empty} is the number of cycles where there was no instructions in the
-instruction queue. We can see when the processor is stalling by looking at the
-\emph{No disp.} and the \emph{Issue Empty} numbers. When the \emph{No disp.} number is
-higher than \emph{Issue Empty}, it means that the processor had to do stalling, most
-likely because of hazards. In special cases, such as our baseline instruction
-\texttt{setend}, we see that the amount of \emph{No disp.} is extremely high,
-which again means that the CPU is mostly stalling. It seems to be a strong
-relation between low power usage and high stall numbers.
+\texttt{jne} as shown in \autoref{list:inst_loop}. \emph{Main Ex.} is the number
+of cycles where the main execution pipeline is active, labeled ALU/MUL in
+\autoref{fig:pipeline}, \emph{Second Ex.} is for the second execution pipeline,
+labeled ALU. \emph{No disp.} is the amount of cycles where there the processor
+was not able to dispatch any instructions to any execution pipeline, while
+\emph{Issue Empty} is the number of cycles where there was no instructions in
+the instruction queue. We can see when the processor is stalling by looking at
+the \emph{No disp.} and the \emph{Issue Empty} numbers. When the \emph{No disp.}
+number is higher than \emph{Issue Empty}, it means that the processor had to do
+stalling, most likely because of hazards. In special cases, such as our baseline
+instruction \texttt{setend}, we see that the amount of \emph{No disp.} is
+extremely high, which again means that the CPU is mostly stalling. It seems to
+be a strong relation between low power usage and high stall numbers.
 
 %Some instructions use variable amount of time. This section will contain
 %information about how we normalize and compare energy consumption of
@@ -193,13 +193,14 @@ it's goal as a space-and-time filler.
 
 45 of the instructions that was compared used 2 or 3 cycles to complete their
 results, and we will discuss them here. 18 of these instructions are
-non-multiply.  These non-multiply instructions power measurements are displayed
-in \autoref{fig:multicycle} and a selection of the performance counter results
-are shown in \autoref{tab:perf_nonmul}. We see that the unsigned extend is
-cheaper than signed extend, which might indicate that some hardware is left idle
-when not needing sign extension. The instructions are normalized according to
-their stated cycle count in the ARM Cortex-A9 Technical Reference Manual Table
-B-5\cite{armtech}.
+non-multiply. These non-multiply instruction power measurements are displayed in
+\autoref{fig:multicycle} and a selection of the performance counter results are
+shown in \autoref{tab:perf_nonmul}. We see that the unsigned extend \texttt{ux*}
+is slightly cheaper than signed extend \texttt{sx*}, which might indicate that
+some hardware is left idle when not needing sign extension. The instructions are
+normalized according to their stated cycle count in the table B-5 in
+\cite{armtech}.
+
 
 \begin{table}
     \centering
@@ -244,17 +245,18 @@ B-5\cite{armtech}.
 \subsection{Multiply}
 We will also discuss the 47 different multiply instructions. Since the ARM
 Cortex-A9 only contains a single multiply pipeline, but has two general
-ALUs\autoref{fig:pipeline}, the multiply instructions are queued up and all are
-run though the same pipeline. This means that multiply instructions would have a
-lower continuous power drain, and thus seem more energy efficient than compared
-to the general single-cycle instructions that uses the double amount of ALUs. We
-have not compensated for this matter other than multiplying the power drain with
-the number of cycles used to finish one multiply instruction, as it is not
-published knowledge how the different multiply instructions utilize the
-pipeline(s). As we can see from \autoref{tab:perf_mul}, there is reason to
-believe that at least some of the multiply-accumulate instructions utilize both
-pipelines\cite{ramangcc}, and thus utilize more hardware while still queuing up
-through the multiply-enabled main pipeline.
+ALUs\autoref{fig:pipeline}, the multiply instructions are queued up waiting to
+execute through the same pipeline. This implies that multiply instructions would
+have a lower continuous power drain because it does less useful work and will
+seemingly use less energy compared to instructions utilizing both pipelines at
+its full potential. We have not compensated for this matter other than
+multiplying the power drain with the number of cycles used to finish one
+multiply instruction, as it is not known how the different multiply instructions
+utilize the pipeline(s). As we can see from \autoref{tab:perf_mul}, there is
+reason to believe that at least some of the multiply-accumulate instructions
+utilize both pipelines\cite{ramangcc}, and thus utilize more hardware while
+still queuing up through the multiply-enabled main
+pipeline.
 
 \begin{table}
     \centering
@@ -295,14 +297,14 @@ internal architecture are not available for the public. According to the ARM
 Cortex-A9 Technical Reference Manual Table B-5, some multiply instructions uses
 more time than others before the results are actually available\cite{armtech}.
 
-According to the performance counters in \autoref{tab:perf_mul}, we can see that
-there is a difference in how each instruction are handled by the architecture.
-We have not had enough time to look deeper into each instruction, but in general
-will instructions that counts more "No dispatch" or "Issue Empty" have more idle
-time, thus a lower overall power drain. The results in \autoref{fig:allmul} show
-power drain in amperes multiplied by cycle counts stated in the ARM Cortex-A9
-Technical Reference Manual Table B-5\cite{armtech} and is not normalized
-according to the performance counter values.
+From the performance counters in \autoref{tab:perf_mul}, we see that
+instructions are treated differently by the architecture. We have not considered
+all the tested instructions in detail, but it is evident to us that there is a
+strong the negative correlation between performance counters (\emph{No Disp.}
+and \emph{Issue Empty}) and processor power drain. The results in
+\autoref{fig:allmul} shows power drain in Amperes multiplied by cycle counts
+stated in \cite{armtech} and is not normalized according to the performance
+counter values.
 
 \subsection{Evaluation}
 \begin{figure}
@@ -313,14 +315,13 @@ according to the performance counter values.
     \label{fig:heat}
 \end{figure}
 
-Each instruction was measured 41 times. For each run, there was small changes in
-power consumption, but the relation trends was equal for every run.  As stated
-in \autoref{sec:temperature}, the power consumption is not easily pushed by
-temperature. \autoref{fig:heat} shows how the change in power consumption of the
-instruction \texttt{add} over different runs combined with the ambient
-temperature the heatsink temperature. According to these results, we assume that
-the change in power consumption was not due to heat. We did not log heat for all
-test runs, but assume that the results from \autoref{fig:heat} holds, and that
-this small change in heat is not responsible for any disturbance in the power
-consumption measurements.
-
+Each instruction was measured 41 times. We found small variations in power
+consumption between testbench runs, but all results shows the same trend.  As
+stated in \autoref{sec:temperature}, the power consumption is not easily pushed
+by temperature. \autoref{fig:heat} shows how the change in power consumption of
+the instruction \texttt{add} over different runs combined with the ambient
+temperature and the heatsink temperature. According to these results, we assume
+that the change in power consumption was not due to heat. We did not log heat
+for all test runs, but assume that the results from \autoref{fig:heat} holds,
+and that this small change in heat is not responsible for any disturbance in the
+power consumption measurements.
