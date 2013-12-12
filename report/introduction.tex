@@ -35,17 +35,16 @@ research correlates power drain seen from the wall outlet with performance
 counters on the CPU\cite{singh}\cite{bertran}\cite{bircher}. Others look at
 energy usage under different workloads\cite{carroll2010analysis}.
 
-This research is highly related to and motivated by the SHMAC
+This work is highly related to and motivated by the SHMAC
 project\cite{Umuroglu662354}\cite{rusten2012implementing} at NTNU. The goal of
 the SHMAC project is to build an energy efficient heterogenous many-core
-computer architecture. Some of the essence of SHMAC is that multiple processing
-cores with different capabilities share a single ISA and interface, and thus one
-can simply put together a processor tailored for a specific application.  Energy
-profiles provides us a better view of how different ISA implementations perform
-at different tasks\cite{kumar2003single}. The SHMAC project can benefit from
-energy profiles to design different cores that are more energy efficient for
-different task. This paper investigates an ARM architecture, since SHMAC is
-implementing the non-protected ARMv2 ISA.
+computer architecture: multiple processing cores with different capabilities
+share a single ISA and can be put on the same die to create a processor tailored
+for a specific application. Energy profiles provides us a better view of how
+different ISA implementations perform at different tasks\cite{kumar2003single}.
+SHMAC can benefit from energy profiles to design different cores that are more
+energy efficient for different task.  This paper investigates an ARM
+architecture, since SHMAC is implementing the non-protected ARMv2 ISA.
 
 In this paper we make two contributions. First, we analyze the instruction level
 energy efficiency of a modern RISC architecture. We try to isolate as many
@@ -59,7 +58,7 @@ multiple cycles on our target processor.
 When each relevant instruction has been measured, we can compare their
 normalized energy consumption and possibly identify patterns where consumption
 is greater than expected. This can help computer designers recognize energy
-bottlenecks in previous designs and enhance new designs. This is directly
+bottlenecks in previous designs and enhance upcoming designs. This is directly
 related to how we can help the SHMAC project designing better hardware. Even
 another use for energy profiles on the instruction level is that compilers can
 optimize their output for energy efficiency and not only performance.
