@@ -92,27 +92,27 @@ closed product, but by combining the components described in
 instructions that trigger what parts. We can also see how much each component is
 used, as a fraction of cycle count and the given components event counter.
 
-\subsection{Performance counter}
+\subsection{Performance Counters}
 \autoref{tab:perf_nonmul} and \autoref{tab:perf_mul} shows the results from
 running each instruction through a loop with 252 iterations. All instructions
-has a Branch predictor correct predictions count of 251 (Pred.), which is
-because the first and the last iteration of the loop is mis predicted (Mis
-pred.). The cycle count tells us how long time, in terms of clock cycles, it
-took for the processor to execute $252 \cdot (13+2)$ instructions. 13 is the
-number of the tested instruction, the last 2 is \textt{subs} and \textt{jne} as
-shown in \autoref{list:inst_loop}. Main Ex. is the number of cycles where the
-main execution pipeline is active, labeled ALU/MUL in \autoref{fig:pipeline},
-Second Ex. is for the second execution pipeline, labeled ALU. No disp. is the
-amount of cycles where there the processor was not able to dispatch any
-instructions to any execution pipeline, while Issue Empty is the number of
-cycles where there was no instructions in the instruction queue. We can see when
-the processor is stalling by looking at the No disp. and the Issue Empty
-numbers. When the No disp. number is higher than Issue Empty, it means that the
-processor had to do stalling, most likely because of hazards. In special cases,
-such as our baseline instruction \textt{setend}, we see that the amount of No
-disp. is extremely high, which again means that the CPU is mostly stalling. It
-seems to be a strong relation between low power usage and high stall numbers.
-
+have a  correct branch prediction count of 251 (\emph{Pred.}). This is most
+likely because the first and the last iteration of the loop is mispredicted
+(\emph{Mis pred.}). The cycle count tells us how long time, in terms of clock
+cycles, it took for the processor to execute $252 \cdot (13+2)$ instructions. 13
+is the number of the tested instruction, the last 2 is \texttt{subs} and
+\texttt{jne} as shown in \autoref{list:inst_loop}. \emph{Main Ex.} is the number of
+cycles where the main execution pipeline is active, labeled ALU/MUL in
+\autoref{fig:pipeline}, \emph{Second Ex.} is for the second execution pipeline, labeled
+ALU. \emph{No disp.} is the amount of cycles where there the processor was not
+able to dispatch any instructions to any execution pipeline, while \emph{Issue
+Empty} is the number of cycles where there was no instructions in the
+instruction queue. We can see when the processor is stalling by looking at the
+\emph{No disp.} and the \emph{Issue Empty} numbers. When the \emph{No disp.} number is
+higher than \emph{Issue Empty}, it means that the processor had to do stalling, most
+likely because of hazards. In special cases, such as our baseline instruction
+\texttt{setend}, we see that the amount of \emph{No disp.} is extremely high,
+which again means that the CPU is mostly stalling. It seems to be a strong
+relation between low power usage and high stall numbers.
 
 %Some instructions use variable amount of time. This section will contain
 %information about how we normalize and compare energy consumption of
@@ -171,7 +171,7 @@ write-after-write hazard on itself. This makes the \texttt{nop}-instruction
 serialize itself, and it is hard to fill the pipeline with this instruction.
 Knowing this, it makes sense that \texttt{nop} works in this way, as it is often
 used to fill out clock cycles with non-destructive work. It would not make sense
-to optimize the \texttt{nop} instruction, as it would merly fail to complete
+to optimize the \texttt{nop} instruction, as it would merely fail to complete
 it's goal as a space-and-time filler.
 
 \begin{figure}
