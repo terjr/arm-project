@@ -46,25 +46,25 @@ Thumb-2 Instruction Set Quick Reference Card"\cite{armasmref}.
 
 We distinguish between single-cycle instructions and multi-cycle instructions
 because they behave differently in and around the execution pipeline.
-Instructions consuming only one cycle are fairly easy to reason about as there
-is no need to normalize energy consumption with respect to the cycle count (i.e.
+Instructions using only one cycle are fairly easy to reason about as there is no
+need to normalize energy consumption with respect to the cycle count (i.e.
 time). However, it is important to also recognize CPU capabilities such as dual
-issuing that we have on our processor: Most single-cycle ALU instructions
-execute pairwise in parallel -- one in each ALU -- giving a peak performance of
-two instructions per clock cycle. Multi-cycle instructions needs to be carefully
+issuing that are on the processor: most single-cycle ALU instructions execute
+pairwise in parallel -- one in each ALU -- giving a peak performance of two
+instructions per clock cycle. Multi-cycle instructions needs to be carefully
 considered. Typically, multi-cycle instructions divide work which can be done
-only in a subset of the available CPUs (e.g. one) over several cycles, lowering
-the average current draw. They consume less energy per time step, but also do
-less useful work. For all these reasons, we partition the measured data in two
-data sets; one for single-cycle instructions and one for multi-cycle
-instructions.
+in a subset of the available ALUs (e.g. one) over several cycles, and can
+therefore introduce bottlenecks in the execution path. This again makes the
+processor do less, lowering the average current draw. For all these reasons, we
+partition the measured data in two data sets; one for single-cycle instructions
+and one for multi-cycle instructions.
 
 In the graphs, all bars colored green means that the tested instruction is a
 single-cycle instruction, the light blue is two-cycles, and dark blue is
 three-cycle instructions. The red bar is the baseline for power measurement.
 This baseline is an alias for the least power-consuming instruction we could
 find, which is the {\ttfamily setend}-instruction. This instruction sets the
-endianness regarding memory operations to eiter big or little
+endianness regarding memory operations to either big or little
 endian \cite{armcompilerref} and setting it to the same endianess repeatedly
 would resemble continous halting on our processor.
 
