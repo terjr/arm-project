@@ -186,11 +186,13 @@ We separate power consumption on the ARM cores and the development board by
 modifying the ODROID-X2 and providing a separate power supply for the A9 cores.
 They get powered by an external power supply giving $1.3V$ DC, while the rest of
 the board is powered from a another power supply at $5.0V$, as depicted in
-\autoref{fig:setup}.
+\autoref{fig:setup}. We cannot verify that CPU cores sits alone on the 1.3V
+power rail, but we observe a strong degree of correlation between core activity
+and $V_{core}$ power drain.
 
 Certain instructions use more than one cycle to complete their work, so the
 power drain has to be normalized using statistics gained from performance
-counters. An instruction that occupies the pipeline for two cycles, is believed
+counters. An instruction that occupies the pipeline for two cycles is believed
 to use approximately twice as much energy. By normalizing, we can convert
 point-in-time energy consumption in terms of Watts to energy per instruction (in
 Joules).
@@ -206,16 +208,15 @@ our data.
 \label{sec:temperature}
 One obvious such factor is the chip temperature: it is known that power
 consumption increases at higher core temperatures. We explore the boundaries by
-physically applying freeze spray and notice that our measurements gets 4\%
-higher with a temperature increase from 9 to 63 Celsius. The \texttt{mul}
-instruction had the greatest leap and used 7\% more energy at 63 degrees. In our
-experiments, only one of the four available cores are used. Stressing a single
-core over time did not increase temperature by more than 7 degrees (from idle at
-47$^\circ$ C to 54$^\circ$ C at load), so the chip is evidently able to
-dissipate more heat than one core can generate. Assuming that it is generally
-true that a single core cannot heat the entire SoC significantly,
-and that the increase in power consumption is at most 10\% over 50$^\circ$
-Celsius, we get
+physically applying cooling spray and notice that our measurements on average
+gets 4\% higher with a temperature increase from 9 to 63 Celsius. The
+\texttt{mul} instruction had the greatest leap and used 7\% more energy at 63
+degrees. In our experiments, only one of the four available cores are used.
+Stressing a single core over time did not increase temperature by more than
+7$^\circ$C (from idle at 47$^\circ$C to 54$^\circ$C at load) and reached an
+equilibrium where temperature remained constant. Assuming that it is generally
+true that a single core cannot heat the entire SoC significantly, and that the
+increase in power consumption is at most 10\% over 50$^\circ$ Celsius, we get
 
 \begin{equation}
     P_{inc} = P_{orig} \cdot T_{inc} \cdot \frac{0.10}{50} = P_{orig} \cdot T_{inc} \cdot 0.002
@@ -225,9 +226,9 @@ Believing that this trend is at least close to linear, output will increase by
 0.2\% pr. degree Celsius increased. Also, we start our measurements several
 seconds after the benchmarks itself starts, giving the core plenty of time to
 gain work temperature. In our tests, the time used to get to work temperature
-was humanly instant. Note that we could not log temperature from on-chip sensors
-while running our tests, as these sensors are tightly coupled with DVFS in the
-Linux kernel, which we have disabled.
+was humanly instant. Note that this temperature logging was done on a separate
+ODROID as it requires kernel support for Dynamic Voltage and Frequency Scaling
+(DVFS), which we disabled in the test setup to fixate the clock frequency.
 
 Another factor that is not that obvious, but equally important, is power
 induced in the measurement circuit. Since wires are often winded up on the test
