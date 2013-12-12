@@ -41,14 +41,13 @@ environment is sketched in \autoref{fig:setup}, while the details are summarized
 
 The Cortex-A9 is a 32-bit out-of-order dual-issue speculative RISC processor,
 and even though its primary use is in mobile and embedded applications, it
-shares many features with current desktop processors. \cite{patterson}
-\cite{hennessy}. It can issue two instructions per cycle and branches its
-pipeline to four functional units, as depicted in \autoref{fig:pipeline}. Most
-instructions can execute in either of the two general ALU's, but multiply
-instructions must execute in the ALU with a hardware multiplier. The processor
-core also has separate units for floating point operations (the NEON
-co-processor) and address manipulation, but will not be further considered in
-this paper.
+shares many features with current desktop processors. \cite{patterson,hennessy}.
+It can issue two instructions per cycle and branches its pipeline to four
+functional units, as depicted in \autoref{fig:pipeline}. Most instructions can
+execute in either of the two general ALU's, but multiply instructions must
+execute in the ALU with a hardware multiplier. The processor core also has
+separate units for floating point operations (the NEON co-processor) and address
+manipulation, but will not be further considered in this paper.
 
 \begin{figure}
     \begin{centering}

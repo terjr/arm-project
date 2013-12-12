@@ -61,7 +61,7 @@ multi-cycle instructions.
 
 In the graphs, all bars colored green means that the tested instruction is a
 single-cycle instruction, the light blue is two-cycles, and dark blue is
-three-cycle instructions. The red bar is the baseline for power measurement.
+three-cycle instructions. The red bar is the baseline for current measurement.
 This baseline is an alias for the least power-consuming instruction we could
 find, which is the \texttt{setend}-instruction. This instruction sets the
 endianness regarding memory operations to either big or little endian
@@ -71,10 +71,10 @@ Ampere cycles.
 
 The results presented in the graphs are given in Ampere $\cdot$ cycles, which
 means that instructions using more time is normalized by multiplying their
-average power drain with the cycles used in the pipeline. We are more interested
-in how each instruction performs with respect to the other instructions in the
-same ISA than looking at specific numbers. Note that this unit could be
-converted to Watts or Joules from \autoref{eq:1}.
+average current drain with the number of cycles used in the pipeline. We are
+more interested in how each instruction performs with respect to the other
+instructions in the same ISA than looking at specific numbers. Note that this
+unit could be converted to Watts or Joules from \autoref{eq:1}.
 
 During measurements, the core voltage was keept stable at $1.3V\pm50mV$, well
 within the specifications of the processor. The pipelines were kept as full as
