@@ -79,12 +79,12 @@ in table A.18 in the Cortex-A9 Technical Reference Manual \cite{armtech}} that
 each can be mapped to one of six generic event counters in the Performance
 Monitor Unit (i.e. only six generic events can be tracked simultaneously). It
 also has a separate cycle counter. By comparing execution unit counters for the
-two ALUs and the cycle counter, we obtain detailed statistics about the
-pipeline activity. For example, we run \texttt{add} instructions with and
-without hazards, and verify that counters for the hazard-less run completes
-twice in about half the number of cycles. Note that these performance counters are
-approximate due to speculativity in the core, and is only being used as a sanity
-check for what we expected.
+two ALUs and the cycle counter, we obtain detailed statistics about the pipeline
+activity. For example, we run \texttt{add} instructions with and without
+hazards, and verify that the core is able to share the work between execution
+units in the latter case. Note that these performance counters are approximate
+due to speculativity in the core, and is only being used as a sanity check for
+what we expected.
 
 \begin{table}
     \centering
@@ -159,14 +159,14 @@ so by fetching instructions from the icache only at the first loop iteration,
 effectively voiding time and energy spent on instruction cache lookups between
 iterations. However, which loops that falls into this category is not
 documented, but by using performance counters we are able to determine this with
-confidence. We disable the L1 cache, penalizing runs that do not fit into
+confidence. We disable the L1 cache, penalizing runs that do not fit in
 fast-loop, making it easy to distinguish between runs within and outside
-fast-loop. We find that for loops to be executed in fast-loop it must keep two
-premises. First, the loop body must have 15 instructions or less. Secondly, it
-must be aligned to a 64 byte cache line, i.e. the first instruction in the loop
-must be on a 64-byte aligned address. Violating any of these two properties
-will cause code to be executed outside fast-loop and yield a significant
-decrease in performance.
+fast-loop. We find that for a loop to be executed in fast-loop it must hold one
+subtle property: the loop in its entirety must fit within the first 60 bytes of
+a 64 byte cache line. Consequently, the loop body must be 13 instructions or
+less (15 including \texttt{sub} and \texttt{bne}). Loops without this property
+will cause code to be executed outside fast-loop and get a significant decrease
+in performance.
 
 Furthermore, executing code within fast-loop limits the number of cache
 miss predicts to two independent of the iteration count. We confirm this by
