@@ -64,16 +64,17 @@ single-cycle instruction, the light blue is two-cycles, and dark blue is
 three-cycle instructions. The red bar is the baseline for power measurement.
 This baseline is an alias for the least power-consuming instruction we could
 find, which is the \texttt{setend}-instruction. This instruction sets the
-endianness regarding memory operations to either big or little
-endian \cite{armcompilerref} and setting it to the same endianess repeatedly
-would resemble continous halting on our processor.
+endianness regarding memory operations to either big or little endian
+\cite{armcompilerref} and setting it to the same endianess repeatedly would
+force pipelines to be empty most of the time. The instructions is sorted by
+Ampere cycles.
 
-The results presented in the graphs are enumerated as Ampere $\cdot$ cycles,
-which means that instructions using more time is normalized by adding up their
-power drain with the cycles used in the pipeline. We are more interested in how
-each instruction performs with respect to the other instructions in the same ISA
-than looking at specific numbers. Note that this unit could be converted to
-Watts or Joules from \autoref{eq:1}.
+The results presented in the graphs are given in Ampere $\cdot$ cycles, which
+means that instructions using more time is normalized by multiplying their
+average power drain with the cycles used in the pipeline. We are more interested
+in how each instruction performs with respect to the other instructions in the
+same ISA than looking at specific numbers. Note that this unit could be
+converted to Watts or Joules from \autoref{eq:1}.
 
 During measurements, the core voltage was keept stable at $1.3V\pm50mV$, well
 within the specifications of the processor. The pipelines were kept as full as
@@ -125,7 +126,7 @@ relation between low power usage and high stall numbers.
 
 \subsection{Single-Cycle Instructions}
 On our target CPU, 70 of the 115 tested instructions\footnote{119 including
-conditionals} consumes a single cycle, while the remaining 45 uses 2 or 3.
+conditionals} use a single cycle, while the remaining 45 uses 2 or 3.
 Nearly half of the instructions are multiply instructions, so these will be
 discussed separately.
 
@@ -146,13 +147,12 @@ instructions move nearly all bits in the operands around, while \texttt{cmp} and
 the different shift-instructios are most likely moving fewer bits around.
 
 A more interesting result is how instructions bearing the \texttt{s}-flag seems
-to have a lower consumption than their non-\texttt{s} companion. It is hard to
-reason about such, since we do not have access to the inner workings of this
-processor, but according to the performance counters in
-\autoref{tab:perf_nonmul}, there is reason to believe that the processor has to
-do some amount of idleing, and thus seems to save power. The actual result of
-being idle some amount of the time is that more cycles are consumed, and energy
-is wasted.
+to have a lower consumption than their non-\texttt{s} companion. These
+instructions updates status flags and will likely force in-order execution.
+According to the performance counters in \autoref{tab:perf_nonmul} there is
+reason to believe that the processor has to stall one cycle between each issue.
+This saves power in our synthetic program, but would be inefficient in a real
+world scenario.
 
 The results from the conditional-execution scheme brought by this ISA are also
 an interesting matter. We can see from \autoref{fig:cond} how different versions
