@@ -86,72 +86,6 @@ twice in about half the number of cycles. Note that these performance counters a
 approximate due to speculativity in the core, and is only being used as a sanity
 check for what we expected.
 
-\begin{table}
-    \centering
-    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.85cm}R{0.6cm}R{0.45cm}R{0.75cm}R{0.72cm}|}
-       \rowcolor{gray!50}
-        \hline
-        \centering
-        Instr. &
-        \centering
-        Cycles &
-        \centering
-        Main Ex. &
-        \centering
-        Second Ex. &
-        \centering
-        Pred.&
-        \centering
-        Mis pred.&
-        \centering
-        No disp. &
-        \begin{centering}
-        Issue Empty
-        \end{centering}
-        \\
-        \hline
-        \input{table_mul}
-        \hline
-    \end{tabular}
-    \caption{Performance counter data from 252 iterations of all tested multiply
-    instructions.}
-    \label{tab:perf_mul}
-\end{table}
-
-\begin{table}
-    \centering
-    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.85cm}R{0.6cm}R{0.45cm}R{0.75cm}R{0.72cm}|}
-       \rowcolor{gray!50}
-        \hline
-        \centering
-        Instr. &
-        \centering
-        Cycles &
-        \centering
-        Main Ex. &
-        \centering
-        Second Ex. &
-        \centering
-        Pred.&
-        \centering
-        Mis pred.&
-        \centering
-        No disp. &
-        \begin{centering}
-        Issue Empty
-        \end{centering}
-        \\
-        \hline
-        \input{table_instr}
-        \hline
-    \end{tabular}
-    \caption{Performance counter data from 252 iterations of all tested
-    instructions, excluding multiply.}
-    \label{tab:perf_nonmul}
-    \hfill
-\end{table}
-
-
 Using performance counters as above, we are able to confirm a feature on the A9
 processor that is very vaguely documented; fast-loop\texttrademark{} mode. As
 the name suggests, this feature enables rapid execution of small loops. It does
@@ -176,27 +110,38 @@ of the loop.
 
 \subsection{Benchmarks}
 As a first approximation, the benchmark programs consists of an infinite series
-of identical instructions. The A9 core runs at a fixed frequency and we are
-providing a fixed core voltage, so energy usage (in Watts) for a one-cycle
-instruction is determined by the following formula.
+of identical instructions. Since the A9 core runs at a fixed frequency and we are
+providing a fixed core voltage, so energy usage per instruction can
+be deduced from the continuous power drain during instruction runs. In general,
+the power drain related to each instruction can be calculated as following:
 
 \begin{equation}
     P_{instruction} = I_{instruction} \cdot V_{core}
     \label{eq:1}
 \end{equation}
 
-Running for a fixed time period, we obtain an expression for the energy used.
+The fixed core clock cycle gives a fixed amount of time per cycle. Thus, we
+use clock cycles as our base time unit. Energy is then given as
 
 \begin{equation}
     E_{instruction} = P_{instruction} \cdot cycles
     \label{eq:2}
 \end{equation}
 
+We are unable to measure core power directly with our equipment. However,
+voltage and frequency are assumed constant, which gives a linear relation
+between current and consumed energy. As a substitute for providing numbers in
+Joule per instruction, we measure the current drain and multiply with the number
+of cycles the instruction lies within any of the processors functional units.
+This gives us the unit of Ampere-cycles, which in our environment maps directly
+to energy.  We omit the fact that the core voltage is dropped by a variable few mV over
+the shunt resistor, see \autoref{fig:setup}.
+
 This simple setup does not take the memory system into account; we are
 undoubtedly not able to feed the processor instructions at no cost in terms of
 access speed and -- more importantly -- memory system energy usage. Thus, we
 enhance our setup by running all benchmark code within fast-loop. To explicitly
-feed the processor instructions without the overhead of interupts, we write
+feed the processor instructions without the overhead of interrupts, we write
 Linux kernel modules that once inserted, execute a loop similar to the one shown
 in \autoref{list:inst_loop}. Note that the \texttt{subs} and \texttt{jne}
 instructions are needed to avoid memory fetches completely, but also makes the

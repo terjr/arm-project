@@ -173,6 +173,42 @@ when not needing sign extension. The instructions are normalized according to
 their stated cycle count in the ARM Cortex-A9 Technical Reference Manual Table
 B-5\cite{armtech}.
 
+\begin{table}
+    \centering
+    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.85cm}R{0.6cm}R{0.45cm}R{0.75cm}R{0.72cm}|}
+       \rowcolor{gray!50}
+        \hline
+        \centering
+        Instr. &
+        \centering
+        Cycles &
+        \centering
+        Main Ex. &
+        \centering
+        Second Ex. &
+        \centering
+        Pred.&
+        \centering
+        Mis pred.&
+        \centering
+        No disp. &
+        \begin{centering}
+        Issue Empty
+        \end{centering}
+        \\
+        \hline
+        \input{table_instr}
+        \hline
+    \end{tabular}
+    \caption{Performance counter data from 252 iterations of all tested
+    instructions, excluding multiply.}
+    \label{tab:perf_nonmul}
+    \hfill
+\end{table}
+
+
+
+
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth]{figures/graph_0123_base_mul-0c6}
@@ -190,10 +226,43 @@ to the general single-cycle instructions that uses the double amount of ALUs. We
 have not compensated for this matter other than multiplying the power drain with
 the number of cycles used to finish one multiply instruction, as it is not
 published knowledge how the different multiply instructions utilize the
-pipeline(s). We have reason to believe that at least some of the
-multiply-accumulate instructions utilize both pipelines\cite{ramangcc}, and thus
-utlize more hardware while still queueing up through the multiply-enabled main
-pipeline.
+pipeline(s). As we can see from \autoref{tab:perf_mul}, there is reason to
+believe that at least some of the multiply-accumulate instructions utilize both
+pipelines\cite{ramangcc}, and thus utilize more hardware while still queueing up
+through the multiply-enabled main pipeline.
+
+\begin{table}
+    \centering
+    \begin{tabular}{|p{0.7cm}|R{0.8cm}R{0.6cm}R{0.85cm}R{0.6cm}R{0.45cm}R{0.75cm}R{0.72cm}|}
+       \rowcolor{gray!50}
+        \hline
+        \centering
+        Instr. &
+        \centering
+        Cycles &
+        \centering
+        Main Ex. &
+        \centering
+        Second Ex. &
+        \centering
+        Pred.&
+        \centering
+        Mis pred.&
+        \centering
+        No disp. &
+        \begin{centering}
+        Issue Empty
+        \end{centering}
+        \\
+        \hline
+        \input{table_mul}
+        \hline
+    \end{tabular}
+    \caption{Performance counter data from 252 iterations of all tested multiply
+    instructions.}
+    \label{tab:perf_mul}
+\end{table}
+
 
 By looking at \autoref{fig:allmul} we see that the single-cycle multiply
 instructions are quite similar, but those using two or three cycles are more
