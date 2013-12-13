@@ -142,15 +142,15 @@ access speed and -- more importantly -- memory system energy usage. Thus, we
 enhance our setup by running all benchmark code within fast-loop. To explicitly
 feed the processor instructions without the overhead of interrupts, we write
 Linux kernel modules that once inserted, execute a loop similar to the one shown
-in \autoref{list:inst_loop}. Note that the \texttt{subs} and \texttt{bne}
-instructions are needed to avoid memory fetches completely, but also makes the
-program terminate -- which again eases the testing procedure.
+in \autoref{list:inst_loop}. Note that the \texttt{subs} and \texttt{bne} are
+used to generate a loop body small enough to fit in fast-loop, and at the same
+time allows us to terminate the program after some number of iterations.
 
-The technical manual states that branching to immediate locations
-does not consume execution unit cycles. Our micro-benchmarks branches to
-immediate locations, but it does so conditionally. We assume that the
-calculation of this condition takes normal execution time, but that the branch
-is invisible.
+It is stated in \cite{armtech} that branching to immediate locations does not
+use clock cycles. Our micro-benchmarks branches to immediate locations, but it
+does so conditionally. We assume that the calculation of the branch condition,
+the \texttt{subs}, takes its normal execution time, while the following branch
+instruction is invisible.
 
 \begin{figure}
     \begin{lstlisting}{language=[ARM]Assembler}
@@ -167,17 +167,17 @@ is invisible.
 
 \subsection{Power Measurements}
 To measure energy consumption, we use an Agilent 34410A
-multimeter\cite{agilent34410a} to sense the voltage drop over a negligible
-12m$\Omega$ resistor, set up as shown in \autoref{fig:setup}. The multimeter is
-configured to sample at its highest sampling rate of 10kHz. This yields one
-sample every 1.7 million instructions with an error of at most $1 mV$. It is
-obvious that we are unable to observe inter-cycle fluctations with this
-equipment, but as we run the same instruction practically indefinetely we
+multimeter\cite{agilent34410a} to sense the voltage drop over a shunt
+resistor, set up as shown in \autoref{fig:setup}. The multimeter is
+configured to sample at its highest sampling rate of 10 kHz. This yields one
+sample every 170,000 instructions with an error of at most $1 mV$. It is
+obvious that we are unable to observe inter-cycle fluctuations with this
+equipment, but as we run the same instruction practically indefinitely we
 extract the average. The loop for each instruction runs for about 20 seconds and
 we gather 50,000 samples (over a period of 5 seconds) in the middle of this loop.
 Observational errors are accounted for by running the power measurement loop
 many times for each instruction. We also sleep 30 seconds in between runs to
-diminish the effect of temperature variations. Running over the entire testbench
+dilute the effect of temperature variations. Running over the entire testbench
 takes about 100 minutes and we average the medians for each instruction run to
 get a single value.
 
@@ -185,70 +185,61 @@ We separate power consumption on the ARM cores and the development board by
 modifying the ODROID-X2 and providing a separate power supply for the A9 cores.
 They get powered by an external power supply giving $1.3V$ DC, while the rest of
 the board is powered from a another power supply at $5.0V$, as depicted in
-\autoref{fig:setup}. We cannot verify that CPU cores sits alone on the 1.3V
+\autoref{fig:setup}. We cannot verify that CPU cores sit alone on the $1.3V$
 power rail, but we observe a strong degree of correlation between core activity
 and $V_{core}$ power drain.
 
 Certain instructions use more than one cycle to complete their work, so the
-power drain has to be normalized using statistics gained from performance
-counters. An instruction that occupies the pipeline for two cycles is believed
-to use approximately twice as much energy. By normalizing, we can convert
-point-in-time energy consumption in terms of Watts to energy per instruction (in
-Joules).
-
+energy usage has to be normalized. An instruction that occupies the pipeline for
+two cycles is believed to use approximately twice as much energy. By
+normalizing, we can convert point-in-time current drain in terms of Amperes
+to energy per instruction in Ampere-cycles.
 
 \subsection{Pitfalls}
-% write about interrupts
-We are comparing the energy efficiency of different instructions in an
-asynchronous way, so we try to fixate as many parameters as possible. We must
-acknowledge that some factors affects power consumption and produces noise in
-our data.
+We measure the current drain of different instructions separately, so we need
+to fix as many parameters as possible. We must acknowledge that some factors
+affects power consumption and produces noise in our data.
 
 \label{sec:temperature}
 One obvious such factor is the chip temperature: it is known that power
 consumption increases at higher core temperatures. We explore the boundaries by
 physically applying cooling spray and notice that our measurements on average
-gets 4\% higher with a temperature increase from 9 to 63 Celsius. The
-\texttt{mul} instruction had the greatest leap and used 7\% more energy at 63
-degrees. In our experiments, only one of the four available cores are used.
-Stressing a single core over time did not increase temperature by more than
-7$^\circ$C (from idle at 47$^\circ$C to 54$^\circ$C at load) and reached an
-equilibrium where temperature remained constant. Assuming that it is generally
-true that a single core cannot heat the entire SoC significantly, and that the
-increase in power consumption is at most 10\% over 50$^\circ$ Celsius, we get
+gets 4\% higher with a temperature increase from 9$^\circ$C to 63$^\circ$C . The
+\texttt{mul} instruction had the greatest leap and used 7\% more energy at
+63$^\circ$C. In our experiments, only one of the four available cores are
+used.  Stressing a single core over time did not increase temperature by more
+than 7$^\circ$C (from idle at 47$^\circ$C to 54$^\circ$C at load) and reached
+an equilibrium where temperature remained constant. Assuming that it is
+generally true that a single core cannot heat the entire SoC significantly, and
+that the increase in power consumption is at most 10\% over 50$^\circ$C, we get
 
 \begin{equation}
     P_{inc} = P_{orig} \cdot T_{inc} \cdot \frac{0.10}{50} = P_{orig} \cdot T_{inc} \cdot 0.002
 \end{equation}
 
-Believing that this trend is at least close to linear, output will increase by
-0.2\% pr. degree Celsius increased. Also, we start our measurements several
-seconds after the benchmarks itself starts, giving the core plenty of time to
-gain work temperature. In our tests, the time used to get to work temperature
-was humanly instant. Note that this temperature logging was done on a separate
-ODROID as it requires kernel support for Dynamic Voltage and Frequency Scaling
-(DVFS), which we disabled in the test setup to fixate the clock frequency.
-
-Another factor that is not that obvious, but equally important, is induced current
-in the test bench circuitry. Since wires are often winded up on the test
-bench, and lab equipment might contain large metal cores with a great amount of
-power running through them, unexpected power might be introduced.
+Assuming the trend is close to linear, output will increase by 0.2\% per
+$^\circ$C increased. Also, we start our measurements several seconds after the
+benchmarks, giving the core plenty of time to reach work temperature. For our
+purpose, the time used to reach work temperature was pretty much instant. Note
+that this temperature logging was done with a different kernel as it required
+support for Dynamic Voltage and Frequency Scaling (DVFS), which we
+disabled in the test setup in order to fix the clock frequency.
 
 Energy consumption is almost certainly affected by the amount of bit flipping
 within the core. In all the tests, the instruction arguments are static. This
-means that the results might had been different if we used different
-arguments. To mitigate this, we used as equal arguments as possible, but still,
-different instructions contain and use arguments differently.
+means that the results could be different if we changed the arguments. To
+mitigate this, we used as equal arguments as possible. Still, different
+instructions contain and use arguments differently, so we cannot guarantee
+complete fairness between instructions.
 
-We are running Linux as the base environment for our tests, which gives us a
-much simpler abstractions to make the processor run our programs. Running an
-operating system also comes with some caveats. Having an entire operating system
-beneath our benchmark programs implies that there is much going on that we have
-no direct controls over. In order to mitigate the artifacts originating from the
-operating system, we disable all the maskable interrupts and run our benchmark
-programs entirely uninterrupted.
+We are running Linux as the base environment for our tests, which makes it
+simpler to run our micro-benchmarks. However, running an entire operating
+system beneath our benchmark programs implies that there is much going on where
+we have no direct control. To mitigate the artifacts originating from
+the operating system, we disable all the maskable interrupts and run our
+benchmark programs entirely uninterrupted as a kernel module.
 
-As explained in section \autoref{arch_experiments}, we utilize the fast-loop mode of
-the processor to mitigate memory access latency. We disable the L1 cache to
-easier detect when we are outside the fast-loop mode, and thus we are certain
-that there is no memory access going on.
+As explained in section \autoref{arch_experiments}, we utilize the fast-loop
+mode of the processor to avoid memory access latency. We disable the L1 cache
+to easier detect when we are outside the fast-loop mode, and thus we are
+certain that there is no memory access going on.
