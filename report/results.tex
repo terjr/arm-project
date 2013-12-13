@@ -184,10 +184,11 @@ bearing the \texttt{s}-flag seems to have a lower consumption than their
 non-\texttt{s} companion. These instructions updates status flags and will
 likely force in-order execution.  According to the performance counters in
 \autoref{tab:perf_nonmul} there is reason to believe that the processor has to
-stall one cycle between each issue.  This saves power in our synthetic program,
-but would be inefficient in a real world scenario.
+stall one cycle between each issue. This seemingly saves energy in our synthetic
+tests, but needs longer time to complete, thus is actually more inefficient both
+in terms of time and energy.
 
-The results from the conditional-executed instructions is probably also subject
+The results from the conditional-executed instructions are also probably subject
 to forced in-order execution. We can see from \autoref{fig:cond} how different
 versions of \texttt{add} compares. In the figured test, \texttt{addne} is
 committed every time, while \texttt{addeq} never has its results committed. It

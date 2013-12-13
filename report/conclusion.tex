@@ -1,9 +1,10 @@
 \section{Conclusion}
 We have dived into the inner workings of the ARM Cortex-A9 processor core, and
-have found that the energy consumption of the simple instructions are rather
-equal. This RISC processor also includes a range of more advanced instructions,
-of those we have looked into those related to multiply, multiply-accumulate and
-a few register level data movement instructions.
+found that the energy consumption for each of the simple instructions are rather
+equal. This RISC processor also includes a range of more advanced instructions
+that needs more than a single cycle to complete. We have looked into all
+multi-cycle instructions related to multiply and multiply-accumulate, along with
+a few that register level data movement instructions.
 
 Our main observation is that those instructions that are unable to fully fill
 the pipelines comes out as more energy efficient on the current readings. This
@@ -30,6 +31,8 @@ its result, different pipelining schemes apply to the different instructions. Mu
 can only be done in the main execution unit, while accumulate is seemingly executed in
 the second pipeline. This means that even though \texttt{mul} introduces queueing for access
 to the main pipeline, multiply-accumulate, or \texttt{mla}, is equally fast, see \autoref{tab:perf_mul}.
+
+\vfill
 
 %Observations (regarding this architecture):
 %Status flag update instructions are cheaper than their non-updating counterpart.

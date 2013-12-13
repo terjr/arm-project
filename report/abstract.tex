@@ -1,20 +1,22 @@
 \begin{abstract}
 
-In order to build more energy efficient traditional hardware, we are in need for
-better understanding of how the ISA and its implementation relates to energy
-efficiency. This paper investigates the instruction level energy efficiency of
-an ARM Cortex-A9, and presents numbers on current drain, pipeline utilization
-and other performance data for different instructions. This allows reasoning about
-how instructions are executed and how energy efficient their implementation are
-in this otherwise publicly closed architecture.
+Current microprocessors are limited by power density and new designs must emphasize
+energy efficiency to become successful. Building energy efficient hardware
+requires better understanding of how the ISA and its implementation relates to
+energy efficiency. This paper investigates the instruction level energy
+efficiency of an ARM Cortex-A9, and presents numbers on current drain, pipeline
+utilization and other performance data for different instructions. This allows
+reasoning about how instructions are executed and how energy efficient their
+implementation are in this otherwise publicly closed architecture.
 
 The testbench used in the experiments measures the core current drain by
 utilizing a shunt resistor connected directly between the CPU core voltage
 supply pins and an external power supply. Measuring isolated core current drain
-effectively means skipping other on- and off-chip peripherals as much as possible,
-and get a more decent view of what is going on within the processor core. We
-also utilize a small and very core-local instruction cache unit called fast-loop-mode,
-this together with not using data from memory leaves the caches totally unused.
+effectively means skipping other on- and off-chip peripherals as much as
+possible, and get a more decent view of what is going on within the processor
+core.  We exploit instruction buffers within the processor and avoid fetching
+data from memory. This renders the memory hierarchy unused, and isolates the
+core as much as possible.
 
 The results shows that the ARM ISA is well balanced regarding commonly used
 instructions, with instructions such as \texttt{add} and \texttt{sub} seemingly
